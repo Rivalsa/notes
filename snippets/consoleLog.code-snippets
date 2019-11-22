@@ -1,6 +1,6 @@
 {
 	"console.log": {
-		"scope": "javascript",
+		"scope": "javascript,typescrypt",
 		"prefix": "log",
 		"body": [
 			"console.log($1);"
