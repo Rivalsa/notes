@@ -1,0 +1,10 @@
+{
+	"viewport": {
+		"scope": "html",
+		"prefix": "meta",
+		"body": [
+			"<meta name=\"viewport\" content=\"width=device-width,initial-scale=1.0,user-scalable=no\">"
+		],
+		"description": "viewport"
+	}
+}

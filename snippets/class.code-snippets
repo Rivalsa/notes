@@ -1,0 +1,16 @@
+{
+	"class": {
+		"scope": "javascript",
+		"prefix": "class",
+		"body": [
+			"class $1 extends $2{",
+			"	constructor(){",
+			"		super();",
+			"		$3",
+			"	}",
+			"	$4"
+			"}"
+		],
+		"description": "创建或继承一个类"
+	}
+}

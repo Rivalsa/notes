@@ -1,0 +1,21 @@
+{
+	"axios_js": {
+		"scope": "javascript",
+		"prefix": "axios",
+		"body": [
+			"axios({",
+			"    method: 'POST',",
+			"    url: '$1',",
+			"    headers: {$2},",
+			"    params: {$3},",
+			"    data: {$4},",
+			"    withCredentials: false",
+			"}).then(m => {",
+			"    console.log(m);",
+			"}).catch(e => {",
+			"    console.log(e);",
+			"});"
+		],
+		"description": "axios_js"
+	}
+}

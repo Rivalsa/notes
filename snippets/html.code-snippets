@@ -1,0 +1,27 @@
+{
+	"html": {
+		"scope": "html",
+		"prefix": "!!",
+		"body": [
+			"<!DOCTYPE html>",
+			"<html lang=\"zh-CN\">",
+			"	<head>",
+			"		<meta charset=\"utf-8\">",
+			"		<title>$1</title>",
+			"		<link href=\"https://code.invisible.rivalsa.cn/css/init.css\" rel=\"stylesheet\">",
+			"		<style>",
+			"			$3",
+			"		</style>",
+			"	</head>",
+			"	<body>",
+			"		$2",
+			"		<script>",
+			"			'use strict'",
+			"			$4",
+			"		</script>",
+			"	</body>",
+			"</html>"
+		],
+		"description": "html"
+	}
+}

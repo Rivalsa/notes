@@ -1,0 +1,10 @@
+{
+	"jQuery": {
+		"scope": "html",
+		"prefix": "jQuery",
+		"body": [
+			"<script src=\"https://code.invisible.rivalsa.cn/jQuery/jquery-3_4_1_min.js\"></script>"
+		],
+		"description": "jQuery 3.4.1"
+	}
+}
