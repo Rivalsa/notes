@@ -121,6 +121,52 @@ git branch
 **切换分支**
 
 ```git
+git switch 分支名   (推荐)
+或
 git checkout 分支名
 ```
+
+**删除分支**
+
+```git
+git branch -d 分支名
+```
+
+**创建并切换至分支**
+
+```git
+git switch -c 分支名
+```
+
+**将分支合并到当前分支**
+
+```git
+git merge 分支名
+```
+
+**将分支合并到当前分支(不使用快速合并)**
+
+```git
+git merge --no-ff -m"版本信息" 分支名
+```
+
+**将未提交的代码隐藏**
+
+```git
+git stash
+```
+
+**显示隐藏的代码列表**
+
+```git
+git stash list
+```
+
+**恢复隐藏的代码**
+
+```git
+git stash pop
+```
+
+**(整理中,待续)**
 
