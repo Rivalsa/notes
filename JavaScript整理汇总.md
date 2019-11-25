@@ -577,6 +577,94 @@ let x=10,
     };
 ```
 
+### 11.7 回调地狱及Promise
+
+如果代码中有多处异步代码(异步中还有异步),例如:
+
+```javascript
+setTimeout(() => {
+    setTimeour(() => {
+        setTimeout(() => {
+            console.log(4);
+        },100);
+        console.log(3)
+    },100);
+    console.log(2);
+},100);
+console.log(1);
+```
+
+可以看到,上述代码有横向发展的趋势,看起来不好看,也不利于代码维护.通常把这种情况称为**回调地狱**.
+
+**Promise**
+
+`Promise`是一个构造函数(类),需要用`new`来创建一个对象,创建这个对象时,需要两个参数,这两个参数在内部会被定义为函数,第一个表示成功(一般使用resolve),第二个表示失败(一般使用reject),当这部分代码执行完毕后,需要根据状态调用`resolve`或`reject`,调用`resolve`后会停止当前的执行,并执行属性`then`传入的函数的第一个参数,调用`reject`或会停止档期至今,并执行属性`then`传入的第二个参数或属性`catch`传入的参数
+
+*执行到resolve或reject后,会直接进入对应部分代码*
+
+实例化后的Promise对象有两个常用属性,一个是`then`,另一个是`catch`,这两个属性都是函数,`then`需要传入两个函数参数,第一个是resolve时执行的函数,第二个是reject时执行的函数,但通常习惯上不传入第二个参数,而是用`catch`来捕捉reject.
+
+代码如下:
+
+```javascript
+new Promise((resolve,reject) => {
+    ...
+    if(...) resolve(); else reject();
+}).then(() => {
+    //resolve时执行的代码
+    ...
+}).catch(() => {
+    //reject时执行的代码
+    ...
+});
+```
+
+由于当Promise实例执行到resolve时会继续执行then传入的代码,则可以在then部分通过return设置返回值,这个返回值就是整个实例的返回值,如果让整个实例返回一个新的Promise对象,则可以实例又可以继续有then及catch属性,这样就可以将横向发展的代码变成纵向发展,也就解决了回调地狱问题,代码如下:
+
+```javascript
+new Promise (res => {
+    ...
+    res();
+}).then(() => {
+    return new Promise(res => {
+        ...
+        res();
+    });
+}).then(() => {
+    return new Promise(res => {
+        ...
+        res();
+    });
+}).then(() => {
+    ...
+});
+```
+
+*如果需要捕捉reject则在最后增加`catch`即可,由于上面的代码中没有任何地方用到`reject`则`catch`并没有意义,所以没有定义`catch`*
+
+利用此方法可以解决本节第一个代码额回调地狱问题,代码如下:
+
+```javascript
+console.log(1);
+new Promise((resolve,reject) => {
+    setTimeout(() => {
+        console.log(2);
+        resolve();
+    },100);
+}).then(() => {
+    return new Promise(resolve ={
+        setTimeout(() => {
+            console.log(3);
+            resolve();
+        },100);
+	});
+}).then(() => {
+    setTimeout(() => {
+        console.log(4);
+    },100);
+});
+```
+
 ## 12.DOM节点操作
 
 节点(共12种)
