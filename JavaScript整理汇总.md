@@ -2,6 +2,16 @@
 
 ## 1.杂项
 
+`typeof`有两种写法,`typeof x`或`typeof(x)`,返回x的数据类型字符串,但存在特殊情况,下面列出所有可能的输出值
+
+- `number`类型返回`number`
+- `string`类型返回`string`
+- `boolean`类型返回`boolean`
+- `undefined`类型返回`undefined`
+- `null`类型返回`object`
+- `object`类型(function除外)返回`object`
+- `object`类型中的function返回`function`
+
 `alert(x)`弹窗x(本意是警告弹窗,但通常用语不需要确认和输入内容的弹窗,应用很少)
 
 `prompt(x)`输入弹窗,x是提示内容,会返回输入的字符串,如果点"取消""则返回null
@@ -11,8 +21,6 @@
 `isNaN(x)`判断x是否是`NaN`若是则返回true,否则返回false
 
 `delete`删除对象中的变量(在严格模式下无法使用)
-
-`parseInt(string, radix)`字符串转换为整数数字
 
 `getComputedStyle(x)`window的自带函数,返回对象x的CSS样式,只读属性,例如:
 
@@ -160,19 +168,31 @@ fn.bind(document,1)(2);
 
 ## 5.数据类型
 
-- Number
+### 5.1 JavaScript含有的数据类型
 
-- String
+- number
 
-- Boolean
+    - 数字的最大值
 
-- Symbol (ES6新增)
+        JavaScript中的数字有最大值的限制,可以利用`Number.MAX_VALUE`取得最大值,若数字大于此值,则为`Infinity`(正无穷大)
+
+    - 数字的最小值
+
+        JavaScript中的数字有最大值的限制,可以利用`Number.MIN_VALUE`取得最大值,若数字小于此值,则为`-Infinity`(负无穷大)
+
+    - `NaN`也属于数字类型
+
+- string
+
+- boolean
+
+- symbol (ES6新增)
 
 - null
 
 - undefined
 
-- Object
+- object
 
     - 将对象赋值给一个变量是将对象的指针给这个变量,对变量的修改等价于直接修改对象,举例如下:
 
@@ -193,6 +213,16 @@ fn.bind(document,1)(2);
 
         - 当函数中有`return`时,函数的返回值为对应的内容
         - 当函数中没有`return`或内容为空时,返回`undefined`
+
+### 5.2 字符串与数字之间的转换
+
+`Number(x)`将x转换为数字类型,返回转换后的结果,如果x不是数字字符串,则返回`NaN`,(**通常利用运算符的强制类型转换(减0或乘1等)代替本方法**)
+
+`parseInt(string, radix)`将以数字开头的字符串转换为整数数字(第一个非数字字符后面的内容不再解析),返回获得的结果
+
+`parseFloat(x)`将以数字开头的字符串转换为数字(第一个非数字且非`.`字符后面的内容不再解析),返回获得的结果
+
+`String(x)`将x转换为字符串,返回转换后的结果
 
 ## 6.字符串常用API
 
