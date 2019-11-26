@@ -7,6 +7,8 @@ git config --global user.name "Rivalsa"
 git config --global user.email "sa@rivalsa.cn"
 ```
 
+*`--global`表示全局,如果没有这个参数则本次配置只适用于本仓库*
+
 **初始化**
 
 ```git
@@ -150,6 +152,12 @@ git merge 分支名
 git merge --no-ff -m"版本信息" 分支名
 ```
 
+**查看分支的历史**
+
+```git
+git log --graph --pretty=online --avvrev-commit
+```
+
 **将未提交的代码隐藏**
 
 ```git
@@ -167,6 +175,3 @@ git stash list
 ```git
 git stash pop
 ```
-
-**(整理中,待续)**
-
