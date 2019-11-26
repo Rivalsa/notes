@@ -161,12 +161,38 @@ fn.bind(document,1)(2);
 ## 5.数据类型
 
 - Number
+
 - String
+
 - Boolean
+
 - Symbol (ES6新增)
+
 - null
+
 - undefined
+
 - Object
+
+    - 将对象赋值给一个变量是将对象的指针给这个变量,对变量的修改等价于直接修改对象,举例如下:
+
+        ```javascript
+        let obj = {
+            name: 'Rivalsa',
+            age: 18,
+            pet: 'cat'
+        };
+        let a = obj;
+        a.age = 16;
+        console.log(obj.age); // 16
+        ```
+
+    - 数组属于对象的一种
+
+    - 函数属于对象的一种
+
+        - 当函数中有`return`时,函数的返回值为对应的内容
+        - 当函数中没有`return`或内容为空时,返回`undefined`
 
 ## 6.字符串常用API
 
