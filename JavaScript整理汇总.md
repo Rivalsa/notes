@@ -279,7 +279,7 @@ console.log(arr)
 
 `.join(x)`用x将数组的元素连接在一起,返回拼接好的字符串
 
-`.isArray()`判断数据是否是数组,如果是返回true,否则返回false
+`Array.isArray(x)`判断x是否是数组,如果是返回true,否则返回false
 
 `.forEach(x)`数组的遍历,x是一个function,函数执行时会传入三个参数(需要选中设置形参接收),分别是item,index,arr
 
