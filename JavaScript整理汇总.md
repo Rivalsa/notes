@@ -208,36 +208,39 @@ fn.bind(document,1)(2);
 
 `.slice`与上一条相似,但更好用,可以传入负数.
 
-```javascript
-var a="阿飞老师";
-console.log(a[1]); //飞
-console.log(a.charAt(1)); //飞
-console.log(a.length); //4
-console.log(a.charCodeAt(0)); //38463
-onsole.log(a.subString(0,2)); //阿飞
-```
-
 `String.fromCharCode(x)`返回对应Unicode码的字符
 
 `.toLowerCase()`字符串转换为小写,无参数
 
-`.toLocaleLowerCase()`字符串转换为小写,无参数
-
 `.toUpperCase()`字符串转换为大写,无参数
 
-`.split()`以参数中的字符切割字符串,返回一个数组,如果传参为空字符串,则逐字符切割,也可以传入正则表达式(但不常传正则)
+`.toLocaleLowerCase()`按照本地方式将字符串转换为小写,无参数
+
+`.toLocaleUpperCase()`按照本地方式将字符串转换为大写,无参数
+
+> 只有少数几种语言（如土耳其语）具有地方特有的大小写映射，所有该方法的返回值通常与不带`Local`的函数一样。
+
+`.split()`以参数中的字符切割字符串,返回一个数组,如果传参为**空字符串**,则逐字符切割,也可以传入正则表达式(但不常传正则)
 
 `.indexOf(x,y)`返回从第y位开始,x在字符串中第一次出现的位置,x应为字符串,若未出现该字符串,则返回-1
-
-```javascript
-var a="今天很开心见到了阿飞老师";
-console.log(a.indexOf("飞"));
-```
 
 `.replace(旧内容,新内容)`用新内容替换旧内容,返回替换后的字符串,不改变原字符串.
 
 - 旧内容可以是一段字符串,也可以是一个正则表达式
 - 新内容可以是一段字符串,也可以是一个函数,如果是函数则用函数的返回值替换就内容,传给函数的第一个实参为替换前的旧内容(形参通常用$0接收).
+
+```javascript
+let str = '这是一段test用的字符串-123-456-789';
+console.log(str[1]); // '是'
+console.log(str.charAt(1)); // '是'
+console.log(str.length); // 25
+console.log(str.charCodeAt(0)); // 36825
+console.log(str.slice(14,17)); // '123'
+console.log(str.toLocaleUpperCase()); // '这是一段TEST用的字符串-123-456-789'
+console.log(str.split('-')); // ['这是一段test用的字符串','123','456','789']
+console.log(str.indexOf('-'); // 13
+console.log(String.fromCharCode(36825)); // '这'
+```
 
 ## 7.数组常用API
 
@@ -278,7 +281,7 @@ console.log(arr)
 
 `.isArray()`判断数据是否是数组,如果是返回true,否则返回false
 
-`.forEach(x)`数组的遍历,x是一个function,函数自行是会传入三个参数(需要选中设置形参接收),分别是item,index,arr
+`.forEach(x)`数组的遍历,x是一个function,函数执行时会传入三个参数(需要选中设置形参接收),分别是item,index,arr
 
 - item为当前的数据
 - index为当前的序号
@@ -288,7 +291,7 @@ console.log(arr)
 
 ​	querySelecctorAll可以使用forEach
 
-`.map(x)`数组的映射(遍历数组并产生新数组,新数组的元素是x中的返回值),返回值为新数组,不改变原数组.x是一个function,函数自行是会传入三个参数(需要选中设置形参接收),分别是item,index,arr
+`.map(x)`数组的映射(遍历数组并产生新数组,新数组的元素是x中的返回值),返回值为新数组,不改变原数组.x是一个function,函数执行时会传入三个参数(需要选中设置形参接收),分别是item,index,arr
 
 - item为当前的数据
 - index为当前的序号
