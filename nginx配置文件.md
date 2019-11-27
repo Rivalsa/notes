@@ -22,7 +22,9 @@ server{
 	rewrite ^(.*)$ $1 permanent;
 
 	#SSL相关
-	ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+	ssl_protocols TLSv1.1 TLSv1.2;
+    ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4:!DH:!DHE;
+    ssl_prefer_server_ciphers on; # 设置协商加密算法时，优先使用我们服务端的加密套件，而不是客户端浏览器的加密套件。如果只配置了加密套件，而未设置此项，加密套件的设定就没有意义了。
 	ssl_certificate /usr/local/phpstudy/certs/test.sa/test.sa_nginx_public.crt;
 	ssl_certificate_key /usr/local/phpstudy/certs/test.sa/test.sa_nginx.key;
 
