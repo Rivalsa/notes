@@ -5,6 +5,9 @@ server{
 	listen 443 ssl ;
 	server_name test.sa;
 
+    #修改自带Server头
+    more_set_headers 'Server:my-server';
+    
     #添加自定义Header
     add_header 字段 "数据";
     add_header X-TEST "value-test";
