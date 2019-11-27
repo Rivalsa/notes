@@ -167,7 +167,7 @@ console.log(a = 20); // 20
 
     - 数字的最小值
 
-        JavaScript中的数字有最大值的限制,可以利用`Number.MIN_VALUE`取得最大值,若数字小于此值,则为`-Infinity`(负无穷大)
+        JavaScript中的数字有最小值的限制,可以利用`Number.MIN_VALUE`取得最大值,若数字小于此值,则为0
 
     - `NaN`也属于数字类型,这种数据通常出现在类型转换时,将无法转换为数字的数据转换为数字类型,就会出现`NaN`这个值.(NaN即Not a Number)
 
