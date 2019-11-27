@@ -155,7 +155,79 @@ console.log(a = 20); // 20
 
 - `.dir`如果输出的是对象,则可以显示对象的所有属性与方法,如果不是对象,则与`log`无明显差异
 
-## 4.改变`this`指向
+## 4.数据类型
+
+### 4.1 JavaScript含有的数据类型
+
+- number
+
+    - 数字的最大值
+
+        JavaScript中的数字有最大值的限制,可以利用`Number.MAX_VALUE`取得最大值,若数字大于此值,则为`Infinity`(正无穷大)
+
+    - 数字的最小值
+
+        JavaScript中的数字有最大值的限制,可以利用`Number.MIN_VALUE`取得最大值,若数字小于此值,则为`-Infinity`(负无穷大)
+
+    - `NaN`也属于数字类型,这种数据通常出现在类型转换时,将无法转换为数字的数据转换为数字类型,就会出现`NaN`这个值.(NaN即Not a Number)
+
+- string
+
+- boolean
+
+- symbol (ES6新增)
+
+- null
+
+- undefined
+
+- object
+
+    - 将对象赋值给一个变量是将对象的指针给这个变量,对变量的修改等价于直接修改对象,举例如下:
+
+        ```javascript
+        let obj = {
+            name: 'Rivalsa',
+            age: 18,
+            pet: 'cat'
+        };
+        let a = obj;
+        a.age = 16;
+        console.log(obj.age); // 16
+        ```
+
+    - 数组属于对象的一种
+
+    - 函数属于对象的一种
+
+        - 当函数中有`return`时,函数的返回值为对应的内容
+        - 当函数中没有`return`或内容为空时,返回`undefined`
+
+### 4.2 字符串与数字之间的转换
+
+`Number(x)`将x转换为数字类型,返回转换后的结果,如果x不是数字字符串,则返回`NaN`,(**通常利用运算符的强制类型转换(减0或乘1等)代替本方法**)
+
+`parseInt(string, radix)`将以数字开头的字符串转换为整数数字(第一个非数字字符后面的内容不再解析),返回获得的结果
+
+`parseFloat(x)`将以数字开头的字符串转换为数字(第一个非数字且非`.`字符后面的内容不再解析),返回获得的结果
+
+`String(x)`将x转换为字符串,返回转换后的结果
+
+`x.toString`将x转换为字符串,返回转换后的结果
+
+**其他数据类型之间的转换**
+
+其他数据类型之间也可以互相转换,但通常不会主动这样做,所以这里不做介绍.
+
+其他数据类型转换为`boolean`类型时,只有如下内容会转换为`false`,其他都为`true`
+
+- 0    (数字0)
+- ''     (空字符串)
+- undefined
+- null
+- NaN
+
+## 5.改变`this`指向
 
 `call`执行函数时函数加`.call`后传入的第一个实参为函数中的this指向(原参数对应写在后面).
 例如:
@@ -190,7 +262,7 @@ function fn(a,b){
 fn.bind(document,1)(2);
 ```
 
-## 5.几个特殊元素的获取方式
+## 6.几个特殊元素的获取方式
 
 获取html:`document.documentElement`
 
@@ -199,64 +271,6 @@ fn.bind(document,1)(2);
 获取body:`document.body`
 
 获取head:`document.head`
-
-## 6.数据类型
-
-### 6.1 JavaScript含有的数据类型
-
-- number
-
-    - 数字的最大值
-
-        JavaScript中的数字有最大值的限制,可以利用`Number.MAX_VALUE`取得最大值,若数字大于此值,则为`Infinity`(正无穷大)
-
-    - 数字的最小值
-
-        JavaScript中的数字有最大值的限制,可以利用`Number.MIN_VALUE`取得最大值,若数字小于此值,则为`-Infinity`(负无穷大)
-
-    - `NaN`也属于数字类型
-
-- string
-
-- boolean
-
-- symbol (ES6新增)
-
-- null
-
-- undefined
-
-- object
-
-    - 将对象赋值给一个变量是将对象的指针给这个变量,对变量的修改等价于直接修改对象,举例如下:
-
-        ```javascript
-        let obj = {
-            name: 'Rivalsa',
-            age: 18,
-            pet: 'cat'
-        };
-        let a = obj;
-        a.age = 16;
-        console.log(obj.age); // 16
-        ```
-
-    - 数组属于对象的一种
-
-    - 函数属于对象的一种
-
-        - 当函数中有`return`时,函数的返回值为对应的内容
-        - 当函数中没有`return`或内容为空时,返回`undefined`
-
-### 6.2 字符串与数字之间的转换
-
-`Number(x)`将x转换为数字类型,返回转换后的结果,如果x不是数字字符串,则返回`NaN`,(**通常利用运算符的强制类型转换(减0或乘1等)代替本方法**)
-
-`parseInt(string, radix)`将以数字开头的字符串转换为整数数字(第一个非数字字符后面的内容不再解析),返回获得的结果
-
-`parseFloat(x)`将以数字开头的字符串转换为数字(第一个非数字且非`.`字符后面的内容不再解析),返回获得的结果
-
-`String(x)`将x转换为字符串,返回转换后的结果
 
 ## 7.字符串常用API
 
