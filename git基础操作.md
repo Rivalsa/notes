@@ -68,6 +68,12 @@ git reset --hard 版本号
 git reflog
 ```
 
+**对历史版本进行管理**
+
+```git
+git rebase -i 版本号
+```
+
 **创建密钥**
 
 ```git
