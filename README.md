@@ -1,3 +1,5 @@
+**本仓库中JavaScript整理汇总正在持续更新中......**
+
 > GitHub仓库地址:
 >
 > ```url
@@ -16,12 +18,12 @@
 
 **本仓库主要含有如下内容**
 
-- git基础操作
-- nginx配置文件(部分,**未完待续**)
-- HTMLCSS生词本
 - JavaScript整理汇总(**持续更新中**)
-- TypeScript整理汇总(**未完待续**,可能会晚点逐渐更新)
+- HTMLCSS生词本
+- git基础操作
 - vscode常用代码片段
+- nginx配置文件(仅部分配置,**未完待续**)
+- TypeScript整理汇总(**未完待续**,偶尔更新)
 
 欢迎来访:[rivalsa.cn](https://rivalsa.cn) 或 [卅卅.我爱你](https://卅卅.我爱你)
 
