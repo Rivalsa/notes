@@ -9,10 +9,10 @@ server{
     more_set_headers 'Server:my-server';
     
     #添加自定义Header
-    add_header 字段 "数据";
     add_header X-TEST "value-test";
+    add_header Strict-Transport-Security "max-age=31536000; includeSubDomains; preload";
     
-    root /www/admin/test.sa_80/wwwroot/;
+    root /www/admin/xxx/xxxx/;
 	
     #URL重写[语法:rewrite 正则表达式 重写为的地址 标记](重写为的地址中用$1\$2等匹配正则中的子项),标记有4个分别是:
     #last:本条规则匹配完成后继续向下匹配新的location URI规则。（浏览器地址栏URL地址不变）
@@ -25,11 +25,11 @@ server{
 	ssl_protocols TLSv1.1 TLSv1.2;
     ssl_ciphers ECDHE-RSA-AES128-GCM-SHA256:ECDHE:ECDH:AES:HIGH:!NULL:!aNULL:!MD5:!ADH:!RC4:!DH:!DHE;
     ssl_prefer_server_ciphers on; # 设置协商加密算法时，优先使用我们服务端的加密套件，而不是客户端浏览器的加密套件。如果只配置了加密套件，而未设置此项，加密套件的设定就没有意义了。
-	ssl_certificate /usr/local/phpstudy/certs/test.sa/test.sa_nginx_public.crt;
-	ssl_certificate_key /usr/local/phpstudy/certs/test.sa/test.sa_nginx.key;
+	ssl_certificate /usr/local/phpstudy/certs/xxx/xxxx.crt;
+	ssl_certificate_key /usr/local/phpstudy/certs/xxx/xxxx.key;
 
 	location / {
-		root /www/admin/test.sa_80/wwwroot/;
+		root /www/admin/xxx/xxxx/;
 		index index.php index.html;
 	}
 }
