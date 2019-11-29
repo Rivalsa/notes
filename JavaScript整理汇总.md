@@ -4,6 +4,8 @@
 
 ## 1.杂项
 
+创建文档碎片:`document.createDocumentfragment();`
+
 `typeof`有两种写法,`typeof x`或`typeof(x)`,返回x的数据类型字符串,但存在特殊情况,下面列出所有可能的输出值
 
 - `number`类型返回`number`
@@ -398,7 +400,258 @@ console.log(arr)
 - index为当前的序号
 - arr为数组本身(很少使用)
 
-## 9.Math对象
+## 9.作用域与解析顺序
+
+### 9.1 作用域及作用域链
+
+**作用域**可以通俗的理解为起作用的范围,分为全局作用域与局部作用域,在局部作用域中定义的变量,只在定义的作用域内可以使用,**在es5中,只有函数能产生一个局部作用域,在es6中遇到大括号就是一个局部作用域**
+
+全局变量保存在GO对象中,局部变量保存在AO对象中,但GO对象和AO对象在JS中是无法直接访问的.
+
+在引用变量时,会现在自己的作用域内查找,如果找不到就到父级作用域内查找,一直找到全局作用域,如果全局也找不到,则报错,这个称为**作用域链**
+
+### 9.2 变量提升与解析顺序
+
+在es5中,即使把定义变量的语句写在后面,也会先进行变量的定义(但不会赋值),把这个现象称为**变量提升**,例如:
+
+```javascript
+alert(a); // 报错
+
+alert(b); // 弹窗undefined
+var b = 10;
+```
+
+**解析顺序**
+
+1.定义(预解析)
+
+- 执行`var`定义变量(但不赋值)
+- 执行`function`定义变量
+
+2.执行 - 从上到下执行剩余代码
+
+### 9.3 作用域与解析顺序的举例
+
+**例-1**
+
+```javascript
+if(false) {
+    var a = 10;
+}
+alert(a);
+```
+
+**执行结果**
+
+> 弹窗:undefined
+
+**例0**
+
+```javascript
+if(true) {
+    var a = 10;
+    let b = 20
+}
+alert(a);
+alert(b);
+```
+
+**执行结果**
+
+> 弹窗:10
+>
+> 报错:b is not defined
+
+**例1**
+
+```javascript
+var x = 5;
+a();
+function a() {
+    alert(x);
+    var x = 10;
+}
+alert(x);
+```
+
+**执行结果**
+
+> 弹窗:undefined
+>
+> 弹窗:5
+
+**例2**
+
+```javascript
+var x = 5;
+a();
+function a() {
+    alert(x);
+    x = 10;
+}
+alert(x);
+```
+
+**执行结果**
+
+> 弹窗:5
+>
+> 弹窗:10
+
+**例3**
+
+```javascript
+a();
+function a() {
+    alert(x);
+    var x = 10
+}
+alert(x);
+```
+
+**执行结果**
+
+> 弹窗:undefined
+>
+> 报错:x is not defined
+
+**例4**
+
+```javascript
+function a() {
+    alert(1);
+}
+var a;
+alert(a);
+```
+
+**执行结果**
+
+> 弹窗:(函数体)
+
+**例5**
+
+```javascript
+alert(a);
+var a = 10;
+alert(a);
+function a() {alert(20)}
+alert(a);
+var a = 30;
+function a() {alert(40)}
+alert(a);
+```
+
+**执行结果**
+
+> 弹窗:(alert(40)的函数体)
+>
+> 弹窗:10
+>
+> 弹窗:10
+>
+> 弹窗:30
+
+**例6**
+
+```javascript
+var a = 10;
+alert(a);
+a();
+alert(a);
+function a() {
+    alert(20);
+}
+```
+
+**执行结果**
+
+> 弹窗:10
+>
+> 报错: a is not a function
+
+**例7**
+
+```javascript
+a();
+var a = function() {alert(1);};
+a();
+function a() {alert(2);}
+a();
+var a = function() {alert(3);};
+a();
+```
+
+**执行结果**
+
+> 弹窗:2
+>
+> 弹窗:1
+>
+>  弹窗:1
+>
+> 弹窗:3
+
+**例8**
+
+```javascript
+var a = 10;
+function fn() {
+    alert(a);
+    var a = 1;
+    alert(a);
+}
+fn();
+alert(a);
+```
+
+**执行结果**
+
+> 弹窗:undefined
+>
+> 弹窗:1
+>
+>  弹窗:10
+
+**例9**
+
+```javascript
+fn();
+alert(a);
+var a = 10;
+alert(a);
+function fn() {
+    var a = 1;
+}
+```
+
+**执行结果**
+
+> 弹窗:undefined
+>
+> 弹窗:10
+
+**例10**
+
+```javascript
+fn();
+alert(a);
+var a = 10;
+alert(a);
+function fn() {
+    a = 1;
+}
+```
+
+**执行结果**
+
+> 弹窗:1
+>
+> 弹窗:10
+
+
+
+## 10.Math对象
 
 JavaScript内置的数学Object.
 
@@ -411,7 +664,7 @@ JavaScript内置的数学Object.
 - `.max(a,b,c,...)`接收多个数字参数,返回最大值
 - `.pow(a,b)`返回a的b次幂
 
-## 10.定时器
+## 11.定时器
 
 `setInterval(a,b)`设置重复定时器,参数a为一个函数,当定时器时间到后执行函数,参数b为定时时间,返回定时器的编号
 
@@ -425,7 +678,7 @@ JavaScript内置的数学Object.
 
 `cancelAnimationFrame(a)`取消编号为a的`requestAnimationFrame`定时器
 
-## 11.日期对象
+## 12.日期对象
 
 **Date()为构造函数（类）,需要通过new创建一个对象**
 
@@ -451,7 +704,7 @@ JavaScript内置的数学Object.
 
 日期对象可以相减,返回值为两个日期相差的毫秒数(相当于时间戳相减)
 
-## 12.面向对象
+## 13.面向对象
 
 在创建构造函数后，可以用`.prototype`属性来向\_\_proto\_\_中写入原型，这个对象可以供所有实例化后的对象直接使用，例如：
 
@@ -498,9 +751,9 @@ Teacher.prototype.showId=function(){ // 新增的原型
 }
 ```
 
-## 13.ECMA Script 6
+## 14.ECMA Script 6
 
-### 13.1 杂项
+### 14.1 杂项
 
 ES6中不允许使用`var`,不建议通过`function`定义函数(通过赋值方式定义函数)
 
@@ -587,7 +840,7 @@ let obj={
 console.log(obj.name); //阿飞
 ```
 
-### 13.2 箭头函数
+### 14.2 箭头函数
 
 用`=>`的方式来定义函数，例如：
 
@@ -622,7 +875,7 @@ document.addEventListener("click",() => {
 });
 ```
 
-### 13.3 Symbol
+### 14.3 Symbol
 
 每次新建的Symbol都是不一样的。ES6中symbol数据也可以当做属性名，例如
 
@@ -635,7 +888,7 @@ console.log(obj);
 
 Symbol的参数是它的标识，只是便于开发者区分，没有实际意义。
 
-### 13.4 类及其继承
+### 14.4 类及其继承
 
 在ES5中没有类的概念，用构造函数代替，在ES6中可以用class定义一个类，定义的类只能用new执行，不能自执行，继承可以直接使用extends，举例如下：
 
@@ -672,7 +925,7 @@ console.log(r);
 r.showName();
 ```
 
-### 13.5 Set和Map两种数据结构
+### 14.5 Set和Map两种数据结构
 
 ES6中新增Set和Map两种数据结构，需用new创建对象
 
@@ -702,7 +955,7 @@ map.set(obj,"qwe");
 console.log(map.get(obj),map.get(true));
 ```
 
-### 13.6 对象赋值时的简写
+### 14.6 对象赋值时的简写
 
 当对象值得变量名与属性名相同时可以简写，如下所示。方法也可以简写，如下所示；
 
@@ -729,7 +982,7 @@ let x=10,
     };
 ```
 
-### 13.7 回调地狱及Promise
+### 14.7 回调地狱及Promise
 
 如果代码中有多处异步代码(异步中还有异步),例如:
 
@@ -817,7 +1070,7 @@ new Promise((resolve,reject) => {
 });
 ```
 
-## 14.DOM节点操作
+## 15.DOM节点操作
 
 节点(共12种)
 
@@ -856,9 +1109,9 @@ new Promise((resolve,reject) => {
 | nextElementSibling | nextSibling |下一个兄弟元素节点(在现代浏览器中nextSibling表示下一个兄弟节点)|
 | previousElementSibling | previousSibling |上一个兄弟元素节点(在现代浏览器中previousSibling表示上一个兄弟节点)|
 
-## 15.DOM事件
+## 16.DOM事件
 
-### 15.1 0级事件
+### 16.1 0级事件
 
 *采用赋值的方式,新事件替代旧事件*
 
@@ -936,7 +1189,7 @@ new Promise((resolve,reject) => {
 
 **事件对象相关内容,请参阅第16章节**
 
-### 15.2 2级事件
+### 16.2 2级事件
 
 *新事件与旧事件共存,与0级事件不冲突*
 
@@ -950,7 +1203,7 @@ new Promise((resolve,reject) => {
 - a为对应事件,如click(不写on)
 - b为事件函数(b必须与添加时的b具有相同指针)
 
-### 15.3 事件捕获
+### 16.3 事件捕获
 
 先执行捕获事件(从父级到子集)再执行普通事件(从子集到父级)
 
@@ -961,11 +1214,11 @@ new Promise((resolve,reject) => {
 
 *移除捕获事件时`removeEventListener`也需要添加第三个参数为true*
 
-### 15.4 事件委托
+### 16.4 事件委托
 
 把事件加给父级,利用`target`来判断是哪个子级触发的
 
-## 16.BOM相关
+## 17.BOM相关
 
 `onresize`窗口大小改变事件(window的事件)
 
@@ -985,7 +1238,7 @@ new Promise((resolve,reject) => {
 
 `screen`屏幕相关信息对象
 
-## 17.元素各种尺寸和距离
+## 18.元素各种尺寸和距离
 
 `window.innerHeight`浏览器窗口高度(带窗口边框)
 
@@ -1017,7 +1270,7 @@ new Promise((resolve,reject) => {
 
 `window.scrollTo(top:x)`将滚动高度设置为x
 
-## 18.事件对象
+## 19.事件对象
 
 在现代浏览器中：当事件被触发时，会默认传一个实参，为事件对象,可以在事件函数中设置形参(通常用e或ev)接收
 
@@ -1047,10 +1300,6 @@ new Promise((resolve,reject) => {
 - `preventDefault()`阻止默认事件
 
 - `target`事件触发源
-
-## 19.文档碎片
-
-创建文档碎片:`document.createDocumentfragment();`
 
 ## 20.正则表达式
 
