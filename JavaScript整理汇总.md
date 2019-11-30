@@ -52,14 +52,6 @@ console.log(wrapCss.height);
 console.log(wrapCss.backgroundColor);
 ```
 
-`querySelector`与`querySelectorAll`document自带的function,通过选择器选中Element(s)
-
-`getAttribute("xx")`document自带的function,获取自定义属性
-
-`setAttribute("xx","xx")`document自带的function,设置自定义属性
-
-`removeAttribute("xx")`document自带的function,删除自定义属性
-
 `arguments`function内部自带的Object(类Array),不定参.
 
 `toggle("xx")`classList自带的function,若有xx类名则移除,若无则添加.此函数有返回值，如果是添加了类名则返回true，如果是移除了类名则返回false
@@ -196,9 +188,9 @@ JavaScript中的数字有最大值和最小值的限制,最大值可以利用`Nu
 
 ```javascript
 let obj = {
-	name: 'Rivalsa',
+    name: 'Rivalsa',
     age: 18,
-	pet: 'cat'
+    pet: 'cat'
 };
 let a = obj;
 a.age = 16;
@@ -278,17 +270,7 @@ function fn(a,b){
 fn.bind(document,1)(2);
 ```
 
-## 6.几个特殊元素的获取方式
-
-获取html:`document.documentElement`
-
-获取title:`document.title`
-
-获取body:`document.body`
-
-获取head:`document.head`
-
-## 7.字符串常用API
+## 6.字符串常用API
 
 字符串可以加下标（用中括号表示）,表示取其中字符,只读，低版本IE不支持，例如
 
@@ -336,7 +318,7 @@ console.log(str.indexOf('-'); // 13
 console.log(String.fromCharCode(36825)); // '这'
 ```
 
-## 8.数组常用API
+## 7.数组常用API
 
 `.length`返回数组的长度(存储的数据的个数)
 
@@ -397,9 +379,9 @@ console.log(arr)
 - index为当前的序号
 - arr为数组本身(很少使用)
 
-## 9.作用域与解析顺序
+## 8.作用域与解析顺序
 
-### 9.1 作用域及作用域链
+### 8.1 作用域及作用域链
 
 **作用域**可以通俗的理解为起作用的范围,分为全局作用域与局部作用域,在局部作用域中定义的变量,只在定义的作用域内可以使用,**在es5中,只有函数能产生一个局部作用域,在es6中遇到大括号就是一个局部作用域**
 
@@ -407,7 +389,7 @@ console.log(arr)
 
 在引用变量时,会现在自己的作用域内查找,如果找不到就到父级作用域内查找,一直找到全局作用域,如果全局也找不到,则报错,这个称为**作用域链**
 
-### 9.2 变量提升与解析顺序
+### 8.2 变量提升与解析顺序
 
 在es5中,即使把定义变量的语句写在后面,也会先进行变量的定义(但不会赋值),把这个现象称为**变量提升**,例如:
 
@@ -427,9 +409,9 @@ var b = 10;
 
 2.执行 - 从上到下执行剩余代码
 
-### 9.3 作用域与解析顺序的举例
+### 8.3 作用域与解析顺序的举例
 
-**例-1**
+**例0**
 
 ```javascript
 if(false) {
@@ -442,7 +424,7 @@ alert(a);
 
 > 弹窗:undefined
 
-**例0**
+**例1**
 
 ```javascript
 if(true) {
@@ -459,7 +441,7 @@ alert(b);
 >
 > 报错:b is not defined
 
-**例1**
+**例2**
 
 ```javascript
 var x = 5;
@@ -477,7 +459,7 @@ alert(x);
 >
 > 弹窗:5
 
-**例2**
+**例3**
 
 ```javascript
 var x = 5;
@@ -495,7 +477,7 @@ alert(x);
 >
 > 弹窗:10
 
-**例3**
+**例4**
 
 ```javascript
 a();
@@ -512,7 +494,7 @@ alert(x);
 >
 > 报错:x is not defined
 
-**例4**
+**例5**
 
 ```javascript
 function a() {
@@ -526,7 +508,7 @@ alert(a);
 
 > 弹窗:(函数体)
 
-**例5**
+**例6**
 
 ```javascript
 alert(a);
@@ -549,7 +531,7 @@ alert(a);
 >
 > 弹窗:30
 
-**例6**
+**例7**
 
 ```javascript
 var a = 10;
@@ -567,7 +549,7 @@ function a() {
 >
 > 报错: a is not a function
 
-**例7**
+**例8**
 
 ```javascript
 a();
@@ -589,7 +571,7 @@ a();
 >
 > 弹窗:3
 
-**例8**
+**例9**
 
 ```javascript
 var a = 10;
@@ -610,7 +592,7 @@ alert(a);
 >
 >  弹窗:10
 
-**例9**
+**例10**
 
 ```javascript
 fn();
@@ -628,7 +610,7 @@ function fn() {
 >
 > 弹窗:10
 
-**例10**
+**例11**
 
 ```javascript
 fn();
@@ -648,7 +630,7 @@ function fn() {
 
 
 
-## 10.Math对象
+## 9.Math对象
 
 JavaScript内置的数学Object.
 
@@ -661,7 +643,7 @@ JavaScript内置的数学Object.
 - `.max(a,b,c,...)`接收多个数字参数,返回最大值
 - `.pow(a,b)`返回a的b次幂
 
-## 11.定时器
+## 10.定时器
 
 `setInterval(a,b)`设置重复定时器,参数a为一个函数,当定时器时间到后执行函数,参数b为定时时间,返回定时器的编号
 
@@ -675,7 +657,7 @@ JavaScript内置的数学Object.
 
 `cancelAnimationFrame(a)`取消编号为a的`requestAnimationFrame`定时器
 
-## 12.日期对象
+## 11.日期对象
 
 **Date()为构造函数（类）,需要通过new创建一个对象**
 
@@ -701,7 +683,7 @@ JavaScript内置的数学Object.
 
 日期对象可以相减,返回值为两个日期相差的毫秒数(相当于时间戳相减)
 
-## 13.面向对象
+## 12.面向对象
 
 在创建构造函数后，可以用`.prototype`属性来向\_\_proto\_\_中写入原型，这个对象可以供所有实例化后的对象直接使用，例如：
 
@@ -748,9 +730,9 @@ Teacher.prototype.showId=function(){ // 新增的原型
 }
 ```
 
-## 14.ECMA Script 6
+## 13.ECMA Script 6
 
-### 14.1 杂项
+### 13.1 杂项
 
 ES6中不允许使用`var`,不建议通过`function`定义函数(通过赋值方式定义函数)
 
@@ -837,7 +819,7 @@ let obj={
 console.log(obj.name); //阿飞
 ```
 
-### 14.2 箭头函数
+### 13.2 箭头函数
 
 用`=>`的方式来定义函数，例如：
 
@@ -872,7 +854,7 @@ document.addEventListener("click",() => {
 });
 ```
 
-### 14.3 Symbol
+### 13.3 Symbol
 
 每次新建的Symbol都是不一样的。ES6中symbol数据也可以当做属性名，例如
 
@@ -885,7 +867,7 @@ console.log(obj);
 
 Symbol的参数是它的标识，只是便于开发者区分，没有实际意义。
 
-### 14.4 类及其继承
+### 13.4 类及其继承
 
 在ES5中没有类的概念，用构造函数代替，在ES6中可以用class定义一个类，定义的类只能用new执行，不能自执行，继承可以直接使用extends，举例如下：
 
@@ -922,7 +904,7 @@ console.log(r);
 r.showName();
 ```
 
-### 14.5 Set和Map两种数据结构
+### 13.5 Set和Map两种数据结构
 
 ES6中新增Set和Map两种数据结构，需用new创建对象
 
@@ -952,7 +934,7 @@ map.set(obj,"qwe");
 console.log(map.get(obj),map.get(true));
 ```
 
-### 14.6 对象赋值时的简写
+### 13.6 对象赋值时的简写
 
 当对象值得变量名与属性名相同时可以简写，如下所示。方法也可以简写，如下所示；
 
@@ -979,7 +961,7 @@ let x=10,
     };
 ```
 
-### 14.7 回调地狱及Promise
+### 13.7 回调地狱及Promise
 
 如果代码中有多处异步代码(异步中还有异步),例如:
 
@@ -1067,15 +1049,111 @@ new Promise((resolve,reject) => {
 });
 ```
 
-## 15.DOM节点操作
+## 14.DOM操作
 
-节点(共12种)
+> DOM（文档对象模型 document object model）是针对HTML文档的一个API.
+> DOM 描绘了一个层次化的节点树，允许开发人员添加、移除和修改页面元素(元素的文字也是DOM的一个节点)
+
+DOM节点共有12种
 
 - 元素节点(nodetype为1)
 - 文本节点(nodetype为3,nodeValue为文本的内容)
 - 属性节点(nodetype为2,nodeValue为属性的值)
 - 注释节点(nodetype为8,nodeValue为注释的内容)
 - (其他8种)
+
+### 14.1 获取DOM对象
+
+**通过ID获取**
+
+```javascript
+document.getElementById('ID'); // 返回对应的DOM元素
+```
+
+**通过class获取**(不兼容IE8及其以下)
+
+```javascript
+document.getElementsByClassName('className'); // 返回类数组HTMLCollection
+```
+
+**通过标签名获取**
+
+```javascript
+document.getElementsByTagName('tagName'); // 返回类数组HTMLCollection
+```
+
+**通过name获取**
+
+```javascript
+document.getElementsByName('name'); // 返回类数组NodeList
+```
+
+**通过选择器获取**(静态方法)
+
+```javascript
+document.querySelector('选择器'); // 返回对应的DOM元素(第一个)
+document.querySelectorAll('选择器') // 返回类数组NodeList
+```
+
+**几个特殊元素的获取方式**
+
+获取html:`document.documentElement`
+
+获取title:`document.title`
+
+获取body:`document.body`
+
+获取head:`document.head`
+
+### 14.2 操作DOM的属性及内容
+
+**操作标签原有属性**
+
+DOM元素的各种属性都在DOM对象中,所以可以直接修改DOM对象的属性即可,举例如下:
+
+```javascript
+var oBox = document.getElementById("box");
+oBox.href = "#";
+oBox.className = "box1";
+oBox.style.display = "none" ;
+```
+
+特殊情况
+
+- 修改DOM元素的class属性,可以使用`className`或`classList`来操作
+- DOM对象的style属性也是一个对象,此对象的各种属性就是对应元素行内的CSS样式
+
+**操作标签的属性(原有的和自定义的都可以)**
+
+获取属性:`getAttribute('属性名');`
+
+新增或修改属性:`getAttribute('属性名','属性值');`
+
+移除属性:`removeAttribute('属性名');`
+
+```javascript
+var oBox = document.getElementById("box");
+oBox.getAttribute("data-title"); // 获取
+oBox.setAttribute("data-name","mydata"); // 修改、添加
+oBox.removeAttribute("data-name"); // 删除
+```
+
+**innerHTML/innerText**
+
+改变元素的内容
+
+```js
+var oBox = document.getElementById("box");
+oBox.innerHTML = "ABC";
+oBox.innerText = "123";
+```
+
+innerHTML 与 innerText 的区别：
+
+- innerHTML会解析其中的html标签
+- innerText不会解析hmtl标签，原样替换所设置的内容
+
+### 14.3 更多DOM操作
 
 `.childNodes`获取元素的所有子节点(现代浏览器是获取所有子节点,低版本IE浏览器是获取所有子元素节点)
 
@@ -1106,21 +1184,21 @@ new Promise((resolve,reject) => {
 | nextElementSibling | nextSibling |下一个兄弟元素节点(在现代浏览器中nextSibling表示下一个兄弟节点)|
 | previousElementSibling | previousSibling |上一个兄弟元素节点(在现代浏览器中previousSibling表示上一个兄弟节点)|
 
-## 16.DOM事件
+## 15.DOM事件
 
-### 16.1 0级事件
+### 15.1 0级事件
 
 *采用赋值的方式,新事件替代旧事件*
 
 **鼠标事件**
 
-`oncontextmenu`弹出右键菜单事件
+`oncontextmenu`鼠标右键点击事件
 
 `onselectstart`选中开始事件
 
-`ondblclick`双击事件
+`ondblclick`鼠标双击事件
 
-`onclick`单击事件
+`onclick`鼠标单击事件
 
 `onmousedown`鼠标按下
 
@@ -1171,9 +1249,13 @@ new Promise((resolve,reject) => {
 - 对于`checkbox`:被选中和被取消选中时均会触发
 - 对于`select`:选择的内容发生改变时会被触发
 
+`oninput`input框输入或删除字符事件
+
 `onsubmit`表单提交事件
 
 `onreset`表单重置事件
+
+`onselect`文本框的文本内容被选中事件
 
 **表单事件方法**
 
@@ -1182,11 +1264,11 @@ new Promise((resolve,reject) => {
 - `submit()`提交表单
 - `reset()`重置表单
 
-**BOM相关的事件,请参阅第14章节**
+**BOM相关的事件,请参阅《BOM相关》章节**
 
-**事件对象相关内容,请参阅第16章节**
+**事件对象相关内容,请参阅《事件对象》章节**
 
-### 16.2 2级事件
+### 15.2 2级事件
 
 *新事件与旧事件共存,与0级事件不冲突*
 
@@ -1195,12 +1277,12 @@ new Promise((resolve,reject) => {
 - a为对应事件,如click(不写on)
 - b为事件函数(函数的实参为事件对象)
 
-`removeEventListener(a,b)`移除事件监听器(低版本IE不支持,用detachEvent`代替)
+``removeEventListener(a,b)`移除事件监听器(低版本IE不支持,用`detachEvent`代替)
 
 - a为对应事件,如click(不写on)
 - b为事件函数(b必须与添加时的b具有相同指针)
 
-### 16.3 事件捕获
+### 15.3 事件捕获
 
 先执行捕获事件(从父级到子集)再执行普通事件(从子集到父级)
 
@@ -1211,13 +1293,19 @@ new Promise((resolve,reject) => {
 
 *移除捕获事件时`removeEventListener`也需要添加第三个参数为true*
 
-### 16.4 事件委托
+### 15.4 事件委托
 
 把事件加给父级,利用`target`来判断是哪个子级触发的
 
-## 17.BOM相关
+## 16.BOM相关
+
+**BOM事件**
 
 `onresize`窗口大小改变事件(window的事件)
+
+`onload`页面加载完成事件
+
+`onerror`页面加载出错事件
 
 `onscroll`滚动条滚动事件(任何有滚动条的元素都有此事件)
 
@@ -1227,6 +1315,8 @@ new Promise((resolve,reject) => {
 
 *获得焦点与失去焦点事件通常与定时器配合,在失去焦点时取消定时器*
 
+**其他BOM相关内容**
+
 `location`当前地址信息对象
 
 `history`前进后退等历史信息对象
@@ -1235,7 +1325,7 @@ new Promise((resolve,reject) => {
 
 `screen`屏幕相关信息对象
 
-## 18.元素各种尺寸和距离
+## 17.元素各种尺寸和距离
 
 `window.innerHeight`浏览器窗口高度(带窗口边框)
 
@@ -1267,7 +1357,7 @@ new Promise((resolve,reject) => {
 
 `window.scrollTo(top:x)`将滚动高度设置为x
 
-## 19.事件对象
+## 18.事件对象
 
 在现代浏览器中：当事件被触发时，会默认传一个实参，为事件对象,可以在事件函数中设置形参(通常用e或ev)接收
 
@@ -1298,11 +1388,11 @@ new Promise((resolve,reject) => {
 
 - `target`事件触发源
 
-## 20.正则表达式
+## 19.正则表达式
 
 可以用来高效便捷的处理字符串
 
-### 20.1 定义正则表达式
+### 19.1 定义正则表达式
 
 **双斜杠定义**
 
@@ -1312,9 +1402,9 @@ new Promise((resolve,reject) => {
 
 例如`let reg = new RegExp("x");`括号中可以传入一个字符串变量,也可以直接传入字符串(字符串的内容为正则表达式)
 
-### 120.2 正则表达规则
+### 19.2 正则表达规则
 
-#### 20.2.1 转义字符
+#### 19.2.1 转义字符
 
 普通转移字符`\`(将有特殊意义的字符变为普通字符)
 
@@ -1366,7 +1456,7 @@ new Promise((resolve,reject) => {
 - 结束位置
 - `\W`能匹配的所有字符
 
-#### 20.2.2 标识
+#### 19.2.2 标识
 
 *写在正则表达式结尾/的后面,可以写多个,不区分先后顺序,在使用RegExp定义时,标识以字符串形式作为第二个参数传入*
 
@@ -1376,7 +1466,7 @@ new Promise((resolve,reject) => {
 
 `m`换行匹配
 
-#### 20.2.3 量词
+#### 19.2.3 量词
 
 *写在对应规则后面*
 
@@ -1398,11 +1488,11 @@ new Promise((resolve,reject) => {
 
 惰性(在量词后面加`?`表示惰性量词):尽量按少的去匹配
 
-#### 20.2.4 子项
+#### 19.2.4 子项
 
 使用小括号可以将里面的内容作为一个子项
 
-#### 20.2.5 字符集
+#### 19.2.5 字符集
 
 用中括号表示
 
@@ -1426,7 +1516,7 @@ new Promise((resolve,reject) => {
 
 - 字符集中小括号/大括号/正斜杠/问号/星号/加号等无特殊含义
 
-#### 20.2.6 其他有特殊意义的字符
+#### 19.2.6 其他有特殊意义的字符
 
 - `^`表示起始位置
 - `$`表示结束位置
@@ -1435,13 +1525,13 @@ new Promise((resolve,reject) => {
   - `\r`
 - `|`表示或者(前后是两个独立的正则)
 
-#### 20.2.7 捕获组
+#### 19.2.7 捕获组
 
 `\数字x`表示第x个子项,再次匹配第x个子项
 
 *并不是第x个子项的匹配规则,而是第x个子项的内容*
 
-#### 20.2.8 断言
+#### 19.2.8 断言
 
 `(?=xx)`(不算做子项)某字符后面要含有xx字符,但匹配到的东西不包含xx
 
@@ -1451,7 +1541,7 @@ new Promise((resolve,reject) => {
 
 `(?<!xx)`(不算做子项)某字符前面要不含有xx字符,但匹配到的东西不包含xx
 
-### 20.3 使用正则表达式的方法
+### 19.3 使用正则表达式的方法
 
 **正则表达式的方法**
 
@@ -1463,17 +1553,17 @@ new Promise((resolve,reject) => {
 
 `.match(正则表达式)`返回字符串中匹配成功的字符串组成的数组(数组有匹配的内容与子项组成,在规则中使用全局`g`则组成的数组中不包含子项)
 
-### 20.4 RegExp对象
+### 19.4 RegExp对象
 
 RegExp中存储了上一次的子项,可以通过这个对象直接拿到数据.(可以先test然后通过RegExp得到子项)
 
-## 21.ajax
+## 20.ajax
 
 > ajax即“Asynchronous Javascript And XML”（异步 JavaScript 和 XML），是指一种创建交互式网页应用的网页开发技术。 
 
 ajax可以在不刷新页面的前提下向后端 发送/请求 数据，在开发中是必然会用的技术。
 
-### 21.1 JavaScript原生ajax
+### 20.1 JavaScript原生ajax
 
 ```javascript
 let xhr;
@@ -1522,7 +1612,7 @@ function onReadyStateChange() {
 }
 ```
 
-### 21.2 jQuery的ajax
+### 20.2 jQuery的ajax
 
 ```javascript
 // 列出部分参数
@@ -1536,7 +1626,7 @@ $.ajax({
 });
 ```
 
-### 21.3 axios
+### 20.3 axios
 
 **发送单个请求**
 
@@ -1568,11 +1658,11 @@ axios.all([ reqA(),reqB() ]).then(res => {
 });
 ```
 
-### 21.4 跨域问题
+### 20.4 跨域问题
 
 发送ajax请求时需要确保当前页面与请求页面同源(必须协议\\主机\\端口号全都相同),否则需要后端发送相应的HTTP Header才能正常访问.
 
-### 21.5 jsonp
+### 20.5 jsonp
 
 由于HTML页面中调用JavaScript是没有同源限制的,所以可以利用此方法发送数据,举例如下:
 
