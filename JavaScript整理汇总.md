@@ -819,7 +819,7 @@ console.log(window.a); //undefined
 let [a,b]=[10,20];
 let {x:c,y:d}={x:50,y:80}; //可简写为let {c,d}={c:50,d:80},相当于let {c:c,d:d}={c:50,d:80}
 console.log(a,b,c,d);
-let [aa,bb,cc,dd]="阿飞老师";
+let [aa,bb,cc,dd]="解构赋值";
 console.log(aa,bb,cc,dd);
 ```
 
@@ -839,7 +839,7 @@ console.log(aa,bb,cc,dd);
 
 ```javascript
 //遍历对象
-let obj={name:"afei",age:18,sex:"M"};
+let obj={name:"Rivalsa",age:18,sex:"M"};
 for(let key of Object.keys(obj)){ //keys对应换成values或entries
     console.log(key);
 }
@@ -860,9 +860,9 @@ ES6中对象的属性名可以用中括号括起来表示是个变量，例如�
 ```javascript
 let key="name";
 let obj={
-    [key]:"阿飞"
+    [key]:"Rivalsa"
 };
-console.log(obj.name); //阿飞
+console.log(obj.name); // Rivalsa
 ```
 
 ### 13.2 箭头函数
@@ -905,9 +905,9 @@ document.addEventListener("click",() => {
 每次新建的Symbol都是不一样的。ES6中symbol数据也可以当做属性名，例如
 
 ```javascript
-let obj={name:"阿飞",age:18};
+let obj={name:"Rivalsa",age:18};
 let name=Symbol();
-obj[name]="言新";
+obj[name]="Jerry";
 console.log(obj);
 ```
 
@@ -1826,8 +1826,8 @@ $.ajax({
 ```javascript
 axios({
 	method : "post",
-    url : "http://api.afei.fun",
-    data : {name:"afei",age:18}
+    url : "http://example.com",
+    data : {name:"Rivalsa",age:18}
 }).then(res => {
     console.log(res);
 }).catch(err => {
