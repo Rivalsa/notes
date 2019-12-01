@@ -24,43 +24,7 @@
 
 `isNaN(x)`判断x是否是`NaN`若是则返回true,否则返回false
 
-`getComputedStyle(x)`window的自带函数,返回对象x的CSS样式,只读属性,例如:
-
-**HTML**
-
-```html
-<div id="wrap"></div>
-```
-
-**CSS**
-
-```css
-#wrap{
-    width:100px;
-    height:100px;
-    background-color:red;
-}
-```
-
-**JavaScript**
-
-```javascript
-var oWrap=document.getElementById("wrap"),
-    wrapCss=window.getComputedStyle(oWrap);
-console.log(wrapCss.width);
-console.log(wrapCss.height);
-console.log(wrapCss.backgroundColor);
-```
-
-`arguments`function内部自带的Object(类Array),不定参.
-
-`toggle("xx")`classList自带的function,若有xx类名则移除,若无则添加.此函数有返回值，如果是添加了类名则返回true，如果是移除了类名则返回false
-
-例如:
-
-```javascript
-document.documentElement.classList.toggle("xx");
-```
+`arguments`function内部自带的Object(类Array),不定参
 
 `try-catch`执行代码出错后不阻碍后面代码执行,例如:
 
@@ -144,7 +108,7 @@ console.log(a = 20); // 20
 ```javascript
 throw 'xxx';
 // 或
-throw new Error('xxx');
+// throw new Error('xxx');
 ```
 
 `.dir`如果输出的是对象,则可以显示对象的所有属性与方法,如果不是对象,则与`log`无明显差异
@@ -385,7 +349,9 @@ console.log(arr)
 
 *forEach不兼容IE8及其以下*
 
-​	querySelecctorAll可以使用forEach
+*类数组`HTMLCollection`不支持使用`forEach`*
+
+*类数组`NodeList`支持使用`forEach`*
 
 `.map(x)`数组的映射(遍历数组并产生新数组,新数组的元素是x中的返回值),返回值为新数组,不改变原数组.x是一个function,函数执行时会传入三个参数(需要选中设置形参接收),分别是item,index,arr
 
@@ -647,8 +613,6 @@ function fn() {
 > 弹窗:1
 >
 > 弹窗:10
-
-
 
 ## 9.Math对象
 
@@ -1142,6 +1106,153 @@ oBox.style.display = "none" ;
 
 - 修改DOM元素的class属性,可以使用`className`或`classList`来操作
 - DOM对象的style属性也是一个对象,此对象的各种属性就是对应元素行内的CSS样式
+
+对特殊情况的举例
+
+例1
+
+```html
+<html>
+<head>
+	<style>
+        #wrap {
+            width: 300px;
+            height: 300px;
+            background-color: blue;
+        }
+    </style>
+</head>
+<body>
+    <div id="wrap"></div>
+    <script>
+    	let oWrap = document.getElementById('wrap');
+        oWrap.style.backgroundColor = 'red';
+        // 上一行代码也可以写成如下形式
+        // oWrap.style['backgroucd-color'] = 'red';
+    </script>
+</body>
+</html>
+```
+
+在例1中,通过的读写`oWrap.style`只能拿到或写入行内样式的值,如果样式写在`style`标签中,是无法通过`oWrap.style`取得值的.
+
+例2
+
+```html
+<html>
+<head>
+	<style>
+        #wrap {
+            width: 300px;
+            height: 300px;
+            background-color: blue;
+        }
+    </style>
+</head>
+<body>
+    <div id="wrap"></div>
+    <script>
+    	let oWrap = document.getElementById('wrap');
+        oWrap.style.cssText = 'background-color:red; width:100px';
+    </script>
+</body>
+</html>
+```
+
+在例2中,通过`oWrap.style.cssText`可以一次读取或修改多个行内样式.
+
+例3
+
+```html
+<html>
+<head>
+	<style>
+        .wrap {
+            width: 300px;
+            height: 300px;
+            background-color: blue;
+        }
+        .wrap.app {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap"></div>
+    <script>
+    	let oWrap = document.getElementsByClassName('wrap')[0];
+        oWrap.className = 'wrap app';
+    </script>
+</body>
+</html>
+```
+
+通过修改`className`可以直接修改标签对应的类名,通过修改类名可以修改对应样式
+
+例4
+
+```html
+<html>
+<head>
+	<style>
+        .wrap {
+            width: 300px;
+            height: 300px;
+            background-color: blue;
+        }
+        .wrap.app {
+            background-color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrap"></div>
+    <script>
+    	let oWrap = document.getElementsByClassName('wrap')[0];
+        oWrap.addEventListener('click',function() {
+            this.classList.add('app');
+        });
+    </script>
+</body>
+</html>
+```
+
+通过`classList`的各种API可以直接修改类名(*不支持IE9及其以下*),`classList`包括以下API:
+
+- `add(类名)`添加类名
+- `remove(类名)`移除类名
+- `toggle(类名)`添加或删除类名(有则删除,无则添加),删除了类名会返回false,添加了类名会返回true
+- `contains(类名)`判断是否存在类名,存在则返回true,不存在则返回false
+
+获取标签当前样式
+
+`getComputedStyle(x)`window的自带函数,返回对象x的CSS样式,只读属性,例如:
+
+**HTML**
+
+```html
+<div id="wrap"></div>
+```
+
+**CSS**
+
+```css
+#wrap{
+    width:100px;
+    height:100px;
+    background-color:red;
+}
+```
+
+**JavaScript**
+
+```javascript
+var oWrap=document.getElementById("wrap"),
+    wrapCss=window.getComputedStyle(oWrap);
+console.log(wrapCss.width);
+console.log(wrapCss.height);
+console.log(wrapCss.backgroundColor);
+```
 
 **操作标签的属性(原有的和自定义的都可以)**
 
