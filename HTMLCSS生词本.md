@@ -2,6 +2,21 @@
 
 ## 杂项
 
+`display`这个属性可以调整元素的显示样式,有如下值可以使用:
+
+- `block`块级元素
+- `inline`行内元素
+- `inline-block`行内块元素
+- `flex`弹性盒布局
+- `grid`网格布局
+- `inline-grid`行内网格布局
+- `none`不显示此元素
+- 其他值(如`list-item`/`run-in`/`table`/`inline-table`/`teble-*`等)
+
+*关于`block`/`inline`/`inline-block`之间的区别,请参考文章[CSS中display属性值inline,block,inline-block的区别](https://www.rivalsa.cn/s/article/Frontend/display?utm=5Luj56CB5LuT5bqTSFRNTENTUw==)*
+
+*关于`flex`与`grid`的更多介绍,请参见本文的**弹性盒子布局**及**网格布局**部分*
+
 `iframe`可以在当前页面中引入其他html文件(不推荐使用)
 
 - `src`属性:引入的文件路径
