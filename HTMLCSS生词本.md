@@ -1,6 +1,6 @@
 # 前端HTML CSS生词本
 
-## 杂项
+## 1. 杂项
 
 `display`这个属性可以调整元素的显示样式,有如下值可以使用:
 
@@ -73,7 +73,7 @@ div{
 
 `text-indent`文本缩进
 
-## 定位布局
+## 2. 定位布局
 
 `position:relative;`定位：相对于自己定位
 
@@ -87,7 +87,7 @@ div{
 
 绝对定位元素会强制转换为block元素
 
-## 浮动布局
+## 3. 浮动布局
 
 `float`浮动
 
@@ -105,7 +105,7 @@ div{
 
 浮动元素不会覆盖文字
 
-## BFC (块级格式化上下文)
+## 4. BFC (块级格式化上下文)
 
 以下CSS属性可以让元素BFC化:
 
@@ -114,7 +114,7 @@ div{
 - `float:left;/float:right;`
 - `position:absolute;`
 
-## 表单相关
+## 5. 表单相关
 
 `input`的type
 
@@ -191,7 +191,7 @@ div{
 
 `datalist`表单中的数据列表(双标签),可以被`input`标签使用(`list="datalist-id";`),内部使用`option`标签
 
-## 表格
+## 6. 表格
 
 `caption`通常用于表格的标题
 
@@ -203,7 +203,7 @@ div{
 
 `rowspan`竖直合并单元格，通常用于`td`标签中
 
-## 过渡
+## 7. 过渡
 
 `transition`过渡
 
@@ -222,7 +222,7 @@ div{
 
 *`transition: property duration timing-function delay`*
 
-## 动画
+## 8. 动画
 
 `@keyframes`动画的关键帧,后面跟动画名称
 
@@ -255,7 +255,7 @@ div{
 
 *复合写法:先写动画名称,运动时间在延时之前,动画名称和运动时间不可省略*
 
-## 选择器
+## 9. 选择器
 
 `#`ID选择器
 
@@ -271,7 +271,7 @@ div{
 
 `+`相邻兄弟元素选择器(相邻元素选择器,只能向后选)
 
-### 伪类选择器
+### 9.1 伪类选择器
 
 - `hover`鼠标悬停
 
@@ -317,7 +317,7 @@ div{
 
   *用法与`nth-child(x)`相似*
 
-### 属性选择器
+### 9.2 属性选择器
 
 用`[]`表示,格式为
 
@@ -328,7 +328,7 @@ div{
 - `[属性名^="字符"]`有这个属性名,且属性值**以**对应字符**开头**才能被选中
 - `[属性名$="字符"]`有这个属性名,且属性值**以**对应字符**结尾**才能被选中
 
-## 伪元素
+## 10. 伪元素
 
 *JavaScript无法选中伪元素*
 
@@ -342,7 +342,7 @@ div{
 
 *`content`可以设置为`none`和`normal`,这两个值都可以让这个微元素不显示*
 
-## 阴影
+## 11. 阴影
 
 `box-shadow`阴影
 
@@ -370,7 +370,7 @@ div{
 
 `text-shadow`文本阴影
 
-## 滤镜
+## 12. 滤镜
 
 `filter`滤镜
 
@@ -390,7 +390,7 @@ div{
   - 1为原图效果
   - 大于1对比度加强
 
-## 变换
+## 13. 变换
 
 `transform`变换(复合属性)
 
@@ -438,7 +438,7 @@ div{
 
 `transform-style`值为`preserve-3d`可让盒子具有三维空间空间效果
 
-## 弹性盒布局
+## 14. 弹性盒布局
 
 **以下内容添加在父元素（容器）中**
 
@@ -515,7 +515,7 @@ div{
 
 `align-self`与`align-items`的值相同,表示单独控制自己的对齐方式,效果会覆盖`align-items`
 
-## 网格布局
+## 15. 网格布局
 
 **以下内容添加在父元素（容器）中**
 
@@ -585,9 +585,28 @@ gap: 20px 10px; /* 第一个参数是行间隔,第二个参数是列间隔,如�
 
 **以下内容添加在子元素（项目）中**
 
-(待添加)
+`grid-column-start`与`grid-column-end`与`grid-row-start`与`grid-row-end`这四个属性分别指定了项目的四个边框,分别是左边框所在的垂直网格线/右边框所在的垂直网格线/上边框所在的水平网格线/下边框所在的水平网格线,没有指定位置的项目的排序将由容器属性`grid-auto-flow`决定
 
-## 语义化标签
+*除了指定网格线序号外,还可以指定网格线的名字*
+
+*此属性还可以使用`span`关键字,表示跨越多少个网格,在这种情况下`grid-column-start`与`grid-column-end`是相同的,`grid-row-start`与`grid-row-end`是相同的*
+
+*如果项目产生重叠,则使用`z-index`属性指定重叠的顺序*
+
+`grid-column`与`grid-row`分别是`grid-column-start`和`grid-column-end`的复合属性和`grid-row-start`和`grid-row-end`的复合属性,语法类似`grid-column: start/end`或`grid-row: start/end`
+
+`grid-area`属性制定项目放在哪一个区域(好像是用到了项目的名字,我没怎么用过,以后再补充吧)
+
+`justify-self`与`align-self`与`place-self`此三个属性与`justify-items`与`align-items`与`place-items`的作用相同,但只作用于这单个项目,取值如下:
+
+- start:对齐单元格的起始边缘。
+- end:对齐单元格的结束边缘。
+- center:单元格内部居中。
+- stretch:拉伸，占满单元格的整个宽度（默认值）。
+
+`place-self`属性是`align-self`属性和`justify-self`属性的合并简写形式,先写竖直对齐方式,再写水平对齐方式,如果第二个值省略,则与第一个值相同
+
+## 16. 语义化标签
 
 `blockquote`大段引用(block)
 
