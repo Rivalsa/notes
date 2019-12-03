@@ -440,8 +440,6 @@ div{
 
 ## 弹性盒布局
 
-*弹性盒的子元素中的块级元素主轴方向尺寸默认为0,交叉轴方向尺寸默认为100%*
-
 **以下内容添加在父元素（容器）中**
 
 `display:flex`弹性盒模型布局
@@ -527,8 +525,7 @@ div{
 
 `grid-template-columns`与`grid-template-rows`分别定义属性的列宽和行高,可以设置如下值:
 
-- 多个像素值,例如`100px 100px 100px`表示有3行(列),每行(列)为100px高(宽)
-- 多个百分比,例如`30% 30% 20% 20%`表示有4行(列),每行(列)高(宽)分别为30% 30% 20% 20%
+- 多个像素值或百分比,例如`100px 100px 100px`表示有3行(列),每行(列)为100px高(宽)
 - 使用repeat(x,y)可以括号中可以传入两个参数表示添加x个y,例如:
     - `100px 100px 100px`可以写成`repeat(3, 100px)`
     - `30% 30% 20% 20%`可以写成`repeat(2, 30%) repeat(2, 20%)`
@@ -538,6 +535,57 @@ div{
 - 使用minmax(a,b)设置一个长度范围,表示最小为a,最大为b
 - 使用auto关键字,由浏览器自动判断,尽量沾满空余位置
 - 可以利用中括号给每一个网格线设置名称,例如:`[c1] 100px [c2] 100px [c3] auto [c4]`
+
+`row-gap`与`column-gap`与`gap`,前两项分别定义行间距与列间距,`gap`是前两项的复合属性,举例如下:
+
+```css
+row-gap: 20px;
+column-gap: 10px;
+/* 以上代码可以简写为以下代码 */
+gap: 20px 10px; /* 第一个参数是行间隔,第二个参数是列间隔,如果省略第二个参数则与第一个参数相同 */
+```
+
+*对于没有执行最新标准的浏览器,应添加`grid-`前缀*
+
+`grid-template-areas`属性(感觉像是给每个格子命名的,个人使用不多,暂时不介绍了,今后再补充)
+
+`grid-auto-flow`此属性决定了项目的排列方式,可以取如下值:
+
+- row - 水平方式排列(默认值)
+- column - 垂直方式排列
+- row dense - 水平方式排列并尽量排满一行(后面的元素可能会排在前面)
+- column dense - 垂直方式排列,并尽量排满一列(后面的元素可能会排在前面)
+
+`justify-items`与`align-items`与`place-items`前两项设置了每一个项目的水平和竖直对齐方式,可以取如下值:
+
+- start - 对齐单元格的起始边缘。
+- end - 对齐单元格的结束边缘。
+- center - 单元格内部居中。
+- stretch - 拉伸，占满单元格的整个宽度（默认值）。
+
+`place-items`属性是`align-items`属性和`justify-items`属性的合并简写形式,第一个值是竖直对齐方式,第二个值是水平对齐方式,如果省略第二个参数,则与第一个参数的值相同
+
+`justify-content`与`align-content`与`place-content`前两项设置了容器的对齐方式,可以取如下值:
+
+- start - 对齐容器的起始边框。
+- end - 对齐容器的结束边框。
+- center - 容器内部居中。
+- stretch - 项目大小没有指定时，拉伸占据整个网格容器。
+- space-around - 每个项目两侧的间隔相等。所以，项目之间的间隔比项目与容器边框的间隔大一倍。
+- space-between - 项目与项目的间隔相等，项目与容器边框之间没有间隔。
+- space-evenly - 项目与项目的间隔相等，项目与容器边框之间也是同样长度的间隔。
+
+`place-content`属性是`align-content`属性和`justify-content`属性的合并简写形式,第一个值是竖直对齐方式,第二个值是水平对齐方式,如果省略第二个参数,则与第一个参数的值相同
+
+`grid-auto-columns`与`grid-auto-rows`(应该是指定新增格子的宽与高,个人使用不多,暂时不介绍了,今后再补充)
+
+`grid-template`是`grid-template-columns`、`grid-template-rows`和`grid-template-areas`这三个属性的合并简写形式
+
+`grid`是`grid-template-rows`、`grid-template-columns`、`grid-template-areas`、 `grid-auto-rows`、`grid-auto-columns`、`grid-auto-flow`这六个属性的合并简写形式。
+
+**以下内容添加在子元素（项目）中**
+
+(待添加)
 
 ## 语义化标签
 
