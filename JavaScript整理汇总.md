@@ -676,6 +676,57 @@ function fn() {
 >
 > 弹窗:10
 
+**例12**
+
+```javascript
+fn()();
+var a = 0;
+function fn() {
+    alert(a);
+    var a = 3;
+    function c() {
+        alert(a);
+    }
+    return c;
+}
+```
+
+**执行结果**
+
+> 弹窗:undefined
+>
+> 弹窗:3
+
+**例13**
+
+```javascript
+var a = 5;
+function fn() {
+    var a = 10;
+    alert(a);
+    function b() {
+        alert(++a);
+    }
+    return b;
+}
+var c = fn();
+c();
+fn()();
+c();
+```
+
+**执行结果**
+
+> 弹窗:10
+>
+> 弹窗:11
+>
+> 弹窗:10
+>
+> 弹窗:11
+>
+> 弹窗:12
+
 ## 9.Math对象
 
 JavaScript内置的数学Object.
