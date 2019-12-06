@@ -13,7 +13,7 @@
 - `none`不显示此元素
 - 其他值(如`list-item`/`run-in`/`table`/`inline-table`/`teble-*`等)
 
-*关于`block`/`inline`/`inline-block`之间的区别,请参考文章[CSS中display属性值inline,block,inline-block的区别](https://www.rivalsa.cn/s/article/Frontend/display?utm=5Luj56CB5LuT5bqTSFRNTENTUw==)*
+*关于`block`/`inline`/`inline-block`之间的区别,请参考文章[《CSS中display属性值inline,block,inline-block的区别》](https://www.rivalsa.cn/s/article/Frontend/display?utm=5YmN56uvSFRNTCBDU1PnlJ/or43mnKw=)*
 
 *关于`flex`与`grid`的更多介绍,请参见本文的**弹性盒子布局**及**网格布局**部分*
 
