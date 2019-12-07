@@ -371,6 +371,291 @@ var b = alert("hhh") && 0; // 弹窗，b为undefined
 
 更多关于位运算的知识,请参考[《JavaScript中的位运算》](https://www.rivalsa.cn/s/article/Frontend/bit_operation?utm=SlPmlbTnkIbmsYfmgLs=)
 
+## X 判断与循环
+
+### x.1 if...else...
+
+**用法1**
+
+```javascript
+if(表达式) {
+    // 表达式为true是执行此处代码
+    ...
+}
+```
+
+**用法2**
+
+```javascript
+if(表达式) {
+    // 表达式为true是执行此处代码
+    ...
+} else {
+    // 表达式为false是执行此处代码
+    ...
+}
+```
+
+**用法3**
+
+```javascript
+if(表达式1) {
+    // 表达式1为true时执行此处代码
+    ...
+} else if(表达式2) {
+    // 表达式2为true是执行此处代码
+    ...
+} ... {
+    ...
+} else if(表达式n) {
+    // 表达式n为true是执行此处代码
+    ...
+} else {
+    // 上述所有表达式都为false时执行此处代码
+}
+```
+
+如果某个代码块中只有一条语句时,可以省略大括号.
+
+较简单的判断语句可以用逻辑运算符或三目运算符代替.
+
+### X.2 switch
+
+**基本语法**
+
+```javascript
+switch(表达式) {
+    case 值1:
+        代码块1
+    case 值2:
+        代码块2
+    ...
+    	...
+    case 值n:
+        代码块n
+    default:
+        默认代码块
+}
+```
+
+在执行switch时,首先会用表达式和值1/值2/.../值n依次进行匹配,若某个值匹配成功后,则从此代码块开始依次执行后面的所有代码块(包括默认代码块),如果所有的值都不匹配,则执行默认代码块.
+
+执行代码块时,如果遇到break,则直接跳出switch判断
+
+switch的比较需要值与数据类型都完全相同
+
+### X.3 for
+
+**语法**
+
+```javascript
+for(语句1;语句2;语句3) {
+    // 循环体
+    ...
+}
+```
+
+循环语句按照如下顺序执行:
+
+1. 执行语句1;
+2. 判断语句2的表达式,如果为false则跳出循环,否则继续向下执行;
+3. 执行循环体;
+4. 执行语句3;
+5. 返回第2步继续执行
+
+语句1,语句2和语句3均可以省略不写,但分号不可省略,在设置语句2时,除非有明确需要,尽量避免形成死循环.
+
+### X.4 while
+
+**语法**
+
+```javascript
+while(表达式) {
+    // 循环体
+    ...
+}
+```
+
+循环语句按照如下顺序执行:
+
+1. 判断表达式,如果为false则跳出循环,否则继续向下执行;
+2. 执行循环体
+3. 返回第1步继续执行
+
+**while循环即for循环的一种特殊写法，for循环只是把与循环有关的代码集中在了一个位置**
+
+### X.5 do ... while
+
+**语法**
+
+```javascript
+do {
+    // 循环体
+    ...
+} while(表达式);
+```
+
+循环语句按照如下顺序执行:
+
+1. 执行循环体
+2. 判断表达式,如果为false则跳出循环,否则继续向下执行;
+3. 返回第1步继续执行
+
+### X.6 跳出循环
+
+**break**
+
+跳出循环,例如:
+
+```javascript
+for(let i = 0; i < 5; i++) {
+    if(i === 3) break;
+    console.log(i); // 控制台依次输出0 1 2
+}
+```
+
+**continue**
+
+跳出本次循环,立即开始下一次循环,例如:
+
+```javascript
+for(let i = 0; i < 5; i++) {
+    if (i ===3) continue;
+    console.log(i); // 控制台依次输出0 1 2 4
+}
+```
+
+### X.7 循环命名
+
+用于跳出指定的循环
+
+```javascript
+aaa:for(var i = 0; i < 5; i++) {
+    console.log(`i:${i}`);
+    for(var j = 0; j < 5; j++) {
+        console.log(`j:${j}`);
+        break aaa;
+    }
+}
+```
+
+### X.8 ES5循环添加异步事件中的循环变量
+
+例如如下代码:
+
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>ES5循环添加异步事件中的循环变量</title>
+</head>
+<body>
+    <button>按钮0</button>
+    <button>按钮1</button>
+    <button>按钮2</button>
+    <button>按钮3</button>
+    <button>按钮4</button>
+    <script>
+    	var aBtn = document.getElementsByTagName('button');
+        for(var i = 0; i < aBtn.length; i++) {
+            aBtn[i].onclick = function() {
+                alert(i);
+            };
+        }
+    </script>
+</body>
+</html>
+```
+
+执行上述代码时,会发现点击任意一个按钮,都会弹框5,而不是点那个按钮就弹对应的序号,这种现象的原因是:给按钮添加的点击事件属于异步代码,在添加点击事件时,其中的代码不会执行,等到点击按钮执行代码时,循环变量i早已循环完成值到5了.所以点击每个按钮都会弹窗5.
+
+要想解决这个问题,有3个方案(其中第3个方案用到了ES6语法):
+
+**解决方案1:利用一个自定义属性存住循环变量**
+
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>ES5循环添加异步事件中的循环变量</title>
+</head>
+<body>
+    <button>按钮0</button>
+    <button>按钮1</button>
+    <button>按钮2</button>
+    <button>按钮3</button>
+    <button>按钮4</button>
+    <script>
+    	var aBtn = document.getElementsByTagName('button');
+        for(var i = 0; i < aBtn.length; i++) {
+            aBtn[i].index = i;
+            aBtn[i].onclick = function() {
+                alert(this.index);
+            };
+        }
+    </script>
+</body>
+</html>
+```
+
+**解决方案2:利用一个立即执行函数形成闭包**
+
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>ES5循环添加异步事件中的循环变量</title>
+</head>
+<body>
+    <button>按钮0</button>
+    <button>按钮1</button>
+    <button>按钮2</button>
+    <button>按钮3</button>
+    <button>按钮4</button>
+    <script>
+    	var aBtn = document.getElementsByTagName('button');
+        for(var i = 0; i < aBtn.length; i++) {
+            (function(i){
+                aBtn[i].onclick = function() {
+                	alert(i);
+            	};
+            })(i);
+        }
+    </script>
+</body>
+</html>
+```
+
+**解决方案3:利用ES6中的let定义变量形成闭包**
+
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>ES5循环添加异步事件中的循环变量</title>
+</head>
+<body>
+    <button>按钮0</button>
+    <button>按钮1</button>
+    <button>按钮2</button>
+    <button>按钮3</button>
+    <button>按钮4</button>
+    <script>
+    	var aBtn = document.getElementsByTagName('button');
+        for(let i = 0; i < aBtn.length; i++) {
+            aBtn[i].onclick = function() {
+                alert(i);
+            };
+        }
+    </script>
+</body>
+</html>
+```
+
 ## 6.改变`this`指向
 
 `call`执行函数时函数加`.call`后传入的第一个实参为函数中的this指向(原参数对应写在后面).
