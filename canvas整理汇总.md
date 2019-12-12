@@ -1,0 +1,112 @@
+# 前端canvas整理汇总
+
+## canvas的常用样式与属性
+
+要想在网页中引用canvas可以直接在HTML中添加canvas标签即可,此标签默认有如下样式:
+
+- width:300px
+- height:150px
+- display:inline
+
+通常为了方便使用,会给canvas添加一个`display:block`样式
+
+canvas的width样式与height样式确定了元素的宽和高,他的width属性和height属性确定了画布的宽和高如果画布大小和元素大小不一样,按照如下规则进行处理:
+
+- 画布尺寸大于元素尺寸 - 此时,元素会被画布撑开
+- 画布尺寸小于元素尺寸 - 绘制是在画布尺寸内绘制的,但绘制完成后,会缩放到元素尺寸大小
+
+所以通常canvas元素只添加宽高属性,而不添加样式
+
+canvas为双标签,标签中间的内容在浏览器不支持canvas时会显示出来,在支持canvas的浏览器会忽略内部的内容
+
+## 绘制图形
+
+### 获取元素可绘制区域
+
+```html
+<html>
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+        <canvas width="500" height="500"></canvas>
+        <script>
+        	let canvas = document.getElementsByTagName('canvas')[0]; // 获得元素
+            let canCon = canvas.getContext('2d'); // 获得canvas元素渲染的上下文(画布)
+        </script>
+    </body>
+</html>
+```
+
+*后续的代码中,直接JS的部分,HTML中默认有与上面代码相同的元素,且已获取完上下文(canCon)*
+
+### 调整绘制的颜色
+
+```javascript
+canCon.fillstyle = 'red'; // 设置实心图形的颜色
+canCon.strokestyle = 'red'; // 设置空心图形的颜色
+```
+
+### 绘制矩形
+
+```javascript
+// 以下内容中参数x,y为矩形左上角的坐标,width和height为矩形的宽与高
+canCon.fillRect(x, y, width, height); // 绘制实心矩形
+canCon.strokeRect(x, y, width, height); // 绘制空心矩形
+canCon.cleatRect(x, y, width, height); // 清除矩形区域
+```
+
+### 绘制圆弧
+
+`arc(x, y, radius, startAngle, endAngle, anticlockwise)`参数中x,y表示圆心坐标,radius表示圆弧半径,startAngle为起始角度,endAngle为终止角度,anticlockwise为绘制方向,true表示逆时针绘制,false表示顺时针绘制,默认为false
+
+绘制圆弧时,角度应使用**弧度值**,0为右侧,按顺时针方向计算角度大小
+
+**注意:计算角度大小的方向固定为顺时针,而绘制的方向由最后一个参数决定**
+
+```javascript
+canCon.beginPath();
+canCon.moveTo(250,250);
+canCon.arc(250,250,80,0,Math.PI / 2,true);
+canCon.closePath();
+canCon.stroke();
+```
+
+### 路径
+
+> 路径是通过不同颜色和宽度的线段或曲线相连形成的不同形状的点的集合
+
+`beginPath()`新建一条路径,生成之后,图形绘制命令被指向到路径上生成路径
+
+`closePath()`闭合路径之后图形绘制命令又重新指向到上下文中
+
+`stroke()`通过线条来绘制图形轮廓
+
+`fill()`通过填充路径的内容区域生成实心的图形(会自动闭合图形)
+
+`moveTo(x,y)`将笔触移动到指定的x,y坐标上
+
+`lineTo(x,y)`绘制一条从当前位置到x,y坐标的直线
+
+```javascript
+canCon.beginPath(); // 开始绘制路径
+canCon.moveTo(0,50); // 画笔移动到
+canCon.lineTo(50,300); // 定义直线
+canCon.lineTo(100,50); // 定义直线
+canCon.lineTo(150,300); // 定义直线
+canCon.lineTo(200,50); // 定义直线
+canCon.closePath(); // 闭合图形
+canCon.fill(); // 绘制图形
+```
+
+`arcTo(x1,y1,x2,y2,r)`绘制圆角,(用于路径中需要有起始位置坐标)参数中x1,y1为两条边的延长线的交点坐标,x2,y2为终点坐标,r为圆角半径
+
+此命令会绘制一个圆角,并将圆角起点与起始位置相连接,与结束位置不会连接
+
+```javascript
+canCon.beginPath(); // 开始绘制路径
+canCon.moveTo(100,200); // 确定起始位置
+canCon.arcTo(250,200,250,210,50); // 定义圆角
+canCon.stroke(); // 绘制图形
+```
+
