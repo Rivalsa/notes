@@ -656,10 +656,12 @@ for(let i = 0; i < 5; i++) {
 
 ```javascript
 for(let i = 0; i < 5; i++) {
-    if (i ===3) continue;
+    if (i === 3) continue;
     console.log(i); // 控制台依次输出0 1 2 4
 }
 ```
+
+跳出循环时,只跳出`break`或`continue`所在的循环,想跳出外层循环请参考循环命名
 
 ### 6.7 循环命名
 
