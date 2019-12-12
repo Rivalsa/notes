@@ -65,11 +65,8 @@ canCon.cleatRect(x, y, width, height); // 清除矩形区域
 **注意:计算角度大小的方向固定为顺时针,而绘制的方向由最后一个参数决定**
 
 ```javascript
-canCon.beginPath();
-canCon.moveTo(250,250);
-canCon.arc(250,250,80,0,Math.PI / 2,true);
-canCon.closePath();
-canCon.stroke();
+canCon.arc(250,250,80,0,Math.PI / 2,true); // 定义圆弧
+canCon.stroke(); // 绘制图案
 ```
 
 ### 路径
@@ -86,7 +83,7 @@ canCon.stroke();
 
 `moveTo(x,y)`将笔触移动到指定的x,y坐标上
 
-`lineTo(x,y)`绘制一条从当前位置到x,y坐标的直线
+`lineTo(x,y)`定义一条从当前位置到x,y坐标的直线
 
 ```javascript
 canCon.beginPath(); // 开始绘制路径
@@ -99,9 +96,9 @@ canCon.closePath(); // 闭合图形
 canCon.fill(); // 绘制图形
 ```
 
-`arcTo(x1,y1,x2,y2,r)`绘制圆角,(用于路径中需要有起始位置坐标)参数中x1,y1为两条边的延长线的交点坐标,x2,y2为终点坐标,r为圆角半径
+`arcTo(x1,y1,x2,y2,r)`定义圆角,(用于路径中需要有起始位置坐标)参数中x1,y1为两条边的延长线的交点坐标,x2,y2为终点坐标,r为圆角半径
 
-此命令会绘制一个圆角,并将圆角起点与起始位置相连接,与结束位置不会连接
+此命令会定义一个圆角,并将圆角起点与起始位置相连接,与结束位置不会连接
 
 ```javascript
 canCon.beginPath(); // 开始绘制路径
@@ -110,3 +107,16 @@ canCon.arcTo(250,200,250,210,50); // 定义圆角
 canCon.stroke(); // 绘制图形
 ```
 
+`quadraticCurveTo(cp1x,cp1y,x,y)`定义二次贝塞尔曲线,前两个参数为控制点坐标,后两个参数为结束点坐标
+
+`bezierCurveTo(cp1x,cp1y,cp2x,cp2y,x,y)`定义三次贝塞尔曲线,前两个参数为控制点一的坐标,中间两个为控制点二的坐标,最后两个为结束点的坐标
+
+## 相关参数
+
+### 透明度
+
+`globalAlpha`全局透明度,从此代码向后的按照此透明度绘制,对之前的代码无影响.例如`canCon.globalAloha = 0.4;`,但更常使用的是rgba颜色
+
+### 线型管理
+
+`lineWidth = value`设置线条宽度
