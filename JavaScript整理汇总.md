@@ -6,13 +6,13 @@
 
 **关于本文中的==语句==,==表达式==与==值==三个名词的说明**
 
-在本文中说的语句,表达式和值三个概念没有明显的界限,通常:
+在本文中说的语句,表达式和值,通常来说:
 
 - 语句指得是一个完整语法的一行代码,比如`alert(1 < 2);`
 - 表达式指得是一个需要经过运算才能得到值的代码,比如`1 < 2`
 - 值指的是一个确定的量,如`false`
 
-但本文中,写明是表达式的地方,只是这里通常使用表达式,而不是只能使用表达式
+但本文总这三者之间没有明显的界限,比如一个函数既可看做是表达式(需要运算才能得到值),也可以看做为值(表达式的返回值)
 
 **主流浏览器**
 
@@ -66,13 +66,15 @@ V8引擎为解析js代码最快的js引擎
 
 ## 1.杂项
 
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`const`定义一个常数,定义时必须赋值,不允许重新赋值
+
 `encodeURI(x)`将x进行URL encode编码（ASCII字母和数字以及URL中个分隔符不进行编码）
 
 `encodeURIComponent(x)`将x进行URL encode编码（ASCII字母和数字不进行编码）
 
-`decodeURI(x)`将encodeURI编码的x进行解码
+`decodeURI(x)`将`encodeURI`编码的x进行解码
 
-`decodeURIComponent(x)`将encodeURIComponent编码的x进行解码
+`decodeURIComponent(x)`将`encodeURIComponent`编码的x进行解码
 
 `alert(x)`弹窗x(本意是警告弹窗,但通常用语不需要确认和输入内容的弹窗,应用很少)
 
@@ -81,8 +83,6 @@ V8引擎为解析js代码最快的js引擎
 `confirm(x)`确认弹窗,x是提示内容,点击"是"或"确定"一类的返回true,否则返回false
 
 `isNaN(x)`判断x是否是`NaN`若是则返回true,否则返回false
-
-`arguments`function内部自带的Object(类Array),不定参
 
 `try-catch`执行代码出错后不阻碍后面代码执行,例如:
 
@@ -135,17 +135,38 @@ var a=20,
 
 ### 2.3 定义变量及赋值
 
-在es5中可以使用`var`关键字定义一个变量,在定义变量时可以直接赋值,例如:`var a = 10`,也可以先定义后续再赋值.在ES6中可以使用`let`关键词定义变量
+可以使用`var`关键字定义一个变量,在定义变量时可以直接赋值,例如:`var a = 10`,也可以先定义后续再赋值.
+
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>在ES6中可以使用`let`关键词定义变量
+
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>使用`var`定义变量,实际是在`window`对象中加入一个属性,而使用`let`定义变量,其顶层对象并不是`window`,举例如下:
+
+```javascript
+var a = 10;
+let b = 20;
+console.log(window.a); // 10
+console.log(window.b); //undefined
+```
 
 定义变量是可以通过加逗号一定定义多个变量,如`var a = 10, b = '20', c;`
 
 在非严格模式下,允许变量未经定义直接赋值,也允许使用`var`关键字在同一个作用域内多次定义同一个变量,但不建议这样做
 
-在ES5中用`var`定义变量会有变量提升的问题,请参考**作用域与解析顺序**章节
+使用`var`定义变量会有变量提升的问题,请参考**作用域与解析顺序**章节
 
 在严格模式下,变量必须先定义,后赋值
 
 变量定义后未经赋值的,值为undefined
+
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>给变量赋值除了使用赋值运算符`=`外,在es6中还可以通过解构赋值的方式进行赋值,只要变量与数值具有相同的结构就可以进行赋值,例如:
+
+```javascript
+let [a,b] = [10,20]; // 相当于let a = 10, b = 20;
+let {x: c, y: d} = {x: 50, y: 80}; // 相当于let c = 50, d = 80;
+	// 上面一条也可写为 let {c, d} = {c: 50, d: 80};
+	// 完整写出来为 let {c: c, d: d} = {c: 50, d: 80};
+let [aa,bb,cc,dd] = '解构赋值'; // 相当于 let aa = '解', bb = '构', cc = '赋', dd = '值';
+```
 
 ## 3. console控制台输出
 
@@ -179,7 +200,7 @@ throw 'xxx';
 
 - string
 - boolean
-- symbol (ES6新增)
+- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>symbol
 - null
 - undefined
 - object
@@ -192,13 +213,11 @@ throw 'xxx';
 
 - 单引号(') - 例如:`'hello world'`
 - 双引号(") - 例如:`"hello world"`
-- \`符号 - 例如:\`hello word\` - (ES6新增)
+- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>\`符号 - 例如:\`hello word\` - 使用此符号时,内部可以换行,而且可以使用`${表达式}`来直接得到对应的值,避免多次拼接
 
 **number类型**
 
-JavaScript中的数字有最大值和最小值的限制,最大值可以利用`Number.MAX_VALUE`取得,若数字大于此值,则为`Infinity`.正数的最小值可以利用`Number.MIN_VALUE`取得,若数字小于此值,则为0
-
-<span style="color:red;">上一段话要稍作修改</span>
+JavaScript中的数字有最大值和最小值的限制,对于正数最大值可以利用`Number.MAX_VALUE`取得,若数字大于此值,则会转换为`Infinity`最小值可以利用`Number.MIN_VALUE`取得,若数字小于此值,则为`0`;对于负数则为`-Infinity`和`0`
 
 在设置数字的时候可以设置十六进制/十进制/八进制/二进制
 
@@ -225,9 +244,42 @@ console.log(0o88); // 报错 Uncaught SyntaxError: invalid or unexpected token
 
 在es5中,键必须是字符串形式,可以加引号也可以不加引号,但不加引号时必须符合变量的命名规则
 
-在es6中键可以写`[变量]`,这时会使用变量的值转换为字符串形式作为对象的键
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>在es6中键可以写`[变量]`,这时会使用变量的值转换为字符串形式作为对象的键,例如:
+
+```javascript
+let key = "name";
+let obj = {
+    [key]: "Rivalsa"
+};
+console.log(obj.name); // Rivalsa
+```
 
 值可以是任意一种数据类型(包含对象),也可以是变量
+
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>当对象值得变量名与属性名相同时可以简写，如下所示。方法也可以简写，如下所示:
+
+```javascript
+//未简写
+let x = 10,
+    y = 20,
+    obj = {
+        x: x,
+        y: y,
+        sum:function() {
+            return this.x + this.y;
+        }
+    };
+//简写
+let x = 10,
+    y = 20,
+    obj = {
+        x,
+        y,
+        sum() {
+            return this.x + this.y;
+        }
+    };
+```
 
 读取对象中不存在的属性不会报错，会返回`undefined`
 
@@ -251,15 +303,31 @@ a.age = 16;
 console.log(obj.age); // 16
 ```
 
-**数组(array)**属于对象的一种,可以使用`[值1,值2,值3,...,值n]`来定义一个数组
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>对象的`keys()`,`values()`与`entries()`方法:这三个方法需要通过`Object.keys(数组)`的方式来调用,分别表示获取对象的键,值以及键值对
 
-**函数(function)**属于对象的一种
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>利用`for...of...`遍历对象,举例如下:
+
+```javascript
+//遍历对象
+let obj={name:"Rivalsa",age:18,sex:"M"};
+for(let key of Object.keys(obj)){ //keys对应换成values或entries
+    console.log(key);
+}
+//遍历数组（不常用，因为常用forEach来遍历）
+let arr=[1,2,3,4];
+for(let value of arr){
+    console.log(value);
+}
+```
+
+**数组**属于对象的一种,可以使用`[值1,值2,值3,...,值n]`来定义一个数组
+
+**函数**属于对象的一种
 
 - 定义函数可以通过`function`关键字进行定义,如`function 函数名(){}`,也可以通过赋值的方式进行定义,如`var 函数名 = function(){};`,也可以不给函数取名(称为匿名函数),例如`function(){}`
 - 当函数中有`return`时,函数的返回值为对应的内容
 - 当函数中没有`return`或内容为空时,返回`undefined`
-- 函数可以加小括号去执行
-- 函数在定义时经赋值(或整体加`()`或在前面加`+`/`-`/`~`/`!`等)后,可以直接在后面加小括号执行,称为立即执行函数(或自执行函数或IIFE).立即执行函数可以将代码模块化,避免污染全局环境
+- 函数表达式可以加小括号去执行,函数定义时加小括号可以变为表达式,在后面加小括号,称为立即执行函数(或自执行函数或IIFE).立即执行函数可以将代码模块化,避免污染全局环境
 - 函数实际传入的参数称为**实参**,在函数内部用于接受实参值的变量称为**形参**,实参与形参按顺序一一对应
 
 ```javascript
@@ -269,8 +337,61 @@ function fn(形参1,形参2,...,形参n) {
 fn(实参1,实参2,...,实参n);
 ```
 
-- 实参个数可以等于形参个数,也可以大于形参个数,也可以小于形参个数.传参时,形参与实参按顺序一一对应,对于形参多于实参的情况,未传值的形参值为undefined,对于实参多于形参的情况,在函数中无法通过形参拿到值,但可以通过`arguments`来拿到值
-- 函数的`arguments`是内部自带的类数组对象称为**不定参**,用于接受所有传入的参数
+- 实参个数可以等于形参个数,也可以大于形参个数,也可以小于形参个数.传参时,形参与实参按顺序一一对应,对于形参多于实参的情况,未传值的形参值为undefined,对于实参多于形参的情况,在函数中无法通过形参拿到值,但可以通过`arguments`(实参列表)来拿到值
+- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>在es6中函数有length和name属性,length表示形参的个数,name为函数的名字
+
+```javascript
+function fn(a,b,c) {};
+console.log(fn.length, fn.name); // 3 "fn"
+```
+
+- 箭头函数
+
+> 用`=>`的方式来定义函数，例如：
+>
+> ```javascript
+> let a = (x, y) => {
+>  return x + y;
+> }
+> a();
+> ```
+>
+> 箭头函数的简写
+>
+> - 当形参有且仅有一个时，小括号可以不写（小括号里面的形参要写）
+> - 当函数体中只有一条语句时，大括号可以不写（大括号里面的语句要写），但省略大括号后，函数默认的返回值变为语句的返回值
+>
+> 箭头函数与普通函数的异同点
+>
+> | 箭头函数() = > {}                 | 普通函数function(){}       | 举例 |
+> | --------------------------------- | -------------------------- | ---- |
+> | this指向与外界一致,没有自己的this | this指向调用这个函数的对象 | 例1  |
+> | 不能用new执行                     | 可以用new执行              |      |
+> | 没有arguments                     | 有arguments                |      |
+>
+> 例1
+>
+> ```javascript
+> document.addEventListener("click",function(){
+>     console.log(this); // this指向document
+> });
+> document.addEventListener("click",() => {
+>     console.log(this); // this指向window
+> });
+> ```
+
+**<span style="color:yellowgreen;font-weight:600;">[ES6]</span>Symbol类型**
+
+每次新建的Symbol都是不一样的。ES6中symbol数据也可以当做属性名，例如
+
+```javascript
+let obj={name:"Rivalsa",age:18};
+let name=Symbol();
+obj[name]="Jerry";
+console.log(obj);
+```
+
+Symbol的参数是它的标识，只是便于开发者区分，没有实际意义。
 
 ### 4.3 数据类型的检测
 
@@ -551,9 +672,9 @@ if(表达式1) {
 
 **用法3**中可以没有最后一个else部分
 
-如果某个代码块中只有一条语句时,可以省略大括号.
+如果某个代码块中只有一条语句时,可以省略大括号
 
-较简单的判断语句可以用逻辑运算符或三目运算符代替.
+较简单的判断语句可以用逻辑运算符或三目运算符代替
 
 ### 6.2 switch
 
@@ -593,10 +714,10 @@ for(语句1;语句2;语句3) {
 
 循环语句按照如下顺序执行:
 
-1. 执行语句1;
-2. 判断语句2的转换为的布尔值,如果为false则跳出循环,否则继续向下执行;
-3. 执行循环体;
-4. 执行语句3;
+1. 执行语句1
+2. 判断语句2的转换为的布尔值,如果为false则跳出循环,否则继续向下执行
+3. 执行循环体
+4. 执行语句3
 5. 返回第2步继续执行
 
 语句1,语句2和语句3均可以省略不写,但分号不可省略
@@ -796,7 +917,7 @@ aaa:for(var i = 0; i < 5; i++) {
 </html>
 ```
 
-## 7.改变`this`指向
+## 7.改变this指向
 
 `call`执行函数时函数加`.call`后传入的第一个实参为函数中的this指向(原参数对应写在后面).
 例如:
@@ -879,6 +1000,10 @@ console.log(str.indexOf('-'); // 13
 console.log(String.fromCharCode(36825)); // '这'
 ```
 
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`padStart(数字,字符串)`字符串的方法,如果不够对应位数,则在开头添加参数中指定的字符串,补满位数
+
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`padEnd(数字,字符串)`字符串的方法,如果不够对应位数,则在结尾添加参数中指定的字符串,补满位数
+
 ## 9.数组常用API
 
 `.length`返回数组的长度(存储的数据的个数)
@@ -942,6 +1067,17 @@ console.log(arr)
 - index为当前的序号
 - arr为数组本身(很少使用)
 
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>扩展运算符`...`,数组的每一个值,或作为函数的参数接收多于的实参,例如:
+
+```javascript
+let a = [1,2,'3',true];
+console.log(...a);
+let fn = function(a, b, ...c) {
+    console.log(c);
+}
+fn(1,2,3,4,5,6); // [3,4,5,6]
+```
+
 ## 10.作用域与解析顺序
 
 ### 10.1 作用域及作用域链
@@ -959,7 +1095,7 @@ console.log(arr)
 ```javascript
 alert(b); // 弹窗undefined
 var b = 10;
-alert(a); // 报错
+alert(a); // 报错 Uncaught ReferenceError: a is not defined
 ```
 
 **解析顺序**
@@ -1001,7 +1137,7 @@ alert(b);
 
 > 弹窗:10
 >
-> 报错:b is not defined
+> 报错:Uncaught ReferenceError: b is not defined
 
 **例2**
 
@@ -1054,7 +1190,7 @@ alert(x);
 
 > 弹窗:undefined
 >
-> 报错:x is not defined
+> 报错:Uncaught ReferenceError: x is not defined
 
 **例5**
 
@@ -1109,7 +1245,7 @@ function a() {
 
 > 弹窗:10
 >
-> 报错: a is not a function
+> 报错: Uncaught TypeError: a is not a function
 
 **例8**
 
@@ -1252,7 +1388,7 @@ JavaScript内置的数学对象.
 - `.floor(x)`返回x向下取整(舍尾取整)的值
 - `.min(a,b,c,...)`接收多个数字参数,返回最小值
 - `.max(a,b,c,...)`接收多个数字参数,返回最大值
-- `.pow(a,b)`返回a的b次幂(在es6中可以用`a ** b`表示)
+- `.pow(a,b)`返回a的b次幂(<span style="color:yellowgreen;font-weight:600;">[ES6]</span>在es6中可以用`a ** b`表示)
 
 ## 12.定时器
 
@@ -1299,7 +1435,6 @@ JavaScript内置的数学对象.
 在创建构造函数后，可以用`.prototype`属性来向\_\_proto\_\_中写入原型，这个对象可以供所有实例化后的对象直接使用，例如：
 
 ```javascript
-"use strict"
 function O(){
     this.name="rivalsa";
     this.sex="M";
@@ -1341,146 +1476,7 @@ Teacher.prototype.showId=function(){ // 新增的原型
 }
 ```
 
-## 15.ECMA Script 6
-
-### 15.1 杂项
-
-ES6中不允许使用`var`,不建议通过`function`定义函数(通过赋值方式定义函数)
-
-`let`没有变量提升问题,必须先定义变量后使用变量,不能重复定义变量
-
-`const`定义一个常数,定义时必须赋值,不允许重新赋值,满足`let`的所有规定
-
-`padStart(数字,字符串)`字符串的方法,如果不够对应位数,则在开头添加参数中指定的字符串,补满位数
-
-`padEnd(数字,字符串)`字符串的方法,如果不够对应位数,则在结尾添加参数中指定的字符串,补满位数
-
-`**`表示乘方,例如`5 ** 2`表示5的2次幂
-
-**作用域**:每一个括号都会产生一个作用域,作用域嵌套就会产生闭包.(在ES5中只有function能产生作用域)
-
-**块作用域**:直接用大括号括起来,相当于立即执行函数,可以产生一个局部作用域,例如:
-
-```javascript
-{
-    let a=10;
-    console.log(a);
-};
-//相当于ES5中的下面代码
-(function(){
-    var a-10;
-    console.log(a);
-})();
-```
-
-ES6中顶层对象不再是window,例如:
-
-```javascript
-let a=20;
-console.log(window.a); //undefined
-```
-
-**解构赋值**:当定义变量时,变量与数值具有相同的结构,即可进行赋值,例如:
-
-```javascript
-let [a,b]=[10,20];
-let {x:c,y:d}={x:50,y:80}; //可简写为let {c,d}={c:50,d:80},相当于let {c:c,d:d}={c:50,d:80}
-console.log(a,b,c,d);
-let [aa,bb,cc,dd]="解构赋值";
-console.log(aa,bb,cc,dd);
-```
-
-**函数参数的默认值可以直接在形参中写等号进行赋值**:当传入的参数为undefined时,使用默认值
-
-**模板字符串**:用``代替""或'',可以换行,可以通过${}来直接得到大括号中变量的值,避免多次拼接
-
-**扩展运算符**:...
-
-**数组新增方法**
-
-- keys()
-- values()
-- entries()
-
-**for...of...**遍历对象，举例如下：
-
-```javascript
-//遍历对象
-let obj={name:"Rivalsa",age:18,sex:"M"};
-for(let key of Object.keys(obj)){ //keys对应换成values或entries
-    console.log(key);
-}
-//遍历数组（不常用，因为常用forEach来遍历）
-let arr=[1,2,3,4];
-for(let value of arr){
-    console.log(value);
-}
-```
-
-**函数新增length和name属性**
-
-- length表示形参个数
-- name表示函数名字
-
-ES6中对象的属性名可以用中括号括起来表示是个变量，例如：
-
-```javascript
-let key="name";
-let obj={
-    [key]:"Rivalsa"
-};
-console.log(obj.name); // Rivalsa
-```
-
-### 15.2 箭头函数
-
-用`=>`的方式来定义函数，例如：
-
-```javascript
-let a=(x,y)=>{
-    return x+y;
-}
-a();
-```
-
-箭头函数的简写
-
-- 当形参有且仅有一个时，小括号可以不写（小括号里面的形参要写）
-- 当函数体中只有一条语句时，大括号可以不写（大括号里面的语句要写），但省略大括号后，函数默认的返回值变为表达式的值
-
-箭头函数与普通函数的异同点
-
-| 箭头函数() = > {}                 | 普通函数function(){}       | 举例 |
-| --------------------------------- | -------------------------- | ---- |
-| this指向与外界一致,没有自己的this | this指向调用这个函数的对象 | 例1  |
-| 不能用new执行                     | 可以用new执行              |      |
-| 没有arguments                     | 有arguments                |      |
-
-例1
-
-```javascript
-document.addEventListener("click",function(){
-    console.log(this); // this指向document
-});
-document.addEventListener("click",() => {
-    console.log(this); // this指向window
-});
-```
-
-### 15.3 Symbol
-
-每次新建的Symbol都是不一样的。ES6中symbol数据也可以当做属性名，例如
-
-```javascript
-let obj={name:"Rivalsa",age:18};
-let name=Symbol();
-obj[name]="Jerry";
-console.log(obj);
-```
-
-Symbol的参数是它的标识，只是便于开发者区分，没有实际意义。
-
-### 15.4 类及其继承
+**<span style="color:yellowgreen;font-weight:600;">[ES6]</span>类及其继承**
 
 在ES5中没有类的概念，用构造函数代替，在ES6中可以用class定义一个类，定义的类只能用new执行，不能自执行，继承可以直接使用extends，举例如下：
 
@@ -1517,7 +1513,7 @@ console.log(r);
 r.showName();
 ```
 
-### 15.5 Set和Map两种数据结构
+## 15. <span style="color:yellowgreen;font-weight:600;">[ES6]</span>Set和Map两种数据结构
 
 ES6中新增Set和Map两种数据结构，需用new创建对象
 
@@ -1547,34 +1543,7 @@ map.set(obj,"qwe");
 console.log(map.get(obj),map.get(true));
 ```
 
-### 15.6 对象赋值时的简写
-
-当对象值得变量名与属性名相同时可以简写，如下所示。方法也可以简写，如下所示；
-
-```javascript
-//未简写
-let x=10,
-    y=20,
-    obj={
-        x:x,
-        y:y,
-        sum:function(){
-            return this.x+this.y;
-        }
-    };
-//简写
-let x=10,
-    y=20,
-    obj={
-        x,
-        y,
-        sum(){
-            return this.x+this.y;
-        }
-    };
-```
-
-### 15.7 回调地狱及Promise
+## 16. <span style="color:yellowgreen;font-weight:600;">[ES6]</span>回调地狱及Promise
 
 如果代码中有多处异步代码(异步中还有异步),例如:
 
@@ -1662,7 +1631,7 @@ new Promise((resolve,reject) => {
 });
 ```
 
-## 16.DOM操作
+## 17.DOM操作
 
 > DOM（文档对象模型 document object model）是针对HTML文档的一个API.
 > DOM 描绘了一个层次化的节点树，允许开发人员添加、移除和修改页面元素(元素的文字也是DOM的一个节点)
@@ -1675,7 +1644,7 @@ DOM节点共有12种
 - 注释节点(nodetype为8,nodeValue为注释的内容)
 - (其他8种)
 
-### 16.1 获取DOM对象
+### 17.1 获取DOM对象
 
 **通过ID获取**
 
@@ -1718,7 +1687,7 @@ document.querySelectorAll('选择器') // 返回类数组NodeList
 
 获取head:`document.head`
 
-### 16.2 操作DOM的属性及内容
+### 17.2 操作DOM的属性及内容
 
 **操作标签原有属性**
 
@@ -1913,7 +1882,7 @@ innerHTML 与 innerText 的区别：
 - innerHTML会解析其中的html标签
 - innerText不会解析hmtl标签，原样替换所设置的内容
 
-### 16.3 更多DOM操作
+### 17.3 更多DOM操作
 
 `.childNodes`获取元素的所有子节点(现代浏览器是获取所有子节点,低版本IE浏览器是获取所有子元素节点)
 
@@ -1946,9 +1915,9 @@ innerHTML 与 innerText 的区别：
 | nextElementSibling | nextSibling |下一个兄弟元素节点(在现代浏览器中nextSibling表示下一个兄弟节点)|
 | previousElementSibling | previousSibling |上一个兄弟元素节点(在现代浏览器中previousSibling表示上一个兄弟节点)|
 
-## 17.DOM事件
+## 18. DOM事件
 
-### 17.1 0级事件
+### 18.1 0级事件
 
 *采用赋值的方式,新事件替代旧事件*
 
@@ -2030,7 +1999,7 @@ innerHTML 与 innerText 的区别：
 
 **事件对象相关内容,请参阅《事件对象》章节**
 
-### 17.2 2级事件
+### 18.2 2级事件
 
 *新事件与旧事件共存,与0级事件不冲突*
 
@@ -2039,12 +2008,12 @@ innerHTML 与 innerText 的区别：
 - a为对应事件,如click(不写on)
 - b为事件函数(函数的实参为事件对象)
 
-``removeEventListener(a,b)`移除事件监听器(低版本IE不支持,用`detachEvent`代替)
+`removeEventListener(a,b)`移除事件监听器(低版本IE不支持,用`detachEvent`代替)
 
 - a为对应事件,如click(不写on)
 - b为事件函数(b必须与添加时的b具有相同指针)
 
-### 17.3 事件捕获
+### 18.3 事件捕获
 
 先执行捕获事件(从父级到子集)再执行普通事件(从子集到父级)
 
@@ -2055,11 +2024,11 @@ innerHTML 与 innerText 的区别：
 
 *移除捕获事件时`removeEventListener`也需要添加第三个参数为true*
 
-### 17.4 事件委托
+### 18.4 事件委托
 
 把事件加给父级,利用`target`来判断是哪个子级触发的
 
-## 18.BOM相关
+## 19.BOM相关
 
 **BOM事件**
 
@@ -2087,7 +2056,7 @@ innerHTML 与 innerText 的区别：
 
 `screen`屏幕相关信息对象
 
-## 19.元素各种尺寸和距离
+## 20.元素各种尺寸和距离
 
 `window.innerHeight`浏览器窗口高度(带窗口边框)
 
@@ -2119,7 +2088,7 @@ innerHTML 与 innerText 的区别：
 
 `window.scrollTo(top:x)`将滚动高度设置为x
 
-## 20.事件对象
+## 21.事件对象
 
 在现代浏览器中：当事件被触发时，会默认传一个实参，为事件对象,可以在事件函数中设置形参(通常用e或ev)接收
 
@@ -2150,11 +2119,11 @@ innerHTML 与 innerText 的区别：
 
 - `target`事件触发源
 
-## 21.正则表达式
+## 22.正则表达式
 
 可以用来高效便捷的处理字符串
 
-### 21.1 定义正则表达式
+### 22.1 定义正则表达式
 
 **双斜杠定义**
 
@@ -2164,9 +2133,9 @@ innerHTML 与 innerText 的区别：
 
 例如`let reg = new RegExp("x");`括号中可以传入一个字符串变量,也可以直接传入字符串(字符串的内容为正则表达式)
 
-### 21.2 正则表达规则
+### 22.2 正则表达规则
 
-#### 21.2.1 转义字符
+#### 22.2.1 转义字符
 
 普通转移字符`\`(将有特殊意义的字符变为普通字符)
 
@@ -2218,7 +2187,7 @@ innerHTML 与 innerText 的区别：
 - 结束位置
 - `\W`能匹配的所有字符
 
-#### 21.2.2 标识
+#### 22.2.2 标识
 
 *写在正则表达式结尾/的后面,可以写多个,不区分先后顺序,在使用RegExp定义时,标识以字符串形式作为第二个参数传入*
 
@@ -2228,7 +2197,7 @@ innerHTML 与 innerText 的区别：
 
 `m`换行匹配
 
-#### 21.2.3 量词
+#### 22.2.3 量词
 
 *写在对应规则后面*
 
@@ -2250,11 +2219,11 @@ innerHTML 与 innerText 的区别：
 
 惰性(在量词后面加`?`表示惰性量词):尽量按少的去匹配
 
-#### 21.2.4 子项
+#### 22.2.4 子项
 
 使用小括号可以将里面的内容作为一个子项
 
-#### 21.2.5 字符集
+#### 22.2.5 字符集
 
 用中括号表示
 
@@ -2278,7 +2247,7 @@ innerHTML 与 innerText 的区别：
 
 - 字符集中小括号/大括号/正斜杠/问号/星号/加号等无特殊含义
 
-#### 21.2.6 其他有特殊意义的字符
+#### 22.2.6 其他有特殊意义的字符
 
 - `^`表示起始位置
 - `$`表示结束位置
@@ -2287,13 +2256,13 @@ innerHTML 与 innerText 的区别：
   - `\r`
 - `|`表示或者(前后是两个独立的正则)
 
-#### 21.2.7 捕获组
+#### 22.2.7 捕获组
 
 `\数字x`表示第x个子项,再次匹配第x个子项
 
 *并不是第x个子项的匹配规则,而是第x个子项的内容*
 
-#### 21.2.8 断言
+#### 22.2.8 断言
 
 `(?=xx)`(不算做子项)某字符后面要含有xx字符,但匹配到的东西不包含xx
 
@@ -2303,7 +2272,7 @@ innerHTML 与 innerText 的区别：
 
 `(?<!xx)`(不算做子项)某字符前面要不含有xx字符,但匹配到的东西不包含xx
 
-### 21.3 使用正则表达式的方法
+### 22.3 使用正则表达式的方法
 
 **正则表达式的方法**
 
@@ -2315,17 +2284,17 @@ innerHTML 与 innerText 的区别：
 
 `.match(正则表达式)`返回字符串中匹配成功的字符串组成的数组(数组有匹配的内容与子项组成,在规则中使用全局`g`则组成的数组中不包含子项)
 
-### 21.4 RegExp对象
+### 22.4 RegExp对象
 
 RegExp中存储了上一次的子项,可以通过这个对象直接拿到数据.(可以先test然后通过RegExp得到子项)
 
-## 22.ajax
+## 23.ajax
 
 > ajax即“Asynchronous Javascript And XML”（异步 JavaScript 和 XML），是指一种创建交互式网页应用的网页开发技术。 
 
 ajax可以在不刷新页面的前提下向后端 发送/请求 数据，在开发中是必然会用的技术。
 
-### 22.1 JavaScript原生ajax
+### 23.1 JavaScript原生ajax
 
 ```javascript
 let xhr;
@@ -2372,7 +2341,7 @@ function onReadyStateChange() {
 }
 ```
 
-### 22.2 jQuery的ajax
+### 23.2 jQuery的ajax
 
 ```javascript
 // 列出部分参数
@@ -2386,7 +2355,7 @@ $.ajax({
 });
 ```
 
-### 22.3 axios
+### 23.3 axios
 
 **发送单个请求**
 
@@ -2418,11 +2387,11 @@ axios.all([ reqA(),reqB() ]).then(res => {
 });
 ```
 
-### 22.4 跨域问题
+### 23.4 跨域问题
 
 发送ajax请求时需要确保当前页面与请求页面同源(必须协议\\主机\\端口号全都相同),否则需要后端发送相应的HTTP Header才能正常访问.
 
-### 22.5 jsonp
+### 23.5 jsonp
 
 由于HTML页面中调用JavaScript是没有同源限制的,所以可以利用此方法发送数据,举例如下:
 
