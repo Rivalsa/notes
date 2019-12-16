@@ -1082,11 +1082,67 @@ fn(1,2,3,4,5,6); // [3,4,5,6]
 
 ### 10.1 作用域及作用域链
 
-**作用域**可以通俗的理解为起作用的范围,分为全局作用域与局部作用域,在局部作用域中定义的变量,只在定义的作用域内可以使用,**在es5中,只有函数能产生一个局部作用域,在es6中遇到大括号就是一个局部作用域**
-
-全局变量保存在GO对象中,局部变量保存在AO对象中,但GO对象和AO对象在JS中是无法直接访问的.
+**作用域**可以通俗的理解为起作用的范围,分为全局作用域与局部作用域,**在es5中,只有函数运行时会创建一个局部作用域,<span style="color:yellowgreen;font-weight:600;">[ES6]</span>在es6中只要执行大括号中代码时就会创建一个局部作用域**
 
 在引用变量时,会现在自己的作用域内查找,如果找不到就到父级作用域内查找,一直找到全局作用域,如果全局也找不到,则报错,这个称为**作用域链**
+
+全局作用域中的变量保存在GO(全局对象)中,局部作用域中的变量保存在对应的AO(活跃对象)中，能产生局部作用域的代码在每次执行时，会产生全新的AO对象
+
+```javascript
+var a, b;
+function fn() {
+    var a = 10, c = 20;
+    b = 30;
+    console.log(a,b,c); // 10 20 30
+}
+fn();
+console.log(a,b); // undefined 30
+console.log(c); // 报错:Uncaught ReferenceError: c is not defined
+```
+
+对于函数可以通过`[[Scopes]]`记录了其作用域(链)
+
+当AO对象今后无法再用到时,这个作用域内的AO对象会被自动删除,将对应内存释放，称为**垃圾回收机制**
+
+### 10.2 闭包
+
+现有A、B和C三个作用域，B是A的子作用域，C是B的子作用域，在C作用域中用到了B作用域中的AO对象，当C作用域中的内容直接在A作用域中被访问时，由于没有执行B作用域内的内容，也就没有在B作用域内创建全新的AO对象，所以C作用域中能用到B作用域内上次的值。将这种情况称为**闭包**，举例如下：
+
+**未形成闭包的情况**
+
+```javascript
+function outer() {
+    var a = 0;
+    function inner() {
+        console.log(a++);
+    }
+    inner();
+}
+outer(); // 0
+outer(); // 0
+outer(); // 0
+```
+
+上述例子中，有三个作用域，全局作用域，outer形成的局部作用域和inner形成的局部作用域，outer形成的作用域是全局作用域的子作用域，inner形成的作用域是outer形成的作用域的子作用域，inner形成的作用域中用到了outer形成的作用域中的变量a，但是inner形成的作用域无法在全局作用域中直接访问（也就是说无法在不执行outer的情况下直接执行inner），所以每次执行都会创建新的a。
+
+**形成了闭包的情况**
+
+```javascript
+var fn;
+function outer() {
+    var a = 0;
+    function inner() {
+        console.log(a++);
+    }
+    fn = inner;
+}
+outer();
+fn(); // 0
+fn(); // 1
+fn(); // 2
+```
+
+上述例子中，有三个作用域，全局作用域，outer形成的局部作用域和inner形成的局部作用域，outer的是全局作用域的子作用域，inner的是outer的子作用域，inner的作用域中用到了outer的作用域中的变量a，且inner形成的作用域可以在全局作用域中直接访问（通过执行fn可以在不执行outer的情况下直接执行inner），在直接执行时由于outer中的代码没有执行，所以没在outter作用域内创建全新的变量a，所以inner中就可以直接使用outer中原有的a
 
 ### 10.2 变量提升与解析顺序
 
@@ -1095,7 +1151,7 @@ fn(1,2,3,4,5,6); // [3,4,5,6]
 ```javascript
 alert(b); // 弹窗undefined
 var b = 10;
-alert(a); // 报错 Uncaught ReferenceError: a is not defined
+alert(a); // 报错:Uncaught ReferenceError: a is not defined
 ```
 
 **解析顺序**
