@@ -244,7 +244,7 @@ console.log(0o88); // 报错 Uncaught SyntaxError: invalid or unexpected token
 
 **object类型**
 
-可以使用`{键1:值1,键2:值2,...键n:值n}`的方式来定义对象,其中可以有若干个键值对(键也可以称为属性).
+可以使用`{键1:值1,键2:值2,...键n:值n}`的方式来定义对象,其中可以有若干个键值对(键也可以称为属性)，也可以通过`new Object()`的方式来创建一个对象（推荐使用前者）
 
 在es5中,键必须是字符串形式,可以加引号也可以不加引号,但不加引号时必须符合变量的命名规则
 
@@ -287,7 +287,7 @@ let x = 10,
 
 读取对象中不存在的属性不会报错，会返回`undefined`
 
-使用`delete`可以删除对象中的变量,例如:`delete obj.pet`(在严格模式下无法使用)
+使用`delete`可以删除对象中的变量,例如:`delete obj.pet`，删除成功返回`true`否则返回`false`(在严格模式下无法使用)
 
 获取对象属性的值有以下两种方案:
 
@@ -308,6 +308,8 @@ console.log(obj.age); // 16
 ```
 
 <span style="color:yellowgreen;font-weight:600;">[ES6]</span>对象的`keys()`,`values()`与`entries()`方法:这三个方法需要通过`Object.keys(数组)`的方式来调用,分别表示获取对象的键,值以及键值对
+
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>利用`for 变量 in 对象`可以遍历对象或数组的键（能遍历到键了，自然也能取到值了），但更常用下一条的方式来代替。
 
 <span style="color:yellowgreen;font-weight:600;">[ES6]</span>利用`for...of...`遍历对象,举例如下:
 
@@ -626,7 +628,22 @@ var b = alert("hhh") && 0; // 弹窗，b为undefined
 
 更多关于位运算的知识,请参考[《JavaScript中的位运算》](https://www.rivalsa.cn/s/article/Frontend/bit_operation?utm=SlPmlbTnkIbmsYfmgLs=)
 
-### 5.8 运算符的优先级
+### <span style="color:yellowgreen;font-weight:600;">[ES6]</span>5.8 扩展运算符
+
+扩展运算符用`...`表示,将数组拆分为用逗号分隔的参数序列
+
+还可以作为函数的参数接收多于的实参,例如:
+
+```javascript
+let a = [1,2,'3',true];
+console.log(...a);
+let fn = function(a, b, ...c) {
+    console.log(c);
+}
+fn(1,2,3,4,5,6); // [3,4,5,6]
+```
+
+### 5.9 运算符的优先级
 
 <span style="color:red;">待添加内容</span>
 
@@ -1071,17 +1088,6 @@ console.log(arr)
 - index为当前的序号
 - arr为数组本身(很少使用)
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>扩展运算符`...`,数组的每一个值,或作为函数的参数接收多于的实参,例如:
-
-```javascript
-let a = [1,2,'3',true];
-console.log(...a);
-let fn = function(a, b, ...c) {
-    console.log(c);
-}
-fn(1,2,3,4,5,6); // [3,4,5,6]
-```
-
 ## 10.作用域与解析顺序
 
 ### 10.1 作用域及作用域链
@@ -1163,6 +1169,7 @@ alert(a); // 报错:Uncaught ReferenceError: a is not defined
 1.定义(预解析)
 
 - 执行`var`定义变量(但不赋值)
+- 如果在函数内，则自动创建形参并将实参赋值给形参
 - 执行`function`定义变量
 
 2.执行 - 从上到下执行剩余代码
@@ -1174,13 +1181,17 @@ alert(a); // 报错:Uncaught ReferenceError: a is not defined
 ```javascript
 if(false) {
     var a = 10;
+    let b = 20;
 }
 alert(a);
+alert(b);
 ```
 
 **执行结果**
 
 > 弹窗:undefined
+>
+> 报错：Uncaught ReferenceError: b is not defined
 
 **例1**
 
