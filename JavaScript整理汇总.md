@@ -6,6 +6,8 @@
 
 **关于本文中的==语句==,==表达式==与==值==三个名词的说明**
 
+---
+
 在本文中说的语句,表达式和值,通常来说:
 
 - 语句指得是一个完整语法的一行代码,比如`alert(1 < 2);`
@@ -13,6 +15,8 @@
 - 值指的是一个确定的量,如`false`
 
 但本文总这三者之间没有明显的界限,比如一个函数既可看做是表达式(需要运算才能得到值),也可以看做为值(表达式的返回值)
+
+---
 
 **主流浏览器**
 
@@ -44,11 +48,11 @@ V8引擎为解析js代码最快的js引擎
 
 **JS的发展**
 
-**2003年：** 页面上漂浮的广告、弹窗广告；所以当时的浏览器就推出一个功能，禁用广告，实际上本质就是禁用JavaScript。
+**2003年**： 页面上漂浮的广告、弹窗广告；所以当时的浏览器就推出一个功能，禁用广告，实际上本质就是禁用JavaScript。
 
-**2004年：**谷歌打开了Ajax这个潘多拉的盒子，从此JavaScript被人重视，很多人开始学习JS语言。
+**2004年**：谷歌打开了Ajax这个潘多拉的盒子，从此JavaScript被人重视，很多人开始学习JS语言。
 
-**2007年：**三层分离，iPhone发布，人们开始重视用户体验。大家发现了，JavaScript是web页面中制作交互效果唯一的语言，所以把JS的重视程度，提到了相当高的一个地位。
+**2007年**：三层分离，iPhone发布，人们开始重视用户体验。大家发现了，JavaScript是web页面中制作交互效果唯一的语言，所以把JS的重视程度，提到了相当高的一个地位。
 
 **2008年**：Chrome浏览器发布，V8引擎加快了JS的解析，之前的浏览器解析JS的时候卡顿卡顿的，动画效果是蹦蹦的。在Chrome里，它的引擎叫做V8，运行JS很流畅。
 
@@ -62,7 +66,7 @@ V8引擎为解析js代码最快的js引擎
 
 特点:弱类型,解释型,单线程
 
-组成:ECMA Script
+组成:ECMAScript，DOM和BOM
 
 ## 1.杂项
 
@@ -309,12 +313,12 @@ console.log(obj.age); // 16
 
 ```javascript
 //遍历对象
-let obj={name:"Rivalsa",age:18,sex:"M"};
+let obj = {name:"Rivalsa",age:18,sex:"M"};
 for(let key of Object.keys(obj)){ //keys对应换成values或entries
     console.log(key);
 }
 //遍历数组（不常用，因为常用forEach来遍历）
-let arr=[1,2,3,4];
+let arr = [1,2,3,4];
 for(let value of arr){
     console.log(value);
 }
@@ -1093,9 +1097,9 @@ var a, b;
 function fn() {
     var a = 10, c = 20;
     b = 30;
-    console.log(a,b,c); // 10 20 30
+    console.log(a,b,c);
 }
-fn();
+fn(); // 10 20 30
 console.log(a,b); // undefined 30
 console.log(c); // 报错:Uncaught ReferenceError: c is not defined
 ```
@@ -1144,7 +1148,7 @@ fn(); // 2
 
 上述例子中，有三个作用域，全局作用域，outer形成的局部作用域和inner形成的局部作用域，outer的是全局作用域的子作用域，inner的是outer的子作用域，inner的作用域中用到了outer的作用域中的变量a，且inner形成的作用域可以在全局作用域中直接访问（通过执行fn可以在不执行outer的情况下直接执行inner），在直接执行时由于outer中的代码没有执行，所以没在outter作用域内创建全新的变量a，所以inner中就可以直接使用outer中原有的a
 
-### 10.2 变量提升与解析顺序
+### 10.3 变量提升与解析顺序
 
 在es5中,即使把定义变量的语句写在后面,也会先进行变量的定义(但不会赋值),把这个现象称为**变量提升**,例如:
 
