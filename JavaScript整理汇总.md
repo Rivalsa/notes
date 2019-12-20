@@ -240,7 +240,7 @@ console.log(088); // 88
 console.log(0o88); // 报错 Uncaught SyntaxError: invalid or unexpected token
 ```
 
-`NaN`也属于数字类型,这种数据通常出现在类型转换时,将无法转换为数字的数据转换为数字类型或者计算`0/0`,就会出现`NaN`这个值.(NaN即Not a Number)
+`NaN`也属于数字类型,这种数据通常出现在类型转换时,将无法转换为数字的数据转换为数字类型或者计算类似`0/0`或负数的平方根等情况,就会出现`NaN`这个值.(NaN即Not a Number)
 
 **object类型**
 
@@ -309,9 +309,11 @@ console.log(obj.age); // 16
 
 <span style="color:yellowgreen;font-weight:600;">[ES6]</span>对象的`keys()`,`values()`与`entries()`方法:这三个方法需要通过`Object.keys(数组)`的方式来调用,分别表示获取对象的键,值以及键值对
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>利用`for 变量 in 对象`可以遍历对象或数组的键（能遍历到键了，自然也能取到值了），但更常用下一条的方式来代替。
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>利用`for 变量 in 对象`可以遍历对象的键（能遍历到键了，自然也能取到值了）。
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>利用`for...of...`遍历对象,举例如下:
+**数组**属于对象的一种,可以使用`[值1,值2,值3,...,值n]`来定义一个数组
+
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>利用`for...of...`遍历对象（实际是遍历数组），但不常用，因为常用`forEach`来遍历,举例如下:
 
 ```javascript
 //遍历对象
@@ -319,14 +321,12 @@ let obj = {name:"Rivalsa",age:18,sex:"M"};
 for(let key of Object.keys(obj)){ //keys对应换成values或entries
     console.log(key);
 }
-//遍历数组（不常用，因为常用forEach来遍历）
+//遍历数组
 let arr = [1,2,3,4];
 for(let value of arr){
     console.log(value);
 }
 ```
-
-**数组**属于对象的一种,可以使用`[值1,值2,值3,...,值n]`来定义一个数组
 
 **函数**属于对象的一种
 
@@ -354,6 +354,7 @@ function fn(a,b,c) {};
 console.log(fn.length, fn.name); // 3 "fn"
 ```
 
+- 函数中存在一个`this`，会指向调用函数的对象（注意，<span style="color:red;font-weight:600;">是</span>谁调用函数就指向谁，<span style="color:red;font-weight:600;">而不是</span>函数定义在哪指向谁）
 - 箭头函数
 
 > 用`=>`的方式来定义函数，例如：
@@ -1506,6 +1507,25 @@ JavaScript内置的数学对象.
 
 ## 14.面向对象
 
+### 14.1 构造函数
+
+构造函数的本质就是一个普通的函数，和普通函数没有任何区别。但构造函数通常不是直接调用，而是通过`new`关键词来调用，直接调用与通过`new`调用的区别如下：
+
+- 使用`new`执行函数会自动创建一个对象，函数中的`this`指向这个对象，函数执行结束后会自动返回这个对象。
+
+构造函数的函数名通常使用大驼峰命名。
+
+对于基础数据类型，本身是没有属性的，但字符串、数字等具有一个自带的构造函数（如String，Number），当通过`.`或`[]`来读取或运行属性时，系统会自动通过自带的构造函数创建一个对象，再执行或读取对象的属性。我们把这个自带的构造函数称为**包装类**。举例如下：
+
+```javascript
+let str = '我是字符串';
+console.log(str.length);
+// 第二行代码相当于如下代码
+console.log(new String(str).length);
+```
+
+### 14.2 原型与原型链
+
 在创建构造函数后，可以用`.prototype`属性来向\_\_proto\_\_中写入原型，这个对象可以供所有实例化后的对象直接使用，例如：
 
 ```javascript
@@ -1522,7 +1542,7 @@ console.log(obj);
 
 每一个原型上都默认有一个construotor指向对应的的函数
 
-**构造函数私有属性及其原型的继承**
+**构造函数及其原型的继承**
 
 举例如下：
 
@@ -1550,7 +1570,7 @@ Teacher.prototype.showId=function(){ // 新增的原型
 }
 ```
 
-**<span style="color:yellowgreen;font-weight:600;">[ES6]</span>类及其继承**
+### 14.3 <span style="color:yellowgreen;font-weight:600;">[ES6]</span>类及其继承
 
 在ES5中没有类的概念，用构造函数代替，在ES6中可以用class定义一个类，定义的类只能用new执行，不能自执行，继承可以直接使用extends，举例如下：
 
