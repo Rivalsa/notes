@@ -1,0 +1,15 @@
+{
+	"class": {
+		"scope": "javascript",
+		"prefix": "class",
+		"body": [
+			"class $1 {",
+			"    constructor() {",
+			"        $2",
+			"    }",
+			"    $3",
+			"}"
+		],
+		"description": "class"
+	}
+}
