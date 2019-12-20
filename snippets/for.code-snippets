@@ -1,0 +1,12 @@
+{
+	"for": {
+		"scope": "javascript",
+		"prefix": "for",
+		"body": [
+			"for(let $1 = 0; $1 < $2; i++) {",
+			"    $3",
+			"}"
+		],
+		"description": "for"
+	}
+}
