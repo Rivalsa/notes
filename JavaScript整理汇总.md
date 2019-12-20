@@ -4,9 +4,13 @@
 
 #  前端JavaScript整理汇总
 
-**关于本文中的==语句==,==表达式==与==值==三个名词的说明**
+**本文说明**
 
 ---
+
+本文中，标有<span style="color:yellowgreen;font-weight:600;">[ES6]</span>标记的，表示属于ECMA Script 6新增的内容
+
+**关于本文中的==语句==,==表达式==与==值==三个名词的说明**
 
 在本文中说的语句,表达式和值,通常来说:
 
@@ -219,6 +223,56 @@ throw 'xxx';
 - 双引号(") - 例如:`"hello world"`
 - <span style="color:yellowgreen;font-weight:600;">[ES6]</span>\`符号 - 例如:\`hello word\` - 使用此符号时,内部可以换行,而且可以使用`${表达式}`来直接得到对应的值,避免多次拼接
 
+字符串可以加下标（用中括号表示）,表示取其中字符,只读，低版本IE不支持，例如
+
+`.charAt(x)`只读,用法同字符串的下标，任何浏览器都支持。
+
+`.length`只读,获取字符长的长度
+
+`.charCodeAt(x)`第x为的Unicode编码
+
+`.subString(x,y)`截取字符串,从第x个字符(含)开始截取到y个字符(不含)
+
+`.slice`与上一条相似,但更好用,可以传入负数.
+
+`String.fromCharCode(x)`返回对应Unicode码的字符
+
+`.toLowerCase()`字符串转换为小写,无参数
+
+`.toUpperCase()`字符串转换为大写,无参数
+
+`.toLocaleLowerCase()`按照本地方式将字符串转换为小写,无参数
+
+`.toLocaleUpperCase()`按照本地方式将字符串转换为大写,无参数
+
+> 只有少数几种语言（如土耳其语）具有地方特有的大小写映射，所有该方法的返回值通常与不带`Local`的函数一样。
+
+`.split()`以参数中的字符切割字符串,返回一个数组,如果传参为**空字符串**,则逐字符切割,也可以传入正则表达式(但不常传正则)
+
+`.indexOf(x,y)`返回从第y位开始,x在字符串中第一次出现的位置,x应为字符串,若未出现该字符串,则返回-1
+
+`.replace(旧内容,新内容)`用新内容替换旧内容,返回替换后的字符串,不改变原字符串.
+
+- 旧内容可以是一段字符串,也可以是一个正则表达式
+- 新内容可以是一段字符串,也可以是一个函数,如果是函数则用函数的返回值替换就内容,传给函数的第一个实参为替换前的旧内容(形参通常用$0接收).
+
+```javascript
+let str = '这是一段test用的字符串-123-456-789';
+console.log(str[1]); // '是'
+console.log(str.charAt(1)); // '是'
+console.log(str.length); // 25
+console.log(str.charCodeAt(0)); // 36825
+console.log(str.slice(14,17)); // '123'
+console.log(str.toLocaleUpperCase()); // '这是一段TEST用的字符串-123-456-789'
+console.log(str.split('-')); // ['这是一段test用的字符串','123','456','789']
+console.log(str.indexOf('-'); // 13
+console.log(String.fromCharCode(36825)); // '这'
+```
+
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`padStart(数字,字符串)`字符串的方法,如果不够对应位数,则在开头添加参数中指定的字符串,补满位数
+
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`padEnd(数字,字符串)`字符串的方法,如果不够对应位数,则在结尾添加参数中指定的字符串,补满位数
+
 **number类型**
 
 JavaScript中的数字有最大值和最小值的限制,对于正数最大值可以利用`Number.MAX_VALUE`取得,若数字大于此值,则会转换为`Infinity`最小值可以利用`Number.MIN_VALUE`取得,若数字小于此值,则为`0`;对于负数则为`-Infinity`和`0`
@@ -309,7 +363,9 @@ console.log(obj.age); // 16
 
 <span style="color:yellowgreen;font-weight:600;">[ES6]</span>对象的`keys()`,`values()`与`entries()`方法:这三个方法需要通过`Object.keys(数组)`的方式来调用,分别表示获取对象的键,值以及键值对
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>利用`for 变量 in 对象`可以遍历对象的键（能遍历到键了，自然也能取到值了）。
+利用`for 变量 in 对象`可以遍历对象的键（能遍历到键了，自然也能取到值了）。
+
+---
 
 **数组**属于对象的一种,可以使用`[值1,值2,值3,...,值n]`来定义一个数组
 
@@ -327,6 +383,69 @@ for(let value of arr){
     console.log(value);
 }
 ```
+
+`.length`返回数组的长度(存储的数据的个数)
+
+`.push(x)`向数组中添加新数据x(新增到最后一条),返回新增数据后数组的长度.(改变原数组)
+
+`.unshift(x)`向数组中添加新数据(新增到第一条),返回新增数据后数组的长度.(改变原数组)
+
+`.pop()`无参数,把原数组的最后一位删掉,改变原数组,返回被删除的数据
+
+`.shift()`无参数,把原数组的第一位删掉,改变原数组,返回被删除的数据
+
+`.splice(a,b[,data[,data[,data[,...]]]])`从数组的第a位开始删除b个数据,再增加数据data,返回一个数组,里面是被删除的数据(若未删除则返回空数组)
+
+- a可以传入负数,表示从末尾的某处开始删除
+
+`.indexOf(x)`找数组中的某个数据,返回数据下标,若未找到则返回-1
+
+`.slice(x,y)`截取数组,从第x个数据(含)开始到第y个数据(不含)结束,返回切割得到的新数组
+
+`.sort()`将数组中的数据从小到大排列,改变原数组,返回排序后的数组
+
+*可以传一个函数参数,此处不详细写明,但有一种常用用法,举例如下*
+
+```javascript
+var arr=[2,5,1,6,4];
+//倒叙排列
+arr.sort(function(a,b){return b-a;});
+console.log(arr)
+```
+
+`.reverse()`颠倒顺序,改变原数组
+
+`.concat(x)`将数组x拼接在数组后面,不改变原有数组,返回新数组
+
+`.join(x)`用x将数组的元素连接在一起,返回拼接好的字符串
+
+`Array.isArray(x)`判断x是否是数组,如果是返回true,否则返回false
+
+`.forEach(x)`数组的遍历,x是一个function,函数执行时会传入三个参数(需要选中设置形参接收),分别是item,index,arr
+
+- item为当前的数据
+- index为当前的序号
+- arr为数组本身(很少使用)
+
+*forEach不兼容IE8及其以下*
+
+*类数组`HTMLCollection`不支持使用`forEach`*
+
+*类数组`NodeList`支持使用`forEach`*
+
+`.map(x)`数组的映射(遍历数组并产生新数组,新数组的元素是x中的返回值),返回值为新数组,不改变原数组.x是一个function,函数执行时会传入三个参数(需要选中设置形参接收),分别是item,index,arr
+
+- item为当前的数据
+- index为当前的序号
+- arr为数组本身(很少使用)
+
+`.filter(x)`数组的筛选(遍历数组,并产生新数组,新数组的元素是x返回为true时对应原数组的元素),返回值为新数组,不改变原数组.x是一个function,函数自行是会传入三个参数(需要选中设置形参接收),分别是item,index,arr
+
+- item为当前的数据
+- index为当前的序号
+- arr为数组本身(很少使用)
+
+---
 
 **函数**属于对象的一种
 
@@ -977,124 +1096,9 @@ function fn(a,b){
 fn.bind(document,1)(2);
 ```
 
-## 8.字符串常用API
+## 8.作用域与解析顺序
 
-字符串可以加下标（用中括号表示）,表示取其中字符,只读，低版本IE不支持，例如
-
-`.charAt(x)`只读,用法同字符串的下标，任何浏览器都支持。
-
-`.length`只读,获取字符长的长度
-
-`.charCodeAt(x)`第x为的Unicode编码
-
-`.subString(x,y)`截取字符串,从第x个字符(含)开始截取到y个字符(不含)
-
-`.slice`与上一条相似,但更好用,可以传入负数.
-
-`String.fromCharCode(x)`返回对应Unicode码的字符
-
-`.toLowerCase()`字符串转换为小写,无参数
-
-`.toUpperCase()`字符串转换为大写,无参数
-
-`.toLocaleLowerCase()`按照本地方式将字符串转换为小写,无参数
-
-`.toLocaleUpperCase()`按照本地方式将字符串转换为大写,无参数
-
-> 只有少数几种语言（如土耳其语）具有地方特有的大小写映射，所有该方法的返回值通常与不带`Local`的函数一样。
-
-`.split()`以参数中的字符切割字符串,返回一个数组,如果传参为**空字符串**,则逐字符切割,也可以传入正则表达式(但不常传正则)
-
-`.indexOf(x,y)`返回从第y位开始,x在字符串中第一次出现的位置,x应为字符串,若未出现该字符串,则返回-1
-
-`.replace(旧内容,新内容)`用新内容替换旧内容,返回替换后的字符串,不改变原字符串.
-
-- 旧内容可以是一段字符串,也可以是一个正则表达式
-- 新内容可以是一段字符串,也可以是一个函数,如果是函数则用函数的返回值替换就内容,传给函数的第一个实参为替换前的旧内容(形参通常用$0接收).
-
-```javascript
-let str = '这是一段test用的字符串-123-456-789';
-console.log(str[1]); // '是'
-console.log(str.charAt(1)); // '是'
-console.log(str.length); // 25
-console.log(str.charCodeAt(0)); // 36825
-console.log(str.slice(14,17)); // '123'
-console.log(str.toLocaleUpperCase()); // '这是一段TEST用的字符串-123-456-789'
-console.log(str.split('-')); // ['这是一段test用的字符串','123','456','789']
-console.log(str.indexOf('-'); // 13
-console.log(String.fromCharCode(36825)); // '这'
-```
-
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`padStart(数字,字符串)`字符串的方法,如果不够对应位数,则在开头添加参数中指定的字符串,补满位数
-
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`padEnd(数字,字符串)`字符串的方法,如果不够对应位数,则在结尾添加参数中指定的字符串,补满位数
-
-## 9.数组常用API
-
-`.length`返回数组的长度(存储的数据的个数)
-
-`.push(x)`向数组中添加新数据x(新增到最后一条),返回新增数据后数组的长度.(改变原数组)
-
-`.unshift(x)`向数组中添加新数据(新增到第一条),返回新增数据后数组的长度.(改变原数组)
-
-`.pop()`无参数,把原数组的最后一位删掉,改变原数组,返回被删除的数据
-
-`.shift()`无参数,把原数组的第一位删掉,改变原数组,返回被删除的数据
-
-`.splice(a,b[,data[,data[,data[,...]]]])`从数组的第a位开始删除b个数据,再增加数据data,返回一个数组,里面是被删除的数据(若未删除则返回空数组)
-
-- a可以传入负数,表示从末尾的某处开始删除
-
-`.indexOf(x)`找数组中的某个数据,返回数据下标,若未找到则返回-1
-
-`.slice(x,y)`截取数组,从第x个数据(含)开始到第y个数据(不含)结束,返回切割得到的新数组
-
-`.sort()`将数组中的数据从小到大排列,改变原数组,返回排序后的数组
-
-*可以传一个函数参数,此处不详细写明,但有一种常用用法,举例如下*
-
-```javascript
-var arr=[2,5,1,6,4];
-//倒叙排列
-arr.sort(function(a,b){return b-a;});
-console.log(arr)
-```
-
-`.reverse()`颠倒顺序,改变原数组
-
-`.concat(x)`将数组x拼接在数组后面,不改变原有数组,返回新数组
-
-`.join(x)`用x将数组的元素连接在一起,返回拼接好的字符串
-
-`Array.isArray(x)`判断x是否是数组,如果是返回true,否则返回false
-
-`.forEach(x)`数组的遍历,x是一个function,函数执行时会传入三个参数(需要选中设置形参接收),分别是item,index,arr
-
-- item为当前的数据
-- index为当前的序号
-- arr为数组本身(很少使用)
-
-*forEach不兼容IE8及其以下*
-
-*类数组`HTMLCollection`不支持使用`forEach`*
-
-*类数组`NodeList`支持使用`forEach`*
-
-`.map(x)`数组的映射(遍历数组并产生新数组,新数组的元素是x中的返回值),返回值为新数组,不改变原数组.x是一个function,函数执行时会传入三个参数(需要选中设置形参接收),分别是item,index,arr
-
-- item为当前的数据
-- index为当前的序号
-- arr为数组本身(很少使用)
-
-`.filter(x)`数组的筛选(遍历数组,并产生新数组,新数组的元素是x返回为true时对应原数组的元素),返回值为新数组,不改变原数组.x是一个function,函数自行是会传入三个参数(需要选中设置形参接收),分别是item,index,arr
-
-- item为当前的数据
-- index为当前的序号
-- arr为数组本身(很少使用)
-
-## 10.作用域与解析顺序
-
-### 10.1 作用域及作用域链
+### 8.1 作用域及作用域链
 
 **作用域**可以通俗的理解为起作用的范围,分为全局作用域与局部作用域,**在es5中,只有函数运行时会创建一个局部作用域,<span style="color:yellowgreen;font-weight:600;">[ES6]</span>在es6中只要执行大括号中代码时就会创建一个局部作用域**
 
@@ -1118,7 +1122,7 @@ console.log(c); // 报错:Uncaught ReferenceError: c is not defined
 
 当AO对象今后无法再用到时,这个作用域内的AO对象会被自动删除,将对应内存释放，称为**垃圾回收机制**
 
-### 10.2 闭包
+### 8.2 闭包
 
 现有A、B和C三个作用域，B是A的子作用域，C是B的子作用域，在C作用域中用到了B作用域中的AO对象，当C作用域中的内容直接在A作用域中被访问时，由于没有执行B作用域内的内容，也就没有在B作用域内创建全新的AO对象，所以C作用域中能用到B作用域内上次的值。将这种情况称为**闭包**，举例如下：
 
@@ -1158,7 +1162,7 @@ fn(); // 2
 
 上述例子中，有三个作用域，全局作用域，outer形成的局部作用域和inner形成的局部作用域，outer的是全局作用域的子作用域，inner的是outer的子作用域，inner的作用域中用到了outer的作用域中的变量a，且inner形成的作用域可以在全局作用域中直接访问（通过执行fn可以在不执行outer的情况下直接执行inner），在直接执行时由于outer中的代码没有执行，所以没在outter作用域内创建全新的变量a，所以inner中就可以直接使用outer中原有的a
 
-### 10.3 变量提升与解析顺序
+### 8.3 变量提升与解析顺序
 
 在es5中,即使把定义变量的语句写在后面,也会先进行变量的定义(但不会赋值),把这个现象称为**变量提升**,例如:
 
@@ -1178,7 +1182,7 @@ alert(a); // 报错:Uncaught ReferenceError: a is not defined
 
 2.执行 - 从上到下执行剩余代码
 
-### 10.3 作用域与解析顺序的举例
+### 8.4 作用域与解析顺序的举例
 
 **例0**
 
@@ -1452,7 +1456,7 @@ c();
 >
 > 弹窗:12
 
-## 11.Math对象
+## 9.Math对象
 
 JavaScript内置的数学对象.
 
@@ -1465,7 +1469,7 @@ JavaScript内置的数学对象.
 - `.max(a,b,c,...)`接收多个数字参数,返回最大值
 - `.pow(a,b)`返回a的b次幂(<span style="color:yellowgreen;font-weight:600;">[ES6]</span>在es6中可以用`a ** b`表示)
 
-## 12.定时器
+## 10.定时器
 
 `setInterval(a,b)`设置重复定时器,参数a为一个函数,当定时器时间到后执行函数,参数b为定时时间,返回定时器的编号
 
@@ -1479,7 +1483,7 @@ JavaScript内置的数学对象.
 
 `cancelAnimationFrame(a)`取消编号为a的`requestAnimationFrame`定时器
 
-## 13.日期对象
+## 11.日期对象
 
 **Date()为构造函数（类）,需要通过new创建一个对象**
 
@@ -1505,9 +1509,9 @@ JavaScript内置的数学对象.
 
 日期对象可以相减,返回值为两个日期相差的毫秒数(相当于时间戳相减)
 
-## 14.面向对象
+## 12.面向对象
 
-### 14.1 构造函数
+### 12.1 构造函数
 
 构造函数的本质就是一个普通的函数，和普通函数没有任何区别。但构造函数通常不是直接调用，而是通过`new`关键词来调用，直接调用与通过`new`调用的区别如下：
 
@@ -1524,7 +1528,7 @@ console.log(str.length);
 console.log(new String(str).length);
 ```
 
-### 14.2 原型与原型链
+### 12.2 原型与原型链
 
 在创建构造函数后，可以用`.prototype`属性来向\_\_proto\_\_中写入原型，这个对象可以供所有实例化后的对象直接使用，例如：
 
@@ -1570,7 +1574,7 @@ Teacher.prototype.showId=function(){ // 新增的原型
 }
 ```
 
-### 14.3 <span style="color:yellowgreen;font-weight:600;">[ES6]</span>类及其继承
+### 12.3 <span style="color:yellowgreen;font-weight:600;">[ES6]</span>类及其继承
 
 在ES5中没有类的概念，用构造函数代替，在ES6中可以用class定义一个类，定义的类只能用new执行，不能自执行，继承可以直接使用extends，举例如下：
 
@@ -1607,7 +1611,7 @@ console.log(r);
 r.showName();
 ```
 
-## 15. <span style="color:yellowgreen;font-weight:600;">[ES6]</span>Set和Map两种数据结构
+## 13. <span style="color:yellowgreen;font-weight:600;">[ES6]</span>Set和Map两种数据结构
 
 ES6中新增Set和Map两种数据结构，需用new创建对象
 
@@ -1637,7 +1641,7 @@ map.set(obj,"qwe");
 console.log(map.get(obj),map.get(true));
 ```
 
-## 16. <span style="color:yellowgreen;font-weight:600;">[ES6]</span>回调地狱及Promise
+## 14. <span style="color:yellowgreen;font-weight:600;">[ES6]</span>回调地狱及Promise
 
 如果代码中有多处异步代码(异步中还有异步),例如:
 
@@ -1725,7 +1729,7 @@ new Promise((resolve,reject) => {
 });
 ```
 
-## 17.DOM操作
+## 15.DOM操作
 
 > DOM（文档对象模型 document object model）是针对HTML文档的一个API.
 > DOM 描绘了一个层次化的节点树，允许开发人员添加、移除和修改页面元素(元素的文字也是DOM的一个节点)
@@ -1738,7 +1742,7 @@ DOM节点共有12种
 - 注释节点(nodetype为8,nodeValue为注释的内容)
 - (其他8种)
 
-### 17.1 获取DOM对象
+### 15.1 获取DOM对象
 
 **通过ID获取**
 
@@ -1781,7 +1785,7 @@ document.querySelectorAll('选择器') // 返回类数组NodeList
 
 获取head:`document.head`
 
-### 17.2 操作DOM的属性及内容
+### 15.2 操作DOM的属性及内容
 
 **操作标签原有属性**
 
@@ -1976,7 +1980,7 @@ innerHTML 与 innerText 的区别：
 - innerHTML会解析其中的html标签
 - innerText不会解析hmtl标签，原样替换所设置的内容
 
-### 17.3 更多DOM操作
+### 15.3 更多DOM操作
 
 `.childNodes`获取元素的所有子节点(现代浏览器是获取所有子节点,低版本IE浏览器是获取所有子元素节点)
 
@@ -2009,9 +2013,9 @@ innerHTML 与 innerText 的区别：
 | nextElementSibling | nextSibling |下一个兄弟元素节点(在现代浏览器中nextSibling表示下一个兄弟节点)|
 | previousElementSibling | previousSibling |上一个兄弟元素节点(在现代浏览器中previousSibling表示上一个兄弟节点)|
 
-## 18. DOM事件
+## 16. DOM事件
 
-### 18.1 0级事件
+### 16.1 0级事件
 
 *采用赋值的方式,新事件替代旧事件*
 
@@ -2093,7 +2097,7 @@ innerHTML 与 innerText 的区别：
 
 **事件对象相关内容,请参阅《事件对象》章节**
 
-### 18.2 2级事件
+### 16.2 2级事件
 
 *新事件与旧事件共存,与0级事件不冲突*
 
@@ -2107,7 +2111,7 @@ innerHTML 与 innerText 的区别：
 - a为对应事件,如click(不写on)
 - b为事件函数(b必须与添加时的b具有相同指针)
 
-### 18.3 事件捕获
+### 16.3 事件捕获
 
 先执行捕获事件(从父级到子集)再执行普通事件(从子集到父级)
 
@@ -2118,11 +2122,11 @@ innerHTML 与 innerText 的区别：
 
 *移除捕获事件时`removeEventListener`也需要添加第三个参数为true*
 
-### 18.4 事件委托
+### 16.4 事件委托
 
 把事件加给父级,利用`target`来判断是哪个子级触发的
 
-## 19.BOM相关
+## 17.BOM相关
 
 **BOM事件**
 
@@ -2150,7 +2154,7 @@ innerHTML 与 innerText 的区别：
 
 `screen`屏幕相关信息对象
 
-## 20.元素各种尺寸和距离
+## 18.元素各种尺寸和距离
 
 `window.innerHeight`浏览器窗口高度(带窗口边框)
 
@@ -2182,7 +2186,7 @@ innerHTML 与 innerText 的区别：
 
 `window.scrollTo(top:x)`将滚动高度设置为x
 
-## 21.事件对象
+## 19.事件对象
 
 在现代浏览器中：当事件被触发时，会默认传一个实参，为事件对象,可以在事件函数中设置形参(通常用e或ev)接收
 
@@ -2213,11 +2217,11 @@ innerHTML 与 innerText 的区别：
 
 - `target`事件触发源
 
-## 22.正则表达式
+## 20.正则表达式
 
 可以用来高效便捷的处理字符串
 
-### 22.1 定义正则表达式
+### 20.1 定义正则表达式
 
 **双斜杠定义**
 
@@ -2227,9 +2231,9 @@ innerHTML 与 innerText 的区别：
 
 例如`let reg = new RegExp("x");`括号中可以传入一个字符串变量,也可以直接传入字符串(字符串的内容为正则表达式)
 
-### 22.2 正则表达规则
+### 20.2 正则表达规则
 
-#### 22.2.1 转义字符
+#### 20.2.1 转义字符
 
 普通转移字符`\`(将有特殊意义的字符变为普通字符)
 
@@ -2281,7 +2285,7 @@ innerHTML 与 innerText 的区别：
 - 结束位置
 - `\W`能匹配的所有字符
 
-#### 22.2.2 标识
+#### 20.2.2 标识
 
 *写在正则表达式结尾/的后面,可以写多个,不区分先后顺序,在使用RegExp定义时,标识以字符串形式作为第二个参数传入*
 
@@ -2291,7 +2295,7 @@ innerHTML 与 innerText 的区别：
 
 `m`换行匹配
 
-#### 22.2.3 量词
+#### 20.2.3 量词
 
 *写在对应规则后面*
 
@@ -2313,11 +2317,11 @@ innerHTML 与 innerText 的区别：
 
 惰性(在量词后面加`?`表示惰性量词):尽量按少的去匹配
 
-#### 22.2.4 子项
+#### 20.2.4 子项
 
 使用小括号可以将里面的内容作为一个子项
 
-#### 22.2.5 字符集
+#### 20.2.5 字符集
 
 用中括号表示
 
@@ -2341,7 +2345,7 @@ innerHTML 与 innerText 的区别：
 
 - 字符集中小括号/大括号/正斜杠/问号/星号/加号等无特殊含义
 
-#### 22.2.6 其他有特殊意义的字符
+#### 20.2.6 其他有特殊意义的字符
 
 - `^`表示起始位置
 - `$`表示结束位置
@@ -2350,13 +2354,13 @@ innerHTML 与 innerText 的区别：
   - `\r`
 - `|`表示或者(前后是两个独立的正则)
 
-#### 22.2.7 捕获组
+#### 20.2.7 捕获组
 
 `\数字x`表示第x个子项,再次匹配第x个子项
 
 *并不是第x个子项的匹配规则,而是第x个子项的内容*
 
-#### 22.2.8 断言
+#### 20.2.8 断言
 
 `(?=xx)`(不算做子项)某字符后面要含有xx字符,但匹配到的东西不包含xx
 
@@ -2366,7 +2370,7 @@ innerHTML 与 innerText 的区别：
 
 `(?<!xx)`(不算做子项)某字符前面要不含有xx字符,但匹配到的东西不包含xx
 
-### 22.3 使用正则表达式的方法
+### 20.3 使用正则表达式的方法
 
 **正则表达式的方法**
 
@@ -2378,17 +2382,17 @@ innerHTML 与 innerText 的区别：
 
 `.match(正则表达式)`返回字符串中匹配成功的字符串组成的数组(数组有匹配的内容与子项组成,在规则中使用全局`g`则组成的数组中不包含子项)
 
-### 22.4 RegExp对象
+### 20.4 RegExp对象
 
 RegExp中存储了上一次的子项,可以通过这个对象直接拿到数据.(可以先test然后通过RegExp得到子项)
 
-## 23.ajax
+## 21.ajax
 
 > ajax即“Asynchronous Javascript And XML”（异步 JavaScript 和 XML），是指一种创建交互式网页应用的网页开发技术。 
 
 ajax可以在不刷新页面的前提下向后端 发送/请求 数据，在开发中是必然会用的技术。
 
-### 23.1 JavaScript原生ajax
+### 21.1 JavaScript原生ajax
 
 ```javascript
 let xhr;
@@ -2435,7 +2439,7 @@ function onReadyStateChange() {
 }
 ```
 
-### 23.2 jQuery的ajax
+### 21.2 jQuery的ajax
 
 ```javascript
 // 列出部分参数
@@ -2449,7 +2453,7 @@ $.ajax({
 });
 ```
 
-### 23.3 axios
+### 21.3 axios
 
 **发送单个请求**
 
@@ -2481,11 +2485,11 @@ axios.all([ reqA(),reqB() ]).then(res => {
 });
 ```
 
-### 23.4 跨域问题
+### 21.4 跨域问题
 
 发送ajax请求时需要确保当前页面与请求页面同源(必须协议\\主机\\端口号全都相同),否则需要后端发送相应的HTTP Header才能正常访问.
 
-### 23.5 jsonp
+### 21.5 jsonp
 
 由于HTML页面中调用JavaScript是没有同源限制的,所以可以利用此方法发送数据,举例如下:
 
