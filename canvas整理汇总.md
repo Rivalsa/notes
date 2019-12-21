@@ -79,7 +79,10 @@ canCon.stroke(); // 绘制图案
 
 `stroke()`通过线条来绘制图形轮廓
 
-`fill()`通过填充路径的内容区域生成实心的图形(会自动闭合图形)
+`fill(x)`通过填充路径的内容区域生成实心的图形(会自动闭合图形),x可选如下值
+
+- `nonzero` - 全部填充,默认值
+- `evenodd` - 填充基数区域,偶数区域不填充(从内向外)
 
 `moveTo(x,y)`将笔触移动到指定的x,y坐标上
 
@@ -115,9 +118,9 @@ canCon.stroke(); // 绘制图形
 
 ### 透明度
 
-`globalAlpha`全局透明度,从此代码向后的按照此透明度绘制,对之前的代码无影响.例如`canCon.globalAloha = 0.4;`,但更常使用的是rgba颜色来设置透明度
+`globalAlpha`透明度,从此代码向后的按照此透明度绘制,对之前的代码无影响.例如`canCon.globalAloha = 0.4;`,但更常使用的是rgba颜色来设置透明度
 
-### 线型管理
+### 线型
 
 `lineWidth = value`设置线条宽度(单位为px,但设置时不写单位),**推荐使用偶数宽度**
 
@@ -142,3 +145,106 @@ canCon.stroke(); // 绘制图形
 `setLineDash(segments)`设置当前虚线样式,segments为一个数组,第一个元素为线段的长度,第二个为空隙的长度
 
 `lineDashOffset = value`设置虚线样式的起始偏移量
+
+### 线性渐变
+
+`createLinearGradient(x1,y1,x2,y2)`创建一个线性渐变颜色,x1,y1为渐变方向线起点坐标,x2,y2为渐变方向线终点坐标
+
+创建的线性渐变颜色可以使用`addColorStop(x,y)`方法来规定渐变颜色,x为位置(0-1之间的一个值),y为颜色
+
+线性渐变颜色举例如下:
+
+```javascript
+let lin = canCon.createLinearGradient(0,0,0,150);
+lin.addColorStop(0, `red`);
+lin.addColorStop(1, `blue`);
+canCon.fillStyle = lin;
+canCon.fillRect(10,10,260,160);
+```
+
+### 图片
+
+`crearePattern(image,type)`image为图片对象(需要通过`new Image`创建),type有如下几个值:
+
+- repeat
+- repeat-x
+- repeat-y
+- no-repeat
+
+举例如下:
+
+```javascript
+let img = new Image();
+img.src = `test.png`;
+img.addEventListener(`load`,() => {
+    let ptrn = canCon.createPattern(img,`repeat`);
+    canCon.fillStyle = ptrn;
+    canCon.fillRect(100,100,200,200);
+});
+```
+
+### 阴影
+
+从此代码向后的按照此阴影绘制
+
+`shadowOffsetX = value`与`shadowOffsetY = value`阴影在X或Y轴上的延伸距离(正数为正方向,负数为负方向,默认为0)
+
+`shadowBlur = value`阴影的模糊程度,默认为0
+
+`shadowColor = color`阴影颜色效果,默认全透明黑色
+
+## Path2D对象
+
+Path2D相当于把部分绘图记录下来,方便后续直接调用
+
+`new Path2D()`创建一个空的Path2D对象
+
+`new Path2D(path)`复制一个Path2D对象
+
+举例如下:
+
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <style>
+        canvas {
+            display: block;
+            background-color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <canvas height="500" width="500"></canvas>
+    <button>红色</button>
+    <button>蓝色</button>
+    <button>绿色</button>
+    <script>
+        'use strict'
+        let canCon = document.getElementsByTagName(`canvas`)[0].getContext(`2d`);
+        let path = new Path2D();
+        let aButton = document.getElementsByTagName(`button`);
+        path.arc(250, 250, 100, 0, 2 * Math.PI);
+        [...aButton].forEach((v, i) => {
+            console.dir(v);
+            v.addEventListener(`click`, () => {
+                switch (i) {
+                    case 0:
+                        canCon.fillStyle = `red`;
+                        break;
+                    case 1:
+                        canCon.fillStyle = `blue`;
+                        break;
+                    case 2:
+                        canCon.fillStyle = `green`;
+                }
+                canCon.clearRect(0, 0, 500, 500);
+                canCon.fill(path);
+            });
+        });
+    </script>
+</body>
+</html>
+```
+
