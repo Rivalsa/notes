@@ -79,7 +79,7 @@ canCon.stroke(); // 绘制图案
 
 `stroke()`通过线条来绘制图形轮廓
 
-`fill(x)`通过填充路径的内容区域生成实心的图形(会自动闭合图形),x可选如下值
+`fill()`或`fill(fillRule)`或`fill(path, fillRule)`通过填充路径的内容区域生成实心的图形(会自动闭合图形),path为创建的Path2D对象，fillRule可选如下值
 
 - `nonzero` - 全部填充,默认值
 - `evenodd` - 填充基数区域,偶数区域不填充(从内向外)
