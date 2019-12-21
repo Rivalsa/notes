@@ -115,8 +115,30 @@ canCon.stroke(); // 绘制图形
 
 ### 透明度
 
-`globalAlpha`全局透明度,从此代码向后的按照此透明度绘制,对之前的代码无影响.例如`canCon.globalAloha = 0.4;`,但更常使用的是rgba颜色
+`globalAlpha`全局透明度,从此代码向后的按照此透明度绘制,对之前的代码无影响.例如`canCon.globalAloha = 0.4;`,但更常使用的是rgba颜色来设置透明度
 
 ### 线型管理
 
-`lineWidth = value`设置线条宽度
+`lineWidth = value`设置线条宽度(单位为px,但设置时不写单位),**推荐使用偶数宽度**
+
+`lineCap = type`设置线条末端样式,有如下值可选:
+
+- butt - 不超出设置长度(默认)
+- round - 超出部分用半圆形
+- square - 超出部分用矩形
+
+*后两个值会造成不精确*
+
+`lineJoin = type`设定线条与线条接合处样式,有如下值可选:
+
+- round - 接合处为圆角
+- bevel - 接合处垂直于法线效果
+- miter -  接合处为尖锐的效果(默认)
+
+`miterLimit = value`限制当两条线相交时交界处最大长度(交界处长度值线条交界处内角顶掉到外角定点的长度
+
+`getLineDash()`返回一个包含当前虚线样式,查给你读为非负偶数的数组
+
+`setLineDash(segments)`设置当前虚线样式,segments为一个数组,第一个元素为线段的长度,第二个为空隙的长度
+
+`lineDashOffset = value`设置虚线样式的起始偏移量
