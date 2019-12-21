@@ -473,7 +473,7 @@ function fn(a,b,c) {};
 console.log(fn.length, fn.name); // 3 "fn"
 ```
 
-- 函数中存在一个`this`，会指向调用函数的对象（注意，<span style="color:red;font-weight:600;">是</span>谁调用函数就指向谁，<span style="color:red;font-weight:600;">而不是</span>函数定义在哪指向谁）
+- 函数中存在一个`this`，会指向<span style="color:red;font-weight:600;">调用函数的对象</span>,函数直接加括号执行属于window调用的,但在严格模式下,函数加括号直接执行this指向undefined
 - 箭头函数
 
 > 用`=>`的方式来定义函数，例如：
@@ -768,7 +768,7 @@ fn(1,2,3,4,5,6); // [3,4,5,6]
 
 ### 5.9 运算符的优先级
 
-<span style="color:red;">待添加内容</span>
+请参考[这份资料](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Operator_Precedence)
 
 ## 6 判断与循环
 
@@ -1063,37 +1063,37 @@ aaa:for(var i = 0; i < 5; i++) {
 
 ## 7.改变this指向
 
-`call`执行函数时函数加`.call`后传入的第一个实参为函数中的this指向(原参数对应写在后面).
+`call`函数加`.call()`后,会立即执行函数,传入的第一个实参为函数中的this指向(原参数对应写在后面)
 例如:
 
 ```javascript
-function fn(a,b){
+function fn(a, b){
     console.log(this);
-    console.log(a+b);
+    console.log(a + b);
 }
-fn.call(document,5,6);
+fn.call(document, 5, 6);
 ```
 
-`apply`执行函数时函数加`.apply`后传入的第一个实参为函数中的this指向(原参数作为数组在第二个参数传入).
+`apply`函数加`.apply`后,会立即执行函数,传入的第一个实参为函数中的this指向(原参数作为数组在第二个参数传入)(无须改变this指向时可以在第一个参数传null)
 
 例如:
 
 ```javascript
-function fn(a,b){
+function fn(a, b){
     console.log(this);
-    console.log(a+b);
+    console.log(a + b);
 }
-fn.apply(document,[a,b]);
+fn.apply(document, [a, b]);
 ```
 
-`bind`*[不兼容IE8及其以下]*函数加`.bind`后其返回值为新函数,但新函数的内容与原函数相同,新函数的this指向为参数中规定的指向(如果传入函数的参数,则可以固定参数,期返回的函数无须再传此参数也无法修改,传参的方法与`call`相同)(无须改变this指向可以写null).
+`bind`*[不兼容IE8及其以下]*函数加`.bind`后,不执行这个函数,其返回值为新函数,但新函数的内容与原函数相同,新函数的this指向为参数中规定的指向(如果传入函数的参数,则可以固定参数,期返回的函数无须再传此参数也无法修改,传参的方法与`call`相同)(无须改变this指向时可以在第一个参数传null)
 
 ```javascript
-function fn(a,b){
+function fn(a, b){
     console.log(this);
-    console.log(a+b);
+    console.log(a + b);
 }
-fn.bind(document,1)(2);
+fn.bind(document, 1)(2);
 ```
 
 ## 8.作用域与解析顺序
@@ -1515,7 +1515,7 @@ JavaScript内置的数学对象.
 
 构造函数的本质就是一个普通的函数，和普通函数没有任何区别。但构造函数通常不是直接调用，而是通过`new`关键词来调用，直接调用与通过`new`调用的区别如下：
 
-- 使用`new`执行函数会自动创建一个对象，函数中的`this`指向这个对象，函数执行结束后会自动返回这个对象。
+- 使用`new`执行函数会自动创建一个对象，函数中的`this`指向这个对象，函数执行结束后自动返回这个对象。
 
 构造函数的函数名通常使用大驼峰命名。
 
