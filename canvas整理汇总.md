@@ -69,6 +69,18 @@ canCon.arc(250,250,80,0,Math.PI / 2,true); // 定义圆弧
 canCon.stroke(); // 绘制图案
 ```
 
+### 绘制文字
+
+`fillText(text,x,y,maxWidth)`在坐标为x,y的位置绘制对应文字,最后一个参数为绘制的最大宽度,最后一个参数可以省略
+
+`strokeText(text,x,y,maxWidth)`在坐标为x,y的位置绘制文字边框(空心文字),最后一个参数为绘制的最大宽度,最后一个参数可以省略
+
+**绘制文字中的x,y坐标为第一个字符的基线的最左侧的坐标**
+
+### 绘制图片
+
+`drawImage(image,x,y,width,height)`image为图片对象,可以是HTMLImageElement(通过new Image()创建的对象),也可以是另一个canvas元素.x,y为图片左上角的坐标,width与height为图片的宽高(与实际参数不符会被拉伸),可省略最后两个参数
+
 ### 路径
 
 > 路径是通过不同颜色和宽度的线段或曲线相连形成的不同形状的点的集合
@@ -162,9 +174,9 @@ canCon.fillStyle = lin;
 canCon.fillRect(10,10,260,160);
 ```
 
-### 图片
+### 图片背景
 
-`crearePattern(image,type)`image为图片对象(需要通过`new Image`创建),type有如下几个值:
+`crearePattern(image,type)`image为图片对象(与`newImage`中的`image`参数相同),type有如下几个值:
 
 - repeat
 - repeat-x
@@ -192,6 +204,22 @@ img.addEventListener(`load`,() => {
 `shadowBlur = value`阴影的模糊程度,默认为0
 
 `shadowColor = color`阴影颜色效果,默认全透明黑色
+
+### 文字相关
+
+`font = value`绘制文本的字体,与CSS font语法相同,默认为10px san-serif,从此代码向后的照此绘制
+
+`textAlign = value`设置文字的对齐方式,但不常用
+
+`textBaseline = value`设置基线对齐选项,但不常用
+
+`direction = value`设置文本方向,有如下值可用:
+
+- ltr
+- rtl
+- inherit(默认值)
+
+`measureText(x)`返回x会占用多少宽度
 
 ## Path2D对象
 
