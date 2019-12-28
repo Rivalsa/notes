@@ -4,8 +4,6 @@
 
 #  前端JavaScript整理汇总
 
----
-
 **本文说明**
 
 本文中，标有<span style="color:yellowgreen;font-weight:600;">[ES6]</span>标记的，表示属于ECMA Script 6新增的内容
@@ -985,9 +983,7 @@ aaa:for(var i = 0; i < 5; i++) {
 
 执行上述代码时，会发现点击任意一个按钮，都会弹框5，而不是点那个按钮就弹对应的序号，这种现象的原因是给按钮添加的点击事件属于异步代码，在添加点击事件时，其中的代码不会执行，等到点击按钮执行代码时，循环变量i早已循环到5了，所以点击每个按钮都会弹窗5。
 
-解决此问题有3种方案：利用自定义属性、利用闭包和用`forEach`遍历替换`for`循环。
-
-<span style="color:#08a;font-weight:600;">此处待添加地址</span>
+解决此问题有两种方案：利用自定义属性和利用闭包，请参考[《循环添加异步事件中的循环变量》](https://www.rivalsa.cn/s/article/Frontend/variable_in_loop?utm=SlPmlbTnkIbmsYfmgLs=)
 
 ## 7.改变this指向
 
