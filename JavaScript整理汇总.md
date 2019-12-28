@@ -956,7 +956,7 @@ aaa:for(var i = 0; i < 5; i++) {
 
 ### 6.8 循环添加异步事件中的循环变量
 
-例如如下代码:
+例如如下代码
 
 ```html
 <!DOCTYPE html>
@@ -983,93 +983,11 @@ aaa:for(var i = 0; i < 5; i++) {
 </html>
 ```
 
-执行上述代码时,会发现点击任意一个按钮,都会弹框5,而不是点那个按钮就弹对应的序号,这种现象的原因是:给按钮添加的点击事件属于异步代码,在添加点击事件时,其中的代码不会执行,等到点击按钮执行代码时,循环变量i早已循环完成值到5了.所以点击每个按钮都会弹窗5.
+执行上述代码时，会发现点击任意一个按钮，都会弹框5，而不是点那个按钮就弹对应的序号，这种现象的原因是给按钮添加的点击事件属于异步代码，在添加点击事件时，其中的代码不会执行，等到点击按钮执行代码时，循环变量i早已循环到5了，所以点击每个按钮都会弹窗5。
 
-要想解决这个问题,有3个方案(其中第3个方案用到了ES6语法):
+解决此问题有3种方案：利用自定义属性、利用闭包和用`forEach`遍历替换`for`循环。
 
-**解决方案1:利用一个自定义属性存住循环变量**
-
-```html
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <title>循环添加异步事件中的循环变量</title>
-</head>
-<body>
-    <button>按钮0</button>
-    <button>按钮1</button>
-    <button>按钮2</button>
-    <button>按钮3</button>
-    <button>按钮4</button>
-    <script>
-    	var aBtn = document.getElementsByTagName('button');
-        for(var i = 0; i < aBtn.length; i++) {
-            aBtn[i].index = i;
-            aBtn[i].onclick = function() {
-                alert(this.index);
-            };
-        }
-    </script>
-</body>
-</html>
-```
-
-**解决方案2:利用一个立即执行函数形成闭包**
-
-```html
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <title>循环添加异步事件中的循环变量</title>
-</head>
-<body>
-    <button>按钮0</button>
-    <button>按钮1</button>
-    <button>按钮2</button>
-    <button>按钮3</button>
-    <button>按钮4</button>
-    <script>
-    	var aBtn = document.getElementsByTagName('button');
-        for(var i = 0; i < aBtn.length; i++) {
-            (function(i){
-                aBtn[i].onclick = function() {
-                	alert(i);
-            	};
-            })(i);
-        }
-    </script>
-</body>
-</html>
-```
-
-**解决方案3:利用ES6中的let定义变量形成闭包**
-
-```html
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-    <meta charset="UTF-8">
-    <title>循环添加异步事件中的循环变量</title>
-</head>
-<body>
-    <button>按钮0</button>
-    <button>按钮1</button>
-    <button>按钮2</button>
-    <button>按钮3</button>
-    <button>按钮4</button>
-    <script>
-    	var aBtn = document.getElementsByTagName('button');
-        for(let i = 0; i < aBtn.length; i++) {
-            aBtn[i].onclick = function() {
-                alert(i);
-            };
-        }
-    </script>
-</body>
-</html>
-```
+<span style="color:#08a;font-weight:600;">此处待添加地址</span>
 
 ## 7.改变this指向
 

@@ -1,6 +1,6 @@
 **本仓库中JavaScript整理汇总正在持续更新中...**
 
-**本仓库中canvas整理汇总正在持续更新中...**
+**本仓库中canvas整理汇总正在缓慢更新中...**
 
 > GitHub仓库地址:
 >
@@ -20,7 +20,7 @@
 
 - JavaScript整理汇总 - **持续更新中**
 - HTML/CSS生词本
-- canvas整理汇总 - **持续更新中**
+- canvas整理汇总 - **缓慢更新中**
 - git基础操作
 - vscode常用代码片段
 - nginx配置文件(仅部分配置) - <span style="color:red;font-weight:600">近期不更新</span>
