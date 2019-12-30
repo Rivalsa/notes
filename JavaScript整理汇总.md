@@ -402,9 +402,9 @@ for(let value of arr){
 
 - a可以传入负数,表示从末尾的某处开始删除
 
-`.indexOf(x,y)`从下标为y处开始查找数组中的第一个数据x,返回数据下标,若未找到则返回-1，省略y则默认为0
+`.indexOf(x,y)`从下标为y处开始查找数组中的第一个数据x,返回数据下标,若未找到则返回-1，省略y则从第一个元素开始查找
 
-`lastIndexOf(x,y)`从下标为y处开始反向查找数组中的第一个数据x,返回数据下标,若未找到则返回-1，省略y则默认为0
+`lastIndexOf(x,y)`从下标为y处开始反向查找数组中的第一个数据x,返回数据下标,若未找到则返回-1，省略y则从最后一个元素开始查找
 
 `.slice(x,y)`截取数组,从下标为x的数据(含)开始到下标为y的数据(不含)结束,如果省略y则截取到最后,不修改原数组,返回得到的新数组
 
@@ -1666,6 +1666,12 @@ DOM节点共有12种
 - 注释节点(nodetype为8,nodeValue为注释的内容)
 - (其他8种)
 
+`nodeValue`是可读可写的
+
+`nodeName`为节点的名称（以大写字母表示，只读）
+
+`attributes`为节点的属性
+
 ### 15.1 获取DOM对象
 
 **通过ID获取**
@@ -1677,13 +1683,13 @@ document.getElementById('ID'); // 返回对应的DOM元素
 **通过class获取**(不兼容IE8及其以下)
 
 ```javascript
-document.getElementsByClassName('className'); // 返回类数组HTMLCollection
+element.getElementsByClassName('className'); // 返回类数组HTMLCollection, element的后代元素
 ```
 
 **通过标签名获取**
 
 ```javascript
-document.getElementsByTagName('tagName'); // 返回类数组HTMLCollection
+element.getElementsByTagName('tagName'); // 返回类数组HTMLCollection, element的后代元素
 ```
 
 **通过name获取**
@@ -1692,11 +1698,13 @@ document.getElementsByTagName('tagName'); // 返回类数组HTMLCollection
 document.getElementsByName('name'); // 返回类数组NodeList
 ```
 
-**通过选择器获取**(静态方法)
+*在低版本的IE浏览器中，此方法会获取ID为对应字符串的元素*
+
+**通过选择器获取**(静态方法，不兼容IE7及其以下)
 
 ```javascript
-document.querySelector('选择器'); // 返回对应的DOM元素(第一个)
-document.querySelectorAll('选择器') // 返回类数组NodeList
+element.querySelector('选择器'); // 返回对应的DOM元素(第一个), element的后代元素
+element.querySelectorAll('选择器') // 返回类数组NodeList, element的后代元素
 ```
 
 **几个特殊元素的获取方式**
@@ -1912,6 +1920,8 @@ innerHTML 与 innerText 的区别：
 
 `.parentNode`获取元素父节点
 
+`.parentElement`获取元素父元素节点
+
 `.offsetParent`获取元素最近的有定位属性的父节点
 
 `.createElement(x)`创建X元素节点
@@ -1932,10 +1942,12 @@ innerHTML 与 innerText 的区别：
 
 | 现代浏览器        | 低版本IE浏览器 |含义|
 | :---------------: | :------------: | :------------: |
-| firstElementChild | firstChild | 获取第一个子元素节点 |
-| lastElementChild | lastChild |获取最后一个子元素节点|
+| firstElementChild | firstChild | 获取第一个子元素节点（在现代浏览器中firstChild表示第一个节点） |
+| lastElementChild | lastChild |获取最后一个子元素节点（在现代浏览器中lastChild表示最后一个节点）|
 | nextElementSibling | nextSibling |下一个兄弟元素节点(在现代浏览器中nextSibling表示下一个兄弟节点)|
 | previousElementSibling | previousSibling |上一个兄弟元素节点(在现代浏览器中previousSibling表示上一个兄弟节点)|
+
+*这里的“现代浏览器”指除了IE9及以下的浏览器*
 
 ## 16. DOM事件
 
