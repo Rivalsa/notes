@@ -1891,7 +1891,7 @@ console.log(wrapCss.backgroundColor);
 
 获取属性:`getAttribute('属性名');`
 
-新增或修改属性:`getAttribute('属性名','属性值');`
+新增或修改属性:`setAttribute('属性名','属性值');`
 
 移除属性:`removeAttribute('属性名');`
 
@@ -1917,6 +1917,8 @@ innerHTML 与 innerText 的区别：
 - innerHTML会解析其中的html标签
 - innerText不会解析hmtl标签，原样替换所设置的内容
 
+*低版本火狐浏览器不支持`innerText`,用`textContent`代替*
+
 ### 15.3 更多DOM操作
 
 `.childNodes`获取元素的所有子节点(现代浏览器是获取所有子节点,低版本IE浏览器是获取所有子元素节点)
@@ -1927,21 +1929,29 @@ innerHTML 与 innerText 的区别：
 
 `.parentElement`获取元素父元素节点
 
+*通常元素的父节点与元素的父元素节点是相同的，因为通常只有元素节点才会有子节点*
+
 `.offsetParent`获取元素最近的有定位属性的父节点
 
 `.createElement(x)`创建X元素节点
 
 `.createTextNode("xx")`创建内容为xx的文本节点
 
+`.creatComment('xx')`创建内容为xx的注释节点
+
+`.createDocumentfragment()`创建文档片段
+
 `.appendChild(x)`在子节点的末尾添加节点x
 
 `.insertBefore(a,b)`在子节点中节点b之前新增节点a
 
-`.replaceChild(a,b)`在子节点中用a节点代替b节点
+`.replaceChild(a,b)`在子节点中用a节点替换b节点，返回b节点
 
-`.removeChild(x)`在子节点中删除节点x
+`.remove()`删除本节点
 
-`.createDocumentfragment()`创建文档碎片
+`.removeChild(x)`在子节点中删除节点x，返回被删除的节点
+
+`hasChildNodes()`有子节点则返回true，否则返回false
 
 **不常用DOM操作**
 
