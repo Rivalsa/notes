@@ -1873,7 +1873,7 @@ oBox.style.display = "none" ;
 
 获取标签当前样式
 
-`getComputedStyle(x)`window的自带函数,返回对象x的CSS样式,只读属性,例如:
+`getComputedStyle(x，y)`省略y时返回对象x的计算样式表，y取`'after'`或`'before'`时返回x的对应伪元素的计算样式表,只读属性（IE8及其以下不支持，用`element.currentStyle`代替，IE8以上不支持第2个参数）（动态的）例如:
 
 **HTML**
 
@@ -1949,7 +1949,14 @@ innerHTML 与 innerText 的区别：
 
 *通常元素的父节点与元素的父元素节点是相同的，因为通常只有元素节点才会有子节点*
 
-`.offsetParent`获取元素最近的有定位属性的父节点
+`.offsetParent`【兼容性差】
+
+- 对于主流浏览器：获取元素最近的有定位属性的父节点，找不到则为body
+- 对于IE7及其以下：
+
+> 如果本身没有定位属性：获取最近的有设置宽度或高度的元素，找不到则为body
+>
+> 如果本身没有定位属性：与现代浏览器相同
 
 `.createElement(x)`创建X元素节点
 
@@ -2062,15 +2069,13 @@ innerHTML 与 innerText 的区别：
 - `submit()`提交表单
 - `reset()`重置表单
 
-**BOM相关的事件,请参阅《BOM相关》章节**
-
 **事件对象相关内容,请参阅《事件对象》章节**
 
 ### 16.2 2级事件
 
 *新事件与旧事件共存,与0级事件不冲突*
 
-`.addEventListener(a,b)`添加事件监听器(低版本IE不支持,用`attachEvent`代替,且IE中事件函数中this指向window)
+`.addEventListener(a,b)`添加事件监听器(低版本IE不支持,用`attachEvent`代替,且IE中事件函数的this指向window)
 
 - a为对应事件,如click(不写on)
 - b为事件函数(函数的实参为事件对象)
@@ -2129,29 +2134,41 @@ innerHTML 与 innerText 的区别：
 
 `window.innerWidth`浏览器窗口宽度(带窗口边框)
 
-`document.documentElement.clientWidth`HTML的宽度
+`.clientWidth` 盒子padding-box的宽度
 
-`document.documentElement.clientHeight`HTML的高度
+`.clientHeigth` 盒子padding-box的高度
 
-`.clientWidth` width+padding
+`.offsetWidth` 盒子border-box的宽度
 
-`.clientHeigth` height+padding
+`.offsetHeight` 盒子border-box的高度
 
-`.offsetWidth` width+padding+border
+*当盒子没有设置高度，而是由内容撑开时，在IE6中`clientHeigth`为0（这里我记不准是直接为0还是content-box部分高度为0，有知道的小伙伴请e-mail至fans@samail.cn告知）*
 
-`.offsetHeight` height+padding+border
+`.scrollHeight` 【兼容性差】内容实际占用的高度,超出盒子的部分也计算(有无`overflow:hidden`时不一样,不同浏览器不一样)
 
-`.scrollHeight` 内容实际占用的高度,超出盒子的部分也计算(有无`overflow:hidden`时不一样,不同浏览器不一样)
+`.scrollWidth` 【兼容性差】内容实际占用的宽度,超出盒子的部分也计算(有无`overflow:hidden`时不一样,不同浏览器不一样)
 
-`.scrollWidth` 内容实际占用的宽度,超出盒子的部分也计算(有无`overflow:hidden`时不一样,不同浏览器不一样)
+`.offsetLeft`【兼容性差】元素左侧到定位父级左侧的距离(对transform:translate不响应,显示的是没有此属性时的距离)
 
-`.offsetLeft`元素左侧到定位父级左侧的距离(对transform:translate不相应,显示的是没有此属性时的距离)
+`.offsetTop`【兼容性差】元素顶部到定位父级顶部的距离(对transform:translate不响应,显示的是没有此属性时的距离)
 
-`.offsetTop`元素顶部到定位父级顶部的距离(对transform:translate不相应,显示的是没有此属性时的距离)
+`.clientLeft`左边框宽度
+
+`.clientTop`上边框宽度
 
 `.getBoundingClientRect()`
 
-`document.documentElement.scrollTop`竖直滚动条的滚动高度(老版本的Google Chrome,及有些手机版的浏览器使用`document.body.scrollTop`)(可读可写)
+`.scrollTop`滚动高度(可读可写)
+
+`.scrollTop`滚动宽度(可读可写)
+
+**获取页面滚动高/宽度**
+
+- `pageXOffset`/`pageYOffset`
+- `document.documentElement.scrollLeft`/`document.documentElement.scrollTop`
+- `document.body.scrollLeft`/`document.body.scrollTop`
+
+*`document.documentElement.scrollTop`在老版本的Google Chrome,及有些手机版的浏览器中不支持，可使用`document.body.scrollTop`代替*
 
 `window.scrollTo(top:x)`将滚动高度设置为x
 
