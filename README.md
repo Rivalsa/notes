@@ -1,7 +1,5 @@
 **本仓库中JavaScript整理汇总正在持续维护中...**
 
-**本仓库中canvas整理汇总暂停更新**
-
 > GitHub仓库地址:
 >
 > ```url
@@ -23,8 +21,8 @@
 - canvas整理汇总 - **暂停更新**
 - git基础操作
 - vscode常用代码片段
-- nginx配置文件(仅部分配置) - <span style="color:red;font-weight:600">近期不更新</span>
-- TypeScript整理汇总 - <span style="color:red;font-weight:600">未整理完,但近期不更新</span>
+- nginx配置文件(仅部分配置)
+- TypeScript整理汇总 - <span style="color:red;font-weight:600">未整理完</span>
 
 欢迎来访:[rivalsa.cn](https://rivalsa.cn) 或 [卅卅.我爱你](https://卅卅.我爱你)
 
