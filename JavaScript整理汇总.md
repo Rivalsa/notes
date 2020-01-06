@@ -447,11 +447,12 @@ console.log(arr)
 
 `Array.isArray(x)`判断x是否是数组,如果是返回true,否则返回false
 
-`.forEach(x)`数组的遍历,x是一个function,函数执行时会传入三个参数(需要选中设置形参接收),分别是item,index,arr
+`array.forEach(function(currentValue, index, arr), thisValue)`数组的遍历
 
-- item为当前的数据
-- index为当前的序号
-- arr为数组本身(很少使用)
+- `currentValue`为当前的数据
+- `index`为当前的序号
+- `arr`为数组本身(很少使用)
+- `thisValue`为函数中`this`的指向
 
 *forEach不兼容IE8及其以下*
 
