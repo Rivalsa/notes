@@ -1415,13 +1415,21 @@ JavaScript内置的数学对象.
 
 ## 10.定时器
 
-`setInterval(a,b)`设置重复定时器,参数a为一个函数,当定时器时间到后执行函数,参数b为定时时间,返回定时器的编号
+`setInterval(a,b,c,d,e,...)`设置重复定时器,参数a为一个函数或JS语句字符串,当定时器时间到后执行函数或字符串中的语句,参数b为定时时间,c,d,e,...为给a函数传的实参，返回定时器的编号。（除了第一个参数外，均是可选的）
 
-`setTimeout(a,b)`设置单次定时器,参数a为一个函数,当定时器时间到后执行函数,参数b为定时时间,返回定时器的编号
+`setTimeout(a,b,c,d,e,...)`设置单次定时器,参数a为一个函数或JS语句字符串,当定时器时间到后执行函数或字符串中的语句,参数b为定时时间,c,d,e,...为给a函数传的实参,返回定时器的编号。（除了第一个参数外，均是可选的）
+
+```javascript
+setTimeout((...arr) => {
+    console.log(arr);
+}, 1000, null, 2, 'a', true, [1,2,3,false], {pet: 'cat', name: 'Tom'});
+```
 
 `clearInterval(a)`取消编号为a的重复定时器
 
 `clearTimeout(a)`取消编号为a的单次定时器
+
+*实际上，`clearInterval`也可以取消`setTimeout`定时器，`clearTimeout`也可以取消setInterval定时器*
 
 `requestAnimationFrame(a)`按照刷新率执行函数a,相当于一个重复定时器,时间定为刷新率
 
