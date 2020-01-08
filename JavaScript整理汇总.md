@@ -1999,7 +1999,7 @@ innerHTML 与 innerText 的区别：
 
 ### 15.3 更多DOM操作
 
-`.childNodes`获取元素的所有子节点(现代浏览器是获取所有子节点,低版本IE浏览器是获取所有子元素节点)
+`.childNodes`获取元素的所有子节点(主流浏览器是获取所有子节点,低版本IE浏览器是获取所有子元素节点)
 
 `.children`获取元素的所有子元素节点
 
@@ -2016,7 +2016,7 @@ innerHTML 与 innerText 的区别：
 
 > 如果本身没有定位属性：获取最近的有设置宽度或高度的元素，找不到则为body
 >
-> 如果本身没有定位属性：与现代浏览器相同
+> 如果本身没有定位属性：与主流浏览器相同
 
 `.createElement(x)`创建X元素节点
 
@@ -2036,18 +2036,35 @@ innerHTML 与 innerText 的区别：
 
 `.removeChild(x)`在子节点中删除节点x，返回被删除的节点
 
-`hasChildNodes()`有子节点则返回true，否则返回false
+`.hasChildNodes()`有子节点则返回true，否则返回false
 
-**不常用DOM操作**
+`.firstElementChild`获取第一个子元素节点(不支持IE9及其以下)
 
-| 现代浏览器        | 低版本IE浏览器 |含义|
-| :---------------: | :------------: | :------------: |
-| firstElementChild | firstChild | 获取第一个子元素节点（在现代浏览器中firstChild表示第一个节点） |
-| lastElementChild | lastChild |获取最后一个子元素节点（在现代浏览器中lastChild表示最后一个节点）|
-| nextElementSibling | nextSibling |下一个兄弟元素节点(在现代浏览器中nextSibling表示下一个兄弟节点)|
-| previousElementSibling | previousSibling |上一个兄弟元素节点(在现代浏览器中previousSibling表示上一个兄弟节点)|
+`.firstChild`
 
-*这里的“现代浏览器”指除了IE9及以下的浏览器*
+- 主流浏览器:获取第一个子节点
+- IE9及其以下:获取第一个子元素节点
+
+`.lastElementChild`获取最后一个子元素节点(不支持IE9及其以下)
+
+`.lastChild`
+
+- 主流浏览器:获取最后一个子节点
+- IE9及其以下:获取最后一个子元素节点
+
+`.nextElementSibling`获取下一个兄弟元素节点(不支持IE9及其以下)
+
+`.nextSibling`
+
+- 主流浏览器:获取下一个兄弟节点
+- IE9及其以下:获取下一个兄弟元素节点
+
+`.previousElementSibling`获取上一个兄弟元素节点(不支持IE9及其以下)
+
+`.previousSibling`
+
+- 主流浏览器:获取上一个兄弟节点
+- IE9及其以下:获取上一个兄弟元素节点
 
 ## 16. DOM事件
 
@@ -2089,7 +2106,7 @@ innerHTML 与 innerText 的区别：
 
 - `DOMMouseScroll`鼠标滚轮事件（火狐浏览器专用，仅支持2级事件）
 
-- `mousewheel`鼠标滚轮事件（标准现代浏览器（如谷歌））
+- `mousewheel`鼠标滚轮事件（标准主流浏览器（如谷歌））
 
     *事件对象中有一个参数可以指示滚动方向以及滚动速度*
 
@@ -2234,7 +2251,7 @@ innerHTML 与 innerText 的区别：
 
 ## 19.事件对象
 
-在现代浏览器中：当事件被触发时，会默认传一个实参，为事件对象,可以在事件函数中设置形参(通常用e或ev)接收
+在主流浏览器中：当事件被触发时，会默认传一个实参，为事件对象,可以在事件函数中设置形参(通常用e或ev)接收
 
 *在低版本IE浏览器中，不会传这个实参，但在全局中有window.event为事件对象*
 
