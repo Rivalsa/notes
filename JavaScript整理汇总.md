@@ -1464,25 +1464,51 @@ setTimeout((...arr) => {
 
 **Date()为构造函数（类）,需要通过new创建一个对象**
 
-*Date后面加括号可以指定时间(年,月,日,时,分,秒),月份从0起,注意减一,或者括号中可以直接写以毫秒为单位的时间戳*
+*Date后面加括号可以指定时间(年,月,日,时,分,秒),月份从0起,注意减一,或者括号中可以直接写以毫秒为单位的时间戳,或者传格式为"年/月/日 时:分:秒"的字符串("/"可以替换为"-")).传字符串时月份不必考虑加减1的问题*
 
-`getFullYear()`获取完整年份
+`.toLocalString()`转换为本地格式的日期时间
 
-`getMonth()`获取月份,从零开始,通常要加1
+`.toLocalDateString()`转换为本地格式的日期
 
-`getDay()`获取星期,从零开始,星期日为0
+`.toLocalTimeString()`转换为本地格式的时间
 
-`getDate()`获取日
+`.getFullYear()`获取完整年份
 
-`getHours()`获取时
+`.getYear()`获取年份(19xx年用两位数表示,后续会超过100,不常用)
 
-`getMinutes()`获取分
+`.getMonth()`获取月份,0-11月,所以通常要加1
 
-`getSeconds()`获取秒
+`.getDay()`获取星期,从零开始,星期日为0
+
+`.getDate()`获取日
+
+`.getHours()`获取时
+
+`.getMinutes()`获取分
+
+`.getSeconds()`获取秒
+
+`.getMilliSeconds()`获取毫秒
 
 `.toUTCSting()`转换为UTC时间,返回值为字符串
 
-`.getTime()`转换为以毫秒为单位的时间戳
+`.getTime()`转换为以毫秒为单位的时间戳(从1970年1月1日0时整开始计算)
+
+`.getTimezoneOffset()`获取GMT时间与本地时间相差的分钟数(GMT时间减去本地时间)
+
+`setFullYear(x)`将年份设置为x
+
+`setMonth(x)`将月份设置为x,范围为0-11
+
+`setDate(x)`将日设置为x
+
+`setHours(x)`将小时设置为x
+
+`setMinutes(x)`将分钟设置为x
+
+`setSeconds(x)`将秒设置为x
+
+`setMilliseconds(x)`将毫秒设置为x
 
 日期对象可以相减,返回值为两个日期相差的毫秒数(相当于时间戳相减)
 
