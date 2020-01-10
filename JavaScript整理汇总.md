@@ -2070,7 +2070,13 @@ innerHTML 与 innerText 的区别：
 
 ### 16.1 0级事件
 
-*采用赋值的方式,新事件替代旧事件*
+*采用赋值的方式绑定函数,新事件替代旧事件*
+
+```javascript
+element.event = fun;
+```
+
+如需要移除事件，将其赋值为`null`即可
 
 **鼠标事件**
 
@@ -2152,17 +2158,21 @@ innerHTML 与 innerText 的区别：
 
 *新事件与旧事件共存,与0级事件不冲突*
 
-`.addEventListener(a,b)`添加事件监听器(低版本IE不支持,用`attachEvent`代替,且IE中事件函数的this指向window)
+`.addEventListener(a,b,c)`添加事件监听器(低版本IE不支持,用`.attachEvent(a,b)`代替,且IE中事件函数的this指向window)
 
-- a为对应事件,如click(不写on)
-- b为事件函数(函数的实参为事件对象)
+- a为事件字符串，不写on(使用`attachEvent`时需要写on)
+- b为事件函数(参数为事件对象)
+- c为布尔值，true表示事件绑定在捕获阶段，false表示事件绑定在冒泡阶段
 
-`removeEventListener(a,b)`移除事件监听器(低版本IE不支持,用`detachEvent`代替)
+`removeEventListener(a,b,c)`移除事件监听器(低版本IE不支持,用`detachEvent(a,b)`代替)
 
-- a为对应事件,如click(不写on)
-- b为事件函数(b必须与添加时的b具有相同指针)
+*移除事件时的参数应与绑定事件时的参数相同（函数需要指针相同）*
+
+**DOM 3级事件的绑定与解绑方式与DOM 2级事件相同，只是增加了一些新的事件，在此暂不列出。**
 
 ### 16.3 事件捕获
+
+<span style="color:red;font-weight:600;">（此处后续需要修改）</span>
 
 先执行捕获事件(从父级到子集)再执行普通事件(从子集到父级)
 
