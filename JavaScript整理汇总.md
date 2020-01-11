@@ -2088,19 +2088,19 @@ element.event = fun;
 
 `onclick`鼠标单击事件
 
-`onmousedown`鼠标按下
+`onmousedown`鼠标任意键按下
 
 `onmousemove`鼠标移动
 
-`onmouseup`鼠标抬起
+`onmouseup`鼠标任意键抬起
 
-`ommouseenter`鼠标移入事件(不冒泡)
+`ommouseenter`鼠标移入(不冒泡)
 
-`onmouseleave`鼠标移出事件(不冒泡)
+`onmouseleave`鼠标移出(不冒泡)
 
-`onmouseover`鼠标移入事件(冒泡)
+`onmouseover`鼠标移入(冒泡)
 
-`onmouseout`鼠标移出事件(冒泡)
+`onmouseout`鼠标移出(冒泡)
 
 关于鼠标移入移出事件,冒泡与不冒泡的说明:
 
@@ -2112,9 +2112,7 @@ element.event = fun;
 
 - `DOMMouseScroll`鼠标滚轮事件（火狐浏览器专用，仅支持2级事件）
 
-- `mousewheel`鼠标滚轮事件（标准主流浏览器（如谷歌））
-
-    *事件对象中有一个参数可以指示滚动方向以及滚动速度*
+- `mousewheel`鼠标滚轮事件（非火狐浏览器）
 
 **键盘事件**
 
@@ -2126,13 +2124,13 @@ element.event = fun;
 
 **表单事件**
 
-`onfocus`表单获得焦点事件
+`onfocus`表单获得焦点事件(window和表单均码有此事件)
 
-`onblur`表单失去焦点事件
+`onblur`表单失去焦点事件(window和表单均码有此事件)
 
 `onchange`表单内容发生改变事件
 
-- 对于`text`:在失去焦点之前触发(需要失去焦点时刻与获得焦点时刻内容不同才会触发)
+- 对于`text`:在失去焦点之前触发(需要失去焦点时刻与获得焦点时刻**内容不同**才会触发)
 - 对于`radio`:被选中的单选框触发
 - 对于`checkbox`:被选中和被取消选中时均会触发
 - 对于`select`:选择的内容发生改变时会被触发
@@ -2156,36 +2154,178 @@ element.event = fun;
 
 ### 16.2 2级事件
 
+*2级事件的绑定与解绑方式与0级事件不同，所有0级事件都可以在2级事件中使用*
+
 *新事件与旧事件共存,与0级事件不冲突*
 
-`.addEventListener(a,b,c)`添加事件监听器(低版本IE不支持,用`.attachEvent(a,b)`代替,且IE中事件函数的this指向window)
+`.addEventListener(a,b,c)`添加事件监听器(低版本IE不支持,用`.attachEvent(a,b)`代替（没有第3个参数）,且IE中事件函数的this指向window)
 
 - a为事件字符串，不写on(使用`attachEvent`时需要写on)
 - b为事件函数(参数为事件对象)
-- c为布尔值，true表示事件绑定在捕获阶段，false表示事件绑定在冒泡阶段
+- c为布尔值，true表示事件绑定在捕获阶段，false表示事件绑定在冒泡阶段（**参考事件捕获与事件冒泡章节**）
 
-`removeEventListener(a,b,c)`移除事件监听器(低版本IE不支持,用`detachEvent(a,b)`代替)
+`removeEventListener(a,b,c)`移除事件监听器(低版本IE不支持,用`detachEvent(a,b)`代替（没有第3个参数）)
 
 *移除事件时的参数应与绑定事件时的参数相同（函数需要指针相同）*
 
 **DOM 3级事件的绑定与解绑方式与DOM 2级事件相同，只是增加了一些新的事件，在此暂不列出。**
 
-### 16.3 事件捕获
+### 16.3 事件捕获与事件冒泡
 
-<span style="color:red;font-weight:600;">（此处后续需要修改）</span>
+当采用2级事件绑定事件函数时，第三个参数为true则事件绑定在捕获阶段。
 
-先执行捕获事件(从父级到子集)再执行普通事件(从子集到父级)
+当采用2级事件绑定事件函数时，第三个参数为false则事件绑定在冒泡阶段。
 
-`.addEventListener(a,b,c)`(低版本IE不支持)
+**事件源没有捕获阶段，即使第三个参数为true也是绑定在冒泡阶段的，有时会将事件源的冒泡阶段称为执行阶段**
 
-- (参数a,b参考*2级事件*)
-- c为布尔值,为true时此事件为捕获事件
+**0级事件是绑定在事件冒泡阶段的**
 
-*移除捕获事件时`removeEventListener`也需要添加第三个参数为true*
+当某个事件被触发后，会先进入此事件的捕获阶段，随后进入此事件的冒泡阶段。
 
-### 16.4 事件委托
+**事件的捕获阶段**
 
-把事件加给父级,利用`target`来判断是哪个子级触发的
+当某元素的某个事件被触发后，首先会执行window或document（随浏览器的不同而不同）上此事件的捕获阶段的事件函数，随后执行...的捕获阶段的事件函数，随后执行此元素的父级的父级的父级的捕获阶段的事件函数，随后执行此元素的父级的父级的捕获阶段的事件函数，随后执行此元素的父级的捕获阶段的事件函数，随后进入冒泡阶段。
+
+**如果同一个元素的同一个事件绑定了多个捕获阶段的事件，则后绑定的先执行**
+
+**事件的冒泡阶段**
+
+当某元素的某个事件被触发后，会先进入捕获阶段，随后执行此元素冒泡阶段的事件函数，随后执行此元素的父级的冒泡阶段的事件函数，随后执行此元素的父级的父级的冒泡阶段的事件函数，随后执行此元素的父级的父级的父级的冒泡阶段的事件函数，随后执行...的冒泡阶段的事件函数，随后执行window或document（随浏览器的不同而不同）上此事件的冒泡阶段的事件函数。
+
+**如果同一个元素的同一个事件绑定了多个冒泡阶段的事件，则先绑定的先执行**
+
+举例：
+
+```html
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="utf-8">
+    <title>事件捕获与事件冒泡</title>
+    <style>
+        #out {
+            width: 300px;
+            height: 300px;
+            background-color: aqua;
+        }
+        #mid {
+            width: 200px;
+            height: 200px;
+            background-color: pink;
+        }
+        #in {
+            width: 100px;
+            height: 100px;
+            background-color: skyblue;
+        }
+    </style>
+</head>
+<body>
+    <div id="out">
+        <div id="mid">
+            <div id="in"></div>
+        </div>
+    </div>
+    <script>
+        'use strict'
+        let oOut = document.getElementById('out'),
+            oMid = document.getElementById('mid'),
+            oIn = document.getElementById('in');
+        oOut.onclick = () => {
+            console.log('0级out');
+        };
+        oMid.onclick = () => {
+            console.log('0级mid');
+        };
+        oIn.onclick = () => {
+            console.log('0级in');
+        };
+        oOut.addEventListener('click', () => {
+            console.log('冒泡out');
+        });
+        oMid.addEventListener('click', () => {
+            console.log('冒泡mid');
+        });
+        oIn.addEventListener('click', () => {
+            console.log('冒泡in');
+        });
+        oOut.addEventListener('click', () => {
+            console.log('捕获out');
+        }, true);
+        oMid.addEventListener('click', () => {
+            console.log('捕获mid');
+        }, true);
+        oIn.addEventListener('click', () => {
+            console.log('捕获in');
+        }, true);
+    </script>
+</body>
+</html>
+```
+
+执行结果：
+
+> 当点击最内侧的in元素时，控制台会输出如下内容：
+>
+> 捕获out
+> 捕获mid
+> 0级in
+> 冒泡in
+> 捕获in
+> 0级mid
+> 冒泡mid
+> 0级out
+> 冒泡out
+
+**阻止事件冒泡的方法请参考事件对象一节**
+
+### 16.4事件委托
+
+把事件加给父级,利用事件对象中的`target`来判断是哪个元素触发的。
+
+### 16.5 事件对象
+
+在主流浏览器中：当事件被触发时，会默认传一个实参，为事件对象,可以在事件函数中设置形参(通常用e或ev)接收
+
+*在IE8及其以下的浏览器中，不会传这个实参，但在全局中有`window.event`为事件对象*
+
+以下都是事件对象中常用的属性：
+
+**通用属性**
+
+`type`事件的类型（没有on）
+
+`stopPropagation()`停止事件流的传播（不再继续捕获或冒泡）（IE8及其以下浏览器不支持，用`cancelBubble=true`代替）
+
+`preventDefault()`阻止默认事件（IE8及其以下浏览器不支持`preventDefault`，用`returnValue=false`代替）（在0级事件中也可以用`return false`阻止默认事件，所有浏览器均支持)
+
+`target`触发事件的DOM元素(IE8及其以下浏览器不支持,用srcElement代替)
+
+`currentTarget`当前执行事件函数的DOM元素（通常会使用this代替此属性）
+
+**鼠标事件属性**
+
+`altKey/shiftKey/ctrlKey` 对应按键是否按下
+
+`clientX/clientY` 鼠标到浏览器左上角的距离(不是到文档,与滚动条无关)
+
+`pageX/pageY` 鼠标到文档左上角的距离(与滚动条有关)
+
+`offsetX/offsetY` 鼠标到触发事件元素左上角的距离
+
+`layerX/layerY`鼠标距离定位父级左上角的距离【没试过但感觉兼容性差】
+
+`screenX/screenY` 鼠标到用户屏幕左上角的距离
+
+`button`按下的是鼠标左键还是中键还是右键（值分别为0，1，2）
+
+`wheelDelta`(非火狐浏览器可用)滚轮向上滚动值为120，向下滚动值为-120
+
+`detail`(火狐浏览器可用)滚轮向上滚动值为-3，向下滚动值为3
+
+**键盘事件属性**
+
+`keyCode`按键的键值
 
 ## 17.BOM相关
 
@@ -2199,9 +2339,9 @@ element.event = fun;
 
 `onscroll`滚动条滚动事件(任何有滚动条的元素都有此事件)
 
-`onfocus`获得焦点事件(window的事件)
+`onfocus`获得焦点事件(window和表单均码有此事件)
 
-`onblur`失去焦点事件(window的事件)
+`onblur`失去焦点事件(window和表单均码有此事件)
 
 *获得焦点与失去焦点事件通常与定时器配合,在失去焦点时取消定时器*
 
@@ -2259,42 +2399,11 @@ element.event = fun;
 
 `window.scrollTo(top:x)`将滚动高度设置为x
 
-## 19.事件对象
-
-在主流浏览器中：当事件被触发时，会默认传一个实参，为事件对象,可以在事件函数中设置形参(通常用e或ev)接收
-
-*在低版本IE浏览器中，不会传这个实参，但在全局中有window.event为事件对象*
-
-以下都是事件对象中的属性:
-
-- 鼠标事件
-  - `altKey/shiftKey/ctrlKey` 对应按键是否按下
-  - `clientX/clientY` 鼠标到浏览器可视区的距离(不是到文档,与滚动条无关)
-  - `pageX/pageY` 鼠标到文档的距离(与滚动条有关)(兼容性一般)
-  - `offsetX/offsetY` 鼠标到触发事件元素的距离
-  - `screenX/screenY` 鼠标到用户屏幕的距离
-  
-- 键盘事件
-  
-  - `keyCode`按键的键值
-  
-- `stopPropagation()`阻止冒泡
-
-- `cancelBubble=true`阻止冒泡
-
-    - 冒泡指的是在子级上触发的事件会传递给父级
-
-    - 阻止冒泡事件应该添加在子级上(遇到阻止冒泡属性后不再继续冒泡)
-
-- `preventDefault()`阻止默认事件
-
-- `target`事件触发源
-
-## 20.正则表达式
+## 19.正则表达式
 
 可以用来高效便捷的处理字符串
 
-### 20.1 定义正则表达式
+### 19.1 定义正则表达式
 
 **双斜杠定义**
 
@@ -2304,9 +2413,9 @@ element.event = fun;
 
 例如`let reg = new RegExp("x");`括号中可以传入一个字符串变量,也可以直接传入字符串(字符串的内容为正则表达式)
 
-### 20.2 正则表达规则
+### 19.2 正则表达规则
 
-#### 20.2.1 转义字符
+#### 19.2.1 转义字符
 
 普通转移字符`\`(将有特殊意义的字符变为普通字符)
 
@@ -2358,7 +2467,7 @@ element.event = fun;
 - 结束位置
 - `\W`能匹配的所有字符
 
-#### 20.2.2 标识
+#### 19.2.2 标识
 
 *写在正则表达式结尾/的后面,可以写多个,不区分先后顺序,在使用RegExp定义时,标识以字符串形式作为第二个参数传入*
 
@@ -2368,7 +2477,7 @@ element.event = fun;
 
 `m`换行匹配
 
-#### 20.2.3 量词
+#### 19.2.3 量词
 
 *写在对应规则后面*
 
@@ -2390,11 +2499,11 @@ element.event = fun;
 
 惰性(在量词后面加`?`表示惰性量词):尽量按少的去匹配
 
-#### 20.2.4 子项
+#### 19.2.4 子项
 
 使用小括号可以将里面的内容作为一个子项
 
-#### 20.2.5 字符集
+#### 19.2.5 字符集
 
 用中括号表示
 
@@ -2418,7 +2527,7 @@ element.event = fun;
 
 - 字符集中小括号/大括号/正斜杠/问号/星号/加号等无特殊含义
 
-#### 20.2.6 其他有特殊意义的字符
+#### 19.2.6 其他有特殊意义的字符
 
 - `^`表示起始位置
 - `$`表示结束位置
@@ -2427,13 +2536,13 @@ element.event = fun;
   - `\r`
 - `|`表示或者(前后是两个独立的正则)
 
-#### 20.2.7 捕获组
+#### 19.2.7 捕获组
 
 `\数字x`表示第x个子项,再次匹配第x个子项
 
 *并不是第x个子项的匹配规则,而是第x个子项的内容*
 
-#### 20.2.8 断言
+#### 19.2.8 断言
 
 `(?=xx)`(不算做子项)某字符后面要含有xx字符,但匹配到的东西不包含xx
 
@@ -2443,7 +2552,7 @@ element.event = fun;
 
 `(?<!xx)`(不算做子项)某字符前面要不含有xx字符,但匹配到的东西不包含xx
 
-### 20.3 使用正则表达式的方法
+### 19.3 使用正则表达式的方法
 
 **正则表达式的方法**
 
@@ -2455,17 +2564,17 @@ element.event = fun;
 
 `.match(正则表达式)`返回字符串中匹配成功的字符串组成的数组(数组有匹配的内容与子项组成,在规则中使用全局`g`则组成的数组中不包含子项)
 
-### 20.4 RegExp对象
+### 19.4 RegExp对象
 
 RegExp中存储了上一次的子项,可以通过这个对象直接拿到数据.(可以先test然后通过RegExp得到子项)
 
-## 21.ajax
+## 20.ajax
 
 > ajax即“Asynchronous Javascript And XML”（异步 JavaScript 和 XML），是指一种创建交互式网页应用的网页开发技术。 
 
 ajax可以在不刷新页面的前提下向后端 发送/请求 数据，在开发中是必然会用的技术。
 
-### 21.1 JavaScript原生ajax
+### 20.1 JavaScript原生ajax
 
 ```javascript
 let xhr;
@@ -2512,7 +2621,7 @@ function onReadyStateChange() {
 }
 ```
 
-### 21.2 jQuery的ajax
+### 20.2 jQuery的ajax
 
 ```javascript
 // 列出部分参数
@@ -2526,7 +2635,7 @@ $.ajax({
 });
 ```
 
-### 21.3 axios
+### 20.3 axios
 
 **发送单个请求**
 
@@ -2558,11 +2667,11 @@ axios.all([ reqA(),reqB() ]).then(res => {
 });
 ```
 
-### 21.4 跨域问题
+### 20.4 跨域问题
 
 发送ajax请求时需要确保当前页面与请求页面同源(必须协议\\主机\\端口号全都相同),否则需要后端发送相应的HTTP Header才能正常访问.
 
-### 21.5 jsonp
+### 20.5 jsonp
 
 由于HTML页面中调用JavaScript是没有同源限制的,所以可以利用此方法发送数据,举例如下:
 
