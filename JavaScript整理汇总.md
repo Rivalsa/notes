@@ -1537,7 +1537,23 @@ console.log(new String(str).length);
 
 ### 12.2 原型与原型链
 
-在创建构造函数后，可以用`.prototype`属性来向\_\_proto\_\_中写入原型，这个对象可以供所有实例化后的对象直接使用，例如：
+在函数中，存在一个`prototype`属性,这个属性值是一个对象,.此函数通过`new`操作符创建的对象中会默认含有一个`__proto__`属性,此属性值与其构造函数的`prototype`属性指向同一个对象.我们将这个对象称为**原型**
+
+任何一个对象都有自己的原型,原型的属性值是一个对象,则此对象的原型还有自己的原型...所以我们将此称为**原型链**,原型链的终点为Object
+
+一个对象在调用属性时会首先找它本身的属性,如果找到,则使用这个属性值,如果找不到,则会在它的原型中查找,如果找到,则使用这个属性值,如果找不到,则在其原型的原型中查找...也就是说,对象找不到的属性会在原型链中继续查找.
+
+例1
+
+```javascript
+let Cat = function(){};
+Cat.prototype.aa = 0;
+let tom = new Cat();
+console.log(tom.aa); // 0
+console.log(tom.__proto__ === Cat.prototype); // true
+```
+
+例2
 
 ```javascript
 function O(){
@@ -1549,41 +1565,76 @@ var obj=new O;
 console.log(obj);
 ```
 
-*同一个构造函数实例化出来的实例的\_\_proto\_\_是给所有的实例公用的（相同的），也就是构造函数的prototype*
+每一个原型上都默认有一个`construotor`指向对应的的函数
 
-每一个原型上都默认有一个construotor指向对应的的函数
+*由于利用构造函数创造出来的所有的对象的原型都是指向同一对象的指针,所以利用原型及原型链可以减少不必要的内存开销*
 
-**构造函数及其原型的继承**
+**构造函数私有属性及其原型的继承**
 
-举例如下：
+现存在一个构造函数,我们创造一个新的构造函数,新的构造函数中包含原构造函数的所有的属性及原型,则称新的构造函数是由原构造函数**继承**而来的
 
-```javascript
-function Person(n,a){
-    this.name=n;
-    this.age=a;
-}
-Person.prototype.showName=function(){
-    console.log(this.name);
-}
-Person.prototype.showAge=function(){
-    console.log(this.age);
-}
-function Teacher(n,a,id){
-    Person.call(this,n,a); // 继承的私有属性
-    this.id=id; // 新增的私有属性
-}
-function _Person(){} // 新定义的构造函数，和原函数的原型相同，没有多余的私有属性，防止创建无用属性
-_Person.prototype=Person.prototype; // 设置相同的原型函数
-Teacher.prototype=new _Person; // 继承原型（实际是将_Person实例化一个对象作为Teacher的原型）
-Teacher.prototype.constructor=Teacher; // 补充constructor属性
-Teacher.prototype.showId=function(){ // 新增的原型
-	console.log(this.id);
-}
-```
+**私有属性的继承**
+
+JavaScript中没有继承构造函数的方法,但我们可以通过一些方式来模拟出这个过程.
+
+> 为了让新的构造函数中也拥有旧构造函数的私有属性,只要在新构造函数中直接执行旧的构造函数即可(是直接执行,而不是通过`new`来执行).但直接执行旧构造函数会有this指向错误的问题,所以还需要通过`call`来修正this的指向.
+>
+> 私有属性的继承方法如下:
+>
+> ```javascript
+> function Person(n, a) {
+>     this.name = n;
+>     this age = a;
+> }
+> function Teacher(n, a, id) {
+>     Person.call(this,n,a); // 继承的私有属性
+>     this.id=id; // 新增的私有属性
+> }
+> ```
+
+**原型链的继承**
+
+JavaScript中没有继承构造函数的方法,但我们可以通过一些方式来模拟出这个过程.
+
+> 让新构造函数中拥有旧构造函数的原型链,通常是将旧构造函数的原型实例化作为新的构造函数的原型.但这样会导致旧构造函数中的私有属性也放入了新构造函数的原型中,所以在此之前,通常是新建一个没有私有属性只有原型的构造函数,在将此构造函数的实例化作为新构造函数的原型,最后由于自己创造的原型链中没有` constructor`属性,所以还要在原型链中补充这个属性
+>
+> 原型链的继承方法如下:
+>
+> ```javascript
+> function Person(n,a){
+>     this.name=n;
+>     this.age=a;
+> }
+> Person.prototype.showName=function(){
+>     console.log(this.name);
+> }
+> Person.prototype.showAge=function(){
+>     console.log(this.age);
+> }
+> function Teacher(n,a,id){
+>     Person.call(this,n,a); // 继承的私有属性
+>     this.id=id; // 新增的私有属性
+> }
+> function _Person(){} // 新定义的构造函数，和原函数的原型相同，没有多余的私有属性，防止创建无用属性
+> _Person.prototype=Person.prototype; // 设置相同的原型函数
+> Teacher.prototype=new _Person; // 继承原型（实际是将_Person实例化一个对象作为Teacher的原型）
+> Teacher.prototype.constructor=Teacher; // 补充constructor属性
+> Teacher.prototype.showId=function(){ // 新增的原型
+> 	console.log(this.id);
+> }
+> ```
+>
+> 
+
+**instanceof**
+
+可以利用`instanceof`来判断一个对象的原型链上是否存在指定的构造函数,如果存在则返回true,否则返回false
+
+用法:`object instanceof function`
 
 ### 12.3 <span style="color:yellowgreen;font-weight:600;">[ES6]</span>类及其继承
 
-在ES5中没有类的概念，用构造函数代替，在ES6中可以用class定义一个类，定义的类只能用new执行，不能自执行，继承可以直接使用extends，举例如下：
+在ES5中没有类的概念，用构造函数代替，在ES6中可以用class定义一个类，定义的类只能用new执行，不能自执行，继承可以直接使用extends，大大简化了原型及原型链的复杂逻辑.举例如下：
 
 ```javascript
 class Person{
