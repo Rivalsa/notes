@@ -1571,49 +1571,45 @@ console.log(obj);
 
 **构造函数私有属性及其原型的继承**
 
-现存在一个构造函数,我们创造一个新的构造函数,新的构造函数中包含原构造函数的所有的属性及原型,则称新的构造函数是由原构造函数**继承**而来的
+现存在一个构造函数,我们创造一个新的构造函数,新的构造函数可以调用原构造函数的所有的属性及原型,则称新的构造函数是由原构造函数**继承**而来的
 
 **私有属性的继承**
 
-JavaScript中没有继承构造函数的方法,但我们可以通过一些方式来模拟出这个过程.
+JavaScript中没有继承构造函数的方法,但我们可以通过一些方式来模拟出这个过程
 
-> 为了让新的构造函数中也拥有旧构造函数的私有属性,只要在新构造函数中直接执行旧的构造函数即可(是直接执行,而不是通过`new`来执行).但直接执行旧构造函数会有this指向错误的问题,所以还需要通过`call`来修正this的指向.
->
 > 私有属性的继承方法如下:
 >
 > ```javascript
-> function Person(n, a) {
->     this.name = n;
->     this age = a;
-> }
-> function Teacher(n, a, id) {
->     Person.call(this,n,a); // 继承的私有属性
->     this.id=id; // 新增的私有属性
-> }
-> ```
+>function Person(n, a) {
+>  this.name = n;
+>  this age = a;
+>    }
+>    function Teacher(n, a, id) {
+>  Person.call(this,n,a); // 继承的私有属性
+>  this.id=id; // 新增的私有属性
+>    }
+>    ```
 
 **原型链的继承**
 
-JavaScript中没有继承构造函数的方法,但我们可以通过一些方式来模拟出这个过程.
+JavaScript中没有继承构造函数的方法,但我们可以通过一些方式来模拟出这个过程
 
-> 让新构造函数中拥有旧构造函数的原型链,通常是将旧构造函数的原型实例化作为新的构造函数的原型.但这样会导致旧构造函数中的私有属性也放入了新构造函数的原型中,所以在此之前,通常是新建一个没有私有属性只有原型的构造函数,在将此构造函数的实例化作为新构造函数的原型,最后由于自己创造的原型链中没有` constructor`属性,所以还要在原型链中补充这个属性
->
 > 原型链的继承方法如下:
 >
 > ```javascript
 > function Person(n,a){
->     this.name=n;
->     this.age=a;
+>  this.name=n;
+>  this.age=a;
 > }
 > Person.prototype.showName=function(){
->     console.log(this.name);
+>  console.log(this.name);
 > }
 > Person.prototype.showAge=function(){
->     console.log(this.age);
+>  console.log(this.age);
 > }
 > function Teacher(n,a,id){
->     Person.call(this,n,a); // 继承的私有属性
->     this.id=id; // 新增的私有属性
+>  Person.call(this,n,a); // 继承的私有属性
+>  this.id=id; // 新增的私有属性
 > }
 > function _Person(){} // 新定义的构造函数，和原函数的原型相同，没有多余的私有属性，防止创建无用属性
 > _Person.prototype=Person.prototype; // 设置相同的原型函数
@@ -1624,7 +1620,6 @@ JavaScript中没有继承构造函数的方法,但我们可以通过一些方式
 > }
 > ```
 >
-> 
 
 **instanceof**
 
