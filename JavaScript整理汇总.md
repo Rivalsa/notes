@@ -332,7 +332,11 @@ console.log(0o88); // 报错 Uncaught SyntaxError: invalid or unexpected token
 
 **object类型**
 
-可以使用`{键1:值1,键2:值2,...键n:值n}`的方式来定义对象,其中可以有若干个键值对(键也可以称为属性)，也可以通过`new Object()`的方式来创建一个对象（推荐使用前者）
+我们可以通过如下方式来创建一个对象
+
+- 使用`{键1:值1,键2:值2,...键n:值n}`的方式来定义对象,其中可以有若干个键值对(键也可以称为属性)
+- 通过`new Object()`的方式来创建一个对象
+- 通过`Object.create(x)`来创建一个对象，创建的对象的原型指向x
 
 在es5中,键必须是字符串形式,可以加引号也可以不加引号,但不加引号时必须符合变量的命名规则
 
@@ -1519,10 +1523,10 @@ setTimeout((...arr) => {
 
 ### 12.1 构造函数
 
-构造函数的本质就是一个函数。但构造函数通常不是直接调用，而是通过`new`关键词来调用，直接调用与通过`new`调用的区别如下：
+构造函数的本质就是一个函数（箭头函数不能作为构造函数）。但构造函数通常不是直接调用，而是通过`new`关键词来调用，直接调用与通过`new`调用的区别如下：
 
 - 使用`new`执行函数时会自动创建一个对象，函数中的`this`指向这个对象，函数执行结束后自动返回这个对象。
-- 构造函数的函数体中存在`return`语句时，用`new`来调用时，如果`return`的是基础数据类型则会忽略函数体中的`return`，如果`return`的是复杂数据类型则会返回这个数据。
+- 构造函数的函数体中存在`return`语句时，用`new`来执行函数时，如果`return`的是基础数据类型则会忽略函数体中的`return`，返回自动创建的对象，如果`return`的是复杂数据类型则会返回`return`的这个对象。
 
 构造函数的函数名通常使用大驼峰命名。
 
@@ -1557,11 +1561,11 @@ console.log(tom.__proto__ === Cat.prototype); // true
 
 ```javascript
 function O(){
-    this.name="rivalsa";
-    this.sex="M";
+    this.name = "rivalsa";
+    this.sex = "M";
 }
-O.prototype.tt="123";
-var obj=new O;
+O.prototype.tt = "123";
+var obj = new O;
 console.log(obj);
 ```
 
@@ -1569,7 +1573,7 @@ console.log(obj);
 
 *由于利用构造函数创造出来的所有的对象的原型都是指向同一对象的指针,所以利用原型及原型链可以减少不必要的内存开销*
 
-**构造函数私有属性及其原型的继承**
+**构造函数私有属性及其原型（链）的继承**
 
 现存在一个构造函数,我们创造一个新的构造函数,新的构造函数可以调用原构造函数的所有的属性及原型,则称新的构造函数是由原构造函数**继承**而来的
 
@@ -1586,7 +1590,7 @@ JavaScript中没有继承构造函数的方法,但我们可以通过一些方式
 >    }
 >    function Teacher(n, a, id) {
 >  Person.call(this,n,a); // 继承的私有属性
->  this.id=id; // 新增的私有属性
+>  this.id = id; // 新增的私有属性
 >    }
 >    ```
 
@@ -1598,24 +1602,24 @@ JavaScript中没有继承构造函数的方法,但我们可以通过一些方式
 >
 > ```javascript
 > function Person(n,a){
->  this.name=n;
->  this.age=a;
+>  this.name = n;
+>  this.age = a;
 > }
-> Person.prototype.showName=function(){
+> Person.prototype.showName = function(){
 >  console.log(this.name);
 > }
-> Person.prototype.showAge=function(){
+> Person.prototype.showAge = function(){
 >  console.log(this.age);
 > }
 > function Teacher(n,a,id){
 >  Person.call(this,n,a); // 继承的私有属性
->  this.id=id; // 新增的私有属性
+>  this.id = id; // 新增的私有属性
 > }
 > function _Person(){} // 新定义的构造函数，和原函数的原型相同，没有多余的私有属性，防止创建无用属性
-> _Person.prototype=Person.prototype; // 设置相同的原型函数
-> Teacher.prototype=new _Person; // 继承原型（实际是将_Person实例化一个对象作为Teacher的原型）
-> Teacher.prototype.constructor=Teacher; // 补充constructor属性
-> Teacher.prototype.showId=function(){ // 新增的原型
+> _Person.prototype = Person.prototype; // 设置相同的原型函数
+> Teacher.prototype = new _Person; // 继承原型（实际是将_Person实例化一个对象作为Teacher的原型）
+> Teacher.prototype.constructor = Teacher; // 补充constructor属性
+> Teacher.prototype.showId = function(){ // 新增的原型
 > 	console.log(this.id);
 > }
 > ```
