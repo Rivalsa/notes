@@ -4,12 +4,12 @@
 		"prefix": "class",
 		"body": [
 			"class $1 {",
-			"    constructor() {",
-			"        $2",
-			"    }",
-			"    $3",
+			"	constructor() {",
+			"		$2",
+			"	}",
+			"	$3"
 			"}"
 		],
-		"description": "class"
+		"description": "创建或继承一个类"
 	}
 }
