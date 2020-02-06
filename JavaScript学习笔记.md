@@ -4,7 +4,11 @@
 
 #  前端JavaScript学习笔记
 
-本文中，标有<span style="color:yellowgreen;font-weight:600;">[ES6]</span>标记的，表示属于ECMA Script 6新增的内容
+**关于本文中的ES6的说明**
+
+本文中的ES6指的是从ECMA Script 2015一直到最新版的统称
+
+本文中，标有<span style="color:yellowgreen;font-weight:600;">[ES6]</span>标记的，表示属于ES6新增的内容
 
 **关于本文中的语句,表达式与值三个词的说明**
 
@@ -115,8 +119,6 @@ V8引擎为解析js代码最快的js引擎
 `prompt(x,y)`输入弹窗,x是提示内容,y为在输入框中默认输入的内容,返回输入的字符串,如果点"取消"则返回null
 
 `confirm(x)`确认弹窗,x是提示内容,点击"是"返回true,否则返回false
-
-`isNaN(x)`判断x是否是`NaN`若是则返回true,否则返回false
 
 `JSON.parse(x)`将JSON格式的字符串x转换为对象，返回这个对象（IE7及其以下不支持）
 
@@ -288,73 +290,75 @@ throw new Error('xxx');
 
 - 单引号(') - 例如:`'hello world'`
 - 双引号(") - 例如:`"hello world"`
-- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>\`符号 - 例如:\`hello word\` - 使用此符号时,内部可以换行,而且可以使用`${表达式}`来直接得到对应的值,避免多次拼接
+- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>反引号(\`)（称为模板字符串） - 例如:\`hello word\` - 使用此符号时，内部可以换行，而且可以使用`${值}`来直接得到对应的值，避免多次拼接
 
 <span style="color:red;font-weight:600;">字符串常用方法</span>
 
+**以下提到的字符串方法均不改变原字符串的内容**
+
 字符串可以加下标（用中括号表示）,表示取其中字符,只读，低版本IE不支持，x超出下标范围时返回undefined
 
-`.charAt(x)`只读,用法同字符串的下标，任何浏览器都支持，x超出下标范围时返回空字符串
+`String.prototype.charAt(x)`只读,用法同字符串的下标，任何浏览器都支持，x超出下标范围时返回空字符串
 
-`.length`只读,获取字符长的长度
+`String.prototype.length`只读,获取字符长的长度
 
-`.charCodeAt(x)`第x位的编码
+`String.prototype.charCodeAt(x)`第x位的编码
 
 `String.fromCharCode(x)`返回对应编码的字符
 
-`.subString(x,y)`截取字符串,如果x小于y则从第x个字符(含)开始截取到y个字符(不含)；如果x大于y则从第y个字符(含)开始截取到x个字符(不含)，x与y传负数时按0计，若只传入一个数字参数，则从此处一直截取到字符串结尾，返回截取的字符串，不改变原字符串。
+`String.prototype.subString(x[,y])`截取字符串,如果x小于y则从第x个字符(含)开始截取到y个字符(不含)；如果x大于y则从第y个字符(含)开始截取到x个字符(不含)，x与y传负数时按0计，若省略y，则从此处一直截取到字符串结尾，返回截取的字符串。
 
-`.substr(x,y)`截取字符串,从第x个字符(含)开始截取y个字符,y可以省略，省略时截取到末尾。x可以传负数，表示从结尾开始计，返回截取的字符串，不改变原字符串。
+`String.prototype.substr(x[, y])`截取字符串,从第x个字符(含)开始截取y个字符,省略y时截取到末尾。x可以传负数，表示从结尾开始计，返回截取的字符串。
 
-`.slice(x,y)`截取字符串,从第x个字符(含)开始截取到y个字符(不含)，y可以省略，省略时截取到末尾。x与y可以传负数，表示从结尾开始计，返回截取的字符串，不改变原字符串。
+`String.prototype.slice(x[, y])`截取字符串,从第x个字符(含)开始截取到y个字符(不含)，省略y时截取到末尾。x与y可以传负数，表示从结尾开始计，返回截取的字符串。
 
-`.toLowerCase()`字符串转换为小写,无参数，返回转换后的字符串，不改变原字符串。
+`String.prototype.toLowerCase()`字符串转换为小写,无参数，返回转换后的字符串。
 
-`.toUpperCase()`字符串转换为大写,无参数，返回转换后的字符串，不改变原字符串。
+`String.prototype.toUpperCase()`字符串转换为大写,无参数，返回转换后的字符串。
 
-`.toLocaleLowerCase()`按照本地方式将字符串转换为小写,无参数，返回转换后的字符串，不改变原字符串。
+`String.prototype.toLocaleLowerCase()`按照本地方式将字符串转换为小写,无参数，返回转换后的字符串。
 
-`.toLocaleUpperCase()`按照本地方式将字符串转换为大写,无参数，返回转换后的字符串，不改变原字符串。
+`String.prototype.toLocaleUpperCase()`按照本地方式将字符串转换为大写,无参数，返回转换后的字符串。
 
-> 只有少数几种语言（如土耳其语）具有地方特有的大小写映射，所有该方法的返回值通常与不带`Local`的函数一样。
+> 只有少数几种语言（如土耳其语）具有地方特有的大小写映射，所以该方法的返回值通常与不带`Local`的函数一样。
 
-`.split(x)`以参数中的字符串或正则表达式切割字符串,返回一个数组,如果传参为**空字符串**,则逐字符切割,如果不传参数则将整体作为数组的一个元素。
+`String.prototype.split(x)`以参数中的字符串或正则表达式切割字符串,返回一个数组,如果传参为**空字符串**,则逐字符切割,如果不传参数则将整体作为数组的一个元素。
 
-`.indexOf(x,y)`从自左向右第y位开始查询,返回x在字符串中第一次出现的位置,若未出现该字符串,则返回-1，y可以省略表示从第一个字符开始查询
+`String.prototype.indexOf(x[, y])`从自左向右第y位开始查询,返回x在字符串中第一次出现的位置,若未出现该字符串,则返回-1，y可以省略表示从第一个字符开始查询
 
-`.lastIndexOf(x,y)`从自左向右第y位开始向左查询,返回x在字符串中第一次出现的位置,若未出现x,则返回-1，y可以省略表示从最后一个字符开始查询
+`String.prototype.lastIndexOf(x[, y])`从自左向右第y位开始向左查询,返回x在字符串中第一次出现的位置,若未出现x,则返回-1，y可以省略表示从最后一个字符开始查询
 
-`.search(x)`返回x在字符串中第一次出现的位置,x可以为字符串也可以为正则表达式（传正则时不执行全局检索）,若未出现该字符串,则返回-1
+`String.prototype.search(x)`返回x在字符串中第一次出现的位置,x可以为字符串也可以为正则表达式（传正则时不执行全局检索）,若未出现该字符串,则返回-1
 
-`.concat(a,b,c,...)`字符串拼接，将参数a,b,c,...拼接在字符串后面，返回拼接后的新字符串，不改变原字符串
+`String.prototype.concat(a[, b[, c[, ...]]])`字符串拼接，将参数a,b,c,...拼接在字符串后面，返回拼接后的新字符串
 
-`.trimLeft()`去除左侧空格，返回新字符串，不改变原字符串
+`String.prototype.trimLeft()`去除左侧空格，返回新字符串
 
-`.trimRight()`去除右侧空格，返回新字符串，不改变原字符串
+`String.prototype.trimRight()`去除右侧空格，返回新字符串
 
-`.trim()`去除两侧空格，返回新字符串，不改变原字符串
+`String.prototype.trim()`去除两侧空格，返回新字符串
 
-`.replace(旧内容,新内容)`用新内容替换旧内容,返回替换后的字符串,不改变原字符串.
+`String.prototype.replace(旧内容,新内容)`用新内容替换旧内容,返回替换后的字符串
 
 - 旧内容可以是一段字符串,也可以是一个正则表达式，旧内容为字符串时，只替换第一个匹配的内容
 - 新内容可以是一段字符串,也可以是一个函数,如果是函数则用函数的返回值替换就内容,传给函数的第一个实参为替换前的旧内容(形参通常用$0接收)
 
-```javascript
-let str = '这是一段test用的字符串-123-456-789';
-console.log(str[1]); // '是'
-console.log(str.charAt(1)); // '是'
-console.log(str.length); // 25
-console.log(str.charCodeAt(0)); // 36825
-console.log(str.slice(14,17)); // '123'
-console.log(str.toLocaleUpperCase()); // '这是一段TEST用的字符串-123-456-789'
-console.log(str.split('-')); // ['这是一段test用的字符串','123','456','789']
-console.log(str.indexOf('-'); // 13
-console.log(String.fromCharCode(36825)); // '这'
-```
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`String.prototype.padStart(i[, x])`[ES2017]字符串不够i位，则在开头数次添加字符串x，补满位数，返回处理后的字符串，若省略第二个参数，则用空格补全。
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`padStart(数字,字符串)`字符串的方法,如果不够对应位数,则在开头添加参数中指定的字符串,补满位数，返回处理后的字符串，不改变原字符串。
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`String.prototype.padEnd(i[, x])`[ES2017]字符串不够i位，则在结尾数次添加字符串x，补满位数，返回处理后的字符串，若省略第二个参数，则用空格补全。
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`padEnd(数字,字符串)`字符串的方法,如果不够对应位数,则在结尾添加参数中指定的字符串,补满位数，返回处理后的字符串，不改变原字符串。
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`String.prototype.includes(x[, i])`从第i位开始到最后为范围，判断字符串x是否在范围中，存在则返回true，否则返回false
+
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`String.prototype.startsWith(x[, i])`从第i位开始到最后为范围，判断范围内是否已x开头，是则返回true，否则返回false
+
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`String.prototype.endsWith(x[, i])`从第0位开始到第i位（不包括i）为范围，判断范围内是否已x结尾，是则返回true，否则返回false
+
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`String.prototype.repeat(n)`返回将字符串重复n次的新字符串
+
+- 如果n为正小数则向下取整
+- 如果n为小于或等于-1的负数或Infinity则报错
+- 如果n为-1到0之间的小数，则n取0
+- 如果n为字符串，则先转换为数字
 
 **number类型**
 
@@ -364,7 +368,7 @@ JavaScript中的数字有最大值和最小值的限制,对于正数最大值可
 
 - 书写十六进制数字必须以`0x`开头
 - 书写八进制必须以`0`或`0o`开头
-- 书写二进制必须以`0b`开头
+- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>书写二进制必须以`0b`开头
 
 ```javascript
 console.log(017); // 15
@@ -378,6 +382,18 @@ console.log(0o88); // 报错 Uncaught SyntaxError: invalid or unexpected token
 ```
 
 `NaN`也属于数字类型,这种数据通常出现在类型转换时,将无法转换为数字的数据转换为数字类型或者计算类似`0/0`或负数的平方根等情况,就会出现`NaN`这个值.(NaN即Not a Number)
+
+<span style="color:red;font-weight:600;">数字常用方法</span>
+
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Number.isFinite(x)`若x为数字类型且为有穷的数字，则返回true，否则返回false（NaN返回false）
+
+`window.isFinite(x)`将x转换为数字类型，判断转后后的数字是否为有穷的，若是则返回true，否则返回false（NaN返回false）
+
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Number.isNaN(x)`如果x为数字类型，且x为NaN，则返回true，否则返回false
+
+`window.isNaN(x)`判断x转换为数字类型是否是`NaN`，若是则返回true，否则返回false
+
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Number.isInteger(x)`如果x为数字，且x为整数，则返回true，否则返回false
 
 **object类型**
 
@@ -739,6 +755,7 @@ a -= 1; // 相当于 a = a - 1;
 a *= 1; // 相当于 a = a * 1;
 a /= 1; // 相当于 a = a / 1;
 a %= 1; // 相当于 a = a % 1;
+a **= 1； // 相当于 a = a ** 1 [ES6];
 ```
 
 ### 5.2 算数运算符
@@ -1490,23 +1507,27 @@ c();
 
 ## 9.Math对象
 
-- `.abs(x)`返回x的绝对值
-- `.random()`返回0-1之间的随机数(包含0,不包含1)
-- `.round(x)`返回x的四舍五入取整值
-- `.ceil(x)`返回x向上取整(进1取整)的值
-- `.floor(x)`返回x向下取整(舍尾取整)的值
-- `.min(a,b,c,...)`接收多个数字参数,返回最小值（如果不传参返回`Infinity`）
-- `.max(a,b,c,...)`接收多个数字参数,返回最大值（如果不传参返回`-Infinity`）
-- `.pow(a,b)`返回a的b次幂(<span style="color:yellowgreen;font-weight:600;">[ES6]</span>在es6中可以用`a ** b`表示)
-- `.sqrt(x)`返回x的算术平方根
-- `.cos(x)`计算x的余弦值，x是以弧度为单位的数字
-- `.sin(x)`计算x的正弦值，x是以弧度为单位的数字
-- `.tan(x)`计算x的正切值，x是以弧度为单位的数字
-- `.PI`圆周率的值
-- `.LN10`10的自然对数
-- `.LN2`2的自然对数
-- `.LOG10E`以10为底e的对数
-- `.LOG2E`以2为底e的对数
+- `Math.abs(x)`返回x的绝对值
+- `Math.random()`返回0-1之间的随机数(包含0,不包含1)
+- `Math.round(x)`返回x的四舍五入取整值
+- `Math.ceil(x)`返回大于或等于x的最小整数
+- `Math.floor(x)`返回小于或等于x的最大整数
+- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Math.trunc(x)`返回x的整数部分，对于undefined和无法截取证书的值，返回NaN（可以用~~x代替）(传入该函数的参数会被转换为数字类型)
+- `Math.min(a,b,c,...)`接收多个数字参数,返回最小值（如果不传参返回`Infinity`）
+- `Math.max(a,b,c,...)`接收多个数字参数,返回最大值（如果不传参返回`-Infinity`）
+- `Math.pow(a,b)`返回a的b次幂(<span style="color:yellowgreen;font-weight:600;">[ES6]</span>在es6中可以用`a ** b`表示)
+- `Math.sqrt(x)`返回x的算术平方根
+- `Math.cos(x)`计算x的余弦值，x是以弧度为单位的数字
+- `Math.sin(x)`计算x的正弦值，x是以弧度为单位的数字
+- `Math.tan(x)`计算x的正切值，x是以弧度为单位的数字
+- `Math.PI`圆周率的值
+- `Math.LN10`10的自然对数
+- `Math.LN2`2的自然对数
+- `Math.LOG10E`以10为底e的对数
+- `Math.LOG2E`以2为底e的对数
+- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Math.sign(x)`此函数共有5种返回值, 分别是 **1, -1, 0, -0, NaN.** 代表的各是**正数, 负数, 正零, 负零, NaN**(传入该函数的参数会被转换为数字类型)
+- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Math.cbrt(x)`返回x的立方根
+- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Math.hypot(x[, y[, z[, ...]]])`返回所有参数的平方和的平方根
 
 ## 10.定时器
 
