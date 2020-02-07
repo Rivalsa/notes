@@ -106,19 +106,19 @@ V8引擎为解析js代码最快的js引擎
 
 <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`const`定义一个常数,定义时必须赋值,不允许重新赋值，例如`const num = 20;`
 
-`encodeURI(x)`将x进行URL encode编码（ASCII字母和数字以及URL中个分隔符不进行编码）
+`window.encodeURI(x)`将x进行URL encode编码（ASCII字母和数字以及URL中个分隔符不进行编码）
 
-`encodeURIComponent(x)`将x进行URL encode编码（ASCII字母和数字不进行编码）
+`window.encodeURIComponent(x)`将x进行URL encode编码（ASCII字母和数字不进行编码）
 
-`decodeURI(x)`将`encodeURI`编码的x进行解码
+`window.decodeURI(x)`将`window.encodeURI`编码的x进行解码
 
-`decodeURIComponent(x)`将`encodeURIComponent`编码的x进行解码
+`window.decodeURIComponent(x)`将`window.encodeURIComponent`编码的x进行解码
 
-`alert(x)`警告弹窗，x为弹窗的内容
+`window.alert(x)`警告弹窗，x为弹窗的内容
 
-`prompt(x,y)`输入弹窗,x是提示内容,y为在输入框中默认输入的内容,返回输入的字符串,如果点"取消"则返回null
+`window.prompt(x,y)`输入弹窗,x是提示内容,y为在输入框中默认输入的内容,返回输入的字符串,如果点"取消"则返回null
 
-`confirm(x)`确认弹窗,x是提示内容,点击"是"返回true,否则返回false
+`window.confirm(x)`确认弹窗,x是提示内容,点击"是"返回true,否则返回false
 
 `JSON.parse(x)`将JSON格式的字符串x转换为对象，返回这个对象（IE7及其以下不支持）
 
@@ -248,15 +248,15 @@ let {x: c, y: d} = {x: 50, y: 80}; // 相当于let c = 50, d = 80;
 
 ## 3. 控制台输出（console对象）
 
-`.log`普通输出，如有多个参数则依次输出
+`console.log`普通输出，如有多个参数则依次输出
 
-`.info`输出信息
+`console.info`输出信息
 
-*`log`与`info`只是语义上的差别,效果上差别不大,在有有的浏览器中有info的标记,但在Google Chrome中完全一样*
+*`console.log`与`console.info`只是语义上的差别,效果上差别不大,在有有的浏览器中有info的标记,但在Google Chrome中完全一样*
 
-`.warn`输出警告信息,不阻碍代码继续执行
+`console.warn`输出警告信息,不阻碍代码继续执行
 
-`.error`输出错误信息,不阻碍代码继续执行
+`console.error`输出错误信息,不阻碍代码继续执行
 
 *如想阻止代码继续执行,可以使用`throw`抛出错误,例如*
 
@@ -265,7 +265,7 @@ throw 'xxx';
 throw new Error('xxx');
 ```
 
-`.dir`如果输出的是对象,则可以显示对象的所有属性与方法,如果不是对象,则出只能接收一个参数外与`log`无明显差异
+`console.dir`如果输出的是对象,则可以显示对象的所有属性与方法,如果不是对象,则出只能接收一个参数外与`log`无明显差异
 
 ## 4.数据类型
 
@@ -464,7 +464,7 @@ a.age = 16;
 console.log(obj.age); // 16
 ```
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>对象的`keys()`,`values()`与`entries()`方法:这三个方法需要通过`Object.keys(对象)`的方式来调用,分别表示获取对象的键,值以及键值对
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>对象的`Object.keys()`,``Object.values()`与``Object.entries()`方法分别表示获取对象的键,值以及键值对
 
 利用`for 变量 in 对象`可以遍历对象的键（能遍历到键了，自然也能取到值了）。
 
@@ -489,29 +489,29 @@ for(let value of arr){
 }
 ```
 
-`.length`返回数组的长度
+`array.length`返回数组的长度
 
-`.push(x,y,z,...)`向数组中添加新数据x,y,z,...(新增到结尾),返回新增数据后数组的长度.(改变原数组)
+`Array.prototype.push(x,y,z,...)`向数组中添加新数据x,y,z,...(新增到结尾),返回新增数据后数组的长度.(改变原数组)
 
-`.unshift(x,y,z,...)`向数组中添加新数据x,y,z,...(新增到开头),返回新增数据后数组的长度.(改变原数组)
+`Array.prototype.unshift(x,y,z,...)`向数组中添加新数据x,y,z,...(新增到开头),返回新增数据后数组的长度.(改变原数组)
 
-`.pop()`无参数,把原数组的最后一位删掉,改变原数组,返回被删除的数据
+`Array.prototype.pop()`无参数,把原数组的最后一位删掉,改变原数组,返回被删除的数据
 
-`.shift()`无参数,把原数组的第一位删掉,改变原数组,返回被删除的数据
+`Array.prototype.shift()`无参数,把原数组的第一位删掉,改变原数组,返回被删除的数据
 
-`.splice(a,b[,data[,data[,data[,...]]]])`从数组下标为a的位开始删除b个数据,再增加数据data,改变原数组,返回由被删除的数据组成的数组(若未删除则返回空数组)
+`Array.prototype.splice(a,b[,data[,data[,data[,...]]]])`从数组下标为a的位开始删除b个数据,再增加数据data,改变原数组,返回由被删除的数据组成的数组(若未删除则返回空数组)
 
 - a可以传入负数,表示从末尾的某处开始删除
 
-`.indexOf(x,y)`从下标为y处开始查找数组中的第一个数据x,返回数据下标,若未找到则返回-1，省略y则从第一个元素开始查找
+`Array.prototype.indexOf(x,y)`从下标为y处开始查找数组中的第一个数据x,返回数据下标,若未找到则返回-1，省略y则从第一个元素开始查找
 
-`lastIndexOf(x,y)`从下标为y处开始反向查找数组中的第一个数据x,返回数据下标,若未找到则返回-1，省略y则从最后一个元素开始查找
+`Array.prototype.lastIndexOf(x,y)`从下标为y处开始反向查找数组中的第一个数据x,返回数据下标,若未找到则返回-1，省略y则从最后一个元素开始查找
 
-`.slice(x,y)`截取数组,从下标为x的数据(含)开始到下标为y的数据(不含)结束,如果省略y则截取到最后,不修改原数组,返回得到的新数组
+`Array.prototype.slice(x,y)`截取数组,从下标为x的数据(含)开始到下标为y的数据(不含)结束,如果省略y则截取到最后,不修改原数组,返回得到的新数组
 
 - x与y均可以传入负数,表示从末尾开始计
 
-`.sort(x)`当不传入参数x时将数组中的数据从小到大排列,改变原数组,返回排序后的数组
+`Array.prototype.sort(x)`当不传入参数x时将数组中的数据从小到大排列,改变原数组,返回排序后的数组
 
 *x可以为函数,此处不详细写明,但有一种常用用法,举例如下*
 
@@ -522,11 +522,11 @@ arr.sort(function(a,b){return b-a;});
 console.log(arr)
 ```
 
-`.reverse()`颠倒顺序,改变原数组,返回改变后的数组
+`Array.prototype.reverse()`颠倒顺序,改变原数组,返回改变后的数组
 
-`.concat(x,y,z,...)`将x,y,z...拼接在数组后面,x,y,z...既可以是一个数组,也可以是其他数据类型的新数据,不改变原有数组,返回新数组
+`Array.prototype.concat(x,y,z,...)`将x,y,z...拼接在数组后面,x,y,z...既可以是一个数组,也可以是其他数据类型的新数据,不改变原有数组,返回新数组
 
-`.join(x)`用x将数组的元素连接在一起（不传x则默认为逗号）,不修改原数组,返回拼接好的字符串
+`Array.prototype.join(x)`用x将数组的元素连接在一起（不传x则默认为逗号）,不修改原数组,返回拼接好的字符串
 
 `Array.isArray(x)`判断x是否是数组,如果是返回true,否则返回false
 
@@ -543,13 +543,13 @@ console.log(arr)
 
 *类数组`NodeList`支持使用`forEach`*
 
-`.map(x)`数组的映射(遍历数组并产生新数组,新数组的元素是x中的返回值),返回值为新数组,不改变原数组.x是一个function,函数执行时会传入三个参数(需要选中设置形参接收),分别是item,index,arr
+`Array.prototype.map(x)`数组的映射(遍历数组并产生新数组,新数组的元素是x中的返回值),返回值为新数组,不改变原数组.x是一个function,函数执行时会传入三个参数(需要选中设置形参接收),分别是item,index,arr
 
 - item为当前的数据
 - index为当前的序号
 - arr为数组本身(很少使用)
 
-`.filter(x)`数组的筛选(遍历数组,并产生新数组,新数组的元素是x返回为true时对应原数组的元素),返回值为新数组,不改变原数组.x是一个function,函数自行是会传入三个参数(需要选中设置形参接收),分别是item,index,arr
+`Array.prototype.filter(x)`数组的筛选(遍历数组,并产生新数组,新数组的元素是x返回为true时对应原数组的元素),返回值为新数组,不改变原数组.x是一个function,函数自行是会传入三个参数(需要选中设置形参接收),分别是item,index,arr
 
 - item为当前的数据
 - index为当前的序号
@@ -679,11 +679,11 @@ Symbol的参数是它的标识，只是便于开发者区分，没有实际意�
 - 若x为`null`,则返回`0`
 - 若x为`undefined`或对象,则先转换为字符串,再将得到的字符串按照上述规则转换为数字,返回得到的数字
 
-`parseInt(string, radix)`将以数字开头的字符串转换为整数数字(第一个非数字字符后面的内容不再解析,正负号算作数字),返回获得的结果,第二个参数为进制的基数,表示第一个参数是以多少进制表示的
+`window.parseInt(string, radix)`将以数字开头的字符串转换为整数数字(第一个非数字字符后面的内容不再解析,正负号算作数字),返回获得的结果,第二个参数为进制的基数,表示第一个参数是以多少进制表示的
 
-`parseFloat(x)`将以数字开头的字符串转换为数字(第一个非数字且非第一个`.`字符后面的内容不再解析,正负号算作数字),返回获得的结果
+`window.parseFloat(x)`将以数字开头的字符串转换为数字(第一个非数字且非第一个`.`字符后面的内容不再解析,正负号算作数字),返回获得的结果
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>在ES6中`parseInt`和`parseFloat`可以用`Number.parseInt`和`Number.parseFloat`代替
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>在ES6中`window.parseInt`和`window.parseFloat`可以用`Number.parseInt`和`Number.parseFloat`代替
 
 #### 4.4.2 转换为字符串
 
@@ -1111,7 +1111,7 @@ aaa:for(var i = 0; i < 5; i++) {
 
 ## 7.改变this指向
 
-`call`函数加`.call()`后,会立即执行函数,传入的第一个实参为函数中的this指向(原参数对应写在后面)
+`Function.prototype.call`函数加`.call()`后,会立即执行函数,传入的第一个实参为函数中的this指向(原参数对应写在后面)
 例如:
 
 ```javascript
@@ -1122,7 +1122,7 @@ function fn(a, b){
 fn.call(document, 5, 6);
 ```
 
-`apply`函数加`.apply`后,会立即执行函数,传入的第一个实参为函数中的this指向(原参数作为数组在第二个参数传入)(无须改变this指向时可以在第一个参数传null)
+`Function.prototype.apply`函数加`.apply`后,会立即执行函数,传入的第一个实参为函数中的this指向(原参数作为数组在第二个参数传入)(无须改变this指向时可以在第一个参数传null)
 
 例如:
 
@@ -1134,7 +1134,7 @@ function fn(a, b){
 fn.apply(document, [5, 6]);
 ```
 
-`bind`*[不兼容IE8及其以下]*函数加`.bind`后,不执行这个函数,其返回值为新函数,但新函数的内容与原函数相同,新函数的this指向为参数中规定的指向(如果传入函数的参数,则可以固定参数,期返回的函数无须再传此参数也无法修改,传参的方法与`call`相同)(无须改变this指向时可以在第一个参数传null)
+`Function.prototype.bind`*[不兼容IE8及其以下]*函数加`.bind`后,不执行这个函数,其返回值为新函数,但新函数的内容与原函数相同,新函数的this指向为参数中规定的指向(如果传入函数的参数,则可以固定参数,期返回的函数无须再传此参数也无法修改,传参的方法与`call`相同)(无须改变this指向时可以在第一个参数传null)
 
 ```javascript
 function fn(a, b){
@@ -1531,9 +1531,9 @@ c();
 
 ## 10.定时器
 
-`setInterval(a,b,c,d,e,...)`设置重复定时器,参数a为一个函数（或JS语句字符串，不建议）,当定时器时间到后执行函数或字符串中的语句,参数b为定时时间,c,d,e,...为给a函数传的实参，返回定时器的编号。（除了第一个参数外，均是可选的）
+`window.setInterval(a,b,c,d,e,...)`设置重复定时器,参数a为一个函数（或JS语句字符串，不建议）,当定时器时间到后执行函数或字符串中的语句,参数b为定时时间,c,d,e,...为给a函数传的实参，返回定时器的编号。（除了第一个参数外，均是可选的）
 
-`setTimeout(a,b,c,d,e,...)`设置单次定时器,参数a为一个函数（或JS语句字符串，不建议）,当定时器时间到后执行函数或字符串中的语句,参数b为定时时间,c,d,e,...为给a函数传的实参,返回定时器的编号。（除了第一个参数外，均是可选的）
+`window.setTimeout(a,b,c,d,e,...)`设置单次定时器,参数a为一个函数（或JS语句字符串，不建议）,当定时器时间到后执行函数或字符串中的语句,参数b为定时时间,c,d,e,...为给a函数传的实参,返回定时器的编号。（除了第一个参数外，均是可选的）
 
 ```javascript
 setTimeout((...arr) => {
@@ -1541,15 +1541,15 @@ setTimeout((...arr) => {
 }, 1000, null, 2, 'a', true, [1,2,3,false], {pet: 'cat', name: 'Tom'});
 ```
 
-`clearInterval(a)`取消编号为a的重复定时器
+`window.clearInterval(a)`取消编号为a的重复定时器
 
-`clearTimeout(a)`取消编号为a的单次定时器
+`window.clearTimeout(a)`取消编号为a的单次定时器
 
 *实际上，`clearInterval`也可以取消`setTimeout`定时器，`clearTimeout`也可以取消setInterval定时器*
 
-`requestAnimationFrame(a)`按照刷新率执行函数a,相当于一个重复定时器,时间定为刷新率
+`window.requestAnimationFrame(a)`按照刷新率执行函数a,相当于一个重复定时器,时间定为刷新率
 
-`cancelAnimationFrame(a)`取消编号为a的`requestAnimationFrame`定时器
+`window.cancelAnimationFrame(a)`取消编号为a的`requestAnimationFrame`定时器
 
 ## 11.日期对象
 
@@ -1557,49 +1557,49 @@ setTimeout((...arr) => {
 
 *Date后面加括号可以指定时间(年,月,日,时,分,秒),月份从0起,注意减一,或者括号中可以直接写以毫秒为单位的时间戳,或者传格式为"年/月/日 时:分:秒"的字符串("/"可以替换为"-")).传字符串时月份不必考虑加减1的问题*
 
-`.toLocalString()`转换为本地格式的日期时间
+`Date.prototype.toLocalString()`转换为本地格式的日期时间
 
-`.toLocalDateString()`转换为本地格式的日期
+`Date.prototype.toLocalDateString()`转换为本地格式的日期
 
-`.toLocalTimeString()`转换为本地格式的时间
+`Date.prototype.toLocalTimeString()`转换为本地格式的时间
 
-`.getFullYear()`获取完整年份
+`Date.prototype.getFullYear()`获取完整年份
 
-`.getYear()`获取年份(19xx年用两位数表示,后续会超过100,不常用)
+`Date.prototype.getYear()`获取年份(19xx年用两位数表示,后续会超过100,不常用)
 
-`.getMonth()`获取月份,0-11月,所以通常要加1
+`Date.prototype.getMonth()`获取月份,0-11月,所以通常要加1
 
-`.getDay()`获取星期,从零开始,星期日为0
+`Date.prototype.getDay()`获取星期,从零开始,星期日为0
 
-`.getDate()`获取日
+`Date.prototype.getDate()`获取日
 
-`.getHours()`获取时
+`Date.prototype.getHours()`获取时
 
-`.getMinutes()`获取分
+`Date.prototype.getMinutes()`获取分
 
-`.getSeconds()`获取秒
+`Date.prototype.getSeconds()`获取秒
 
-`.getMilliSeconds()`获取毫秒
+`Date.prototype.getMilliSeconds()`获取毫秒
 
-`.toUTCSting()`转换为UTC时间,返回值为字符串
+`Date.prototype.toUTCSting()`转换为UTC时间,返回值为字符串
 
-`.getTime()`转换为以毫秒为单位的时间戳(从1970年1月1日0时整开始计算)
+`Date.prototype.getTime()`转换为以毫秒为单位的时间戳(从1970年1月1日0时整开始计算)
 
-`.getTimezoneOffset()`获取GMT时间与本地时间相差的分钟数(GMT时间减去本地时间)
+`Date.prototype.getTimezoneOffset()`获取GMT时间与本地时间相差的分钟数(GMT时间减去本地时间)
 
-`setFullYear(x)`将年份设置为x
+`Date.prototype.setFullYear(x)`将年份设置为x
 
-`setMonth(x)`将月份设置为x,范围为0-11
+`Date.prototype.setMonth(x)`将月份设置为x,范围为0-11
 
-`setDate(x)`将日设置为x
+`Date.prototype.setDate(x)`将日设置为x
 
-`setHours(x)`将小时设置为x
+`Date.prototype.setHours(x)`将小时设置为x
 
-`setMinutes(x)`将分钟设置为x
+`Date.prototype.setMinutes(x)`将分钟设置为x
 
-`setSeconds(x)`将秒设置为x
+`Date.prototype.setSeconds(x)`将秒设置为x
 
-`setMilliseconds(x)`将毫秒设置为x
+`Date.prototype.setMilliseconds(x)`将毫秒设置为x
 
 日期对象可以相减,返回值为两个日期相差的毫秒数(相当于时间戳相减)
 
