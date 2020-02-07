@@ -574,7 +574,7 @@ fn(实参1,实参2,...,实参n);
 ```
 
 - 实参个数可以等于形参个数,也可以大于形参个数,也可以小于形参个数.传参时,形参与实参按顺序一一对应,对于形参多于实参的情况,未传值的形参值为undefined,对于实参多于形参的情况,在函数中无法通过形参拿到值,但可以通过`arguments`(实参列表)来拿到值
-- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>在ES6中可以在形参中通过等号来设置默认值，当形参对应的实参为undefined时，将使用默认值
+- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>在ES6中可以在形参中通过等号来设置默认值，当对应的实参为undefined时，将使用默认值
 
 ```javascript
 function fn(形参 = 默认值) {
@@ -582,34 +582,37 @@ function fn(形参 = 默认值) {
 }
 ```
 
-*ES5中无法直接设置默认值，通常通过如下方案代替：*
+> *ES5中无法直接设置默认值，通常通过如下方案代替：*
+> ```javascript
+> function fn(形参) {
+>     // 方案一
+>     形参 = 形参 || 默认值;
+>     // 方案二
+>     形参 === undefined && 形参 = 默认值;
+>     ...
+> }
+> ```
+>*<span style="color:yellowgreen;font-weight:600;">[ES6]</span>函数的形参可以通过解构赋值的方式来接收实参，在解构赋值时设置默认值的方式请参考《[利用解构赋值给函数传参时的默认值问题](https://www.rivalsa.cn/s/article/Frontend/defval?utm=SlPlrabkuaDnrJTorrA=)》*
+
+- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>在es6中函数有`function.length`和`function.name`属性,length表示第一个有默认值的形参之前的形参的个数（不包括rest参数），name为函数的名字
 
 ```javascript
-function fn(形参) {
-    形参 = 形参 || 默认值;
-    ...
-}
-```
-
-*<span style="color:yellowgreen;font-weight:600;">[ES6]</span>函数的形参可以通过解构赋值的方式来接受实参，在解构赋值时设置默认值的方式请参考《[利用解构赋值给函数传参时的默认值问题](https://www.rivalsa.cn/s/article/Frontend/defval?utm=SlPlrabkuaDnrJTorrA=)》*
-
-- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>在es6中函数有length和name属性,length表示形参的个数,name为函数的名字
-
-```javascript
-function fn(a,b,c) {};
+function fn(a,b,c = 0, d) {};
 console.log(fn.length, fn.name); // 3 "fn"
 ```
 
 - 在函数中可以调用函数自身，这种方式成为**递归**
+- 函数中存在一个`this`，会指向**调用函数的对象**,函数直接加括号执行属于window调用的,但在严格模式下,函数加括号直接执行this指向undefined
+- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>从ES2017开始，允许函数实参有尾逗号
+- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>箭头函数
 
-- 函数中存在一个`this`，会指向<span style="color:red;font-weight:600;">调用函数的对象</span>,函数直接加括号执行属于window调用的,但在严格模式下,函数加括号直接执行this指向undefined
-- 箭头函数
-
+> 箭头函数不是函数声明，只是一个函数表达式
+>
 > 用`=>`的方式来定义函数，例如：
 >
 > ```javascript
 > let a = (x, y) => {
->  return x + y;
+> return x + y;
 > }
 > a();
 > ```
@@ -631,10 +634,10 @@ console.log(fn.length, fn.name); // 3 "fn"
 >
 > ```javascript
 > document.addEventListener("click",function(){
->     console.log(this); // this指向document
+>  console.log(this); // this指向document
 > });
 > document.addEventListener("click",() => {
->     console.log(this); // this指向window
+>  console.log(this); // this指向window
 > });
 > ```
 
@@ -885,11 +888,11 @@ var b = alert("hhh") && 0; // 弹窗，b为undefined
 
 更多关于位运算的知识,请参考[《JavaScript中的位运算》](https://www.rivalsa.cn/s/article/Frontend/bit_operation?utm=SlPlrabkuaDnrJTorrA=)
 
-### <span style="color:yellowgreen;font-weight:600;">[ES6]</span>5.8 扩展运算符
+### <span style="color:yellowgreen;font-weight:600;">[ES6]</span>5.8 ...运算符
 
-扩展运算符用`...`表示,将数组拆分为用逗号分隔的参数序列
+`...`运算符也称为扩展运算符、重置运算符、剩余运算符、rest运算符、rest参数等
 
-还可以作为函数的参数接收多于的实参,例如:
+将数组拆分为用逗号分隔的参数序列或作为函数的参数接收多于的实参，例如：
 
 ```javascript
 let a = [1,2,'3',true];
