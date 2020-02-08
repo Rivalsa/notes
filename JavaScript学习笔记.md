@@ -464,7 +464,7 @@ a.age = 16;
 console.log(obj.age); // 16
 ```
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>对象的`Object.keys()`,``Object.values()`与``Object.entries()`方法分别表示获取对象的键,值以及键值对
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>对象的`Object.keys()`,`Object.values()`与`Object.entries()`方法分别表示获取对象的键,值以及键值对
 
 利用`for 变量 in 对象`可以遍历对象的键（能遍历到键了，自然也能取到值了）。
 
@@ -524,36 +524,52 @@ console.log(arr)
 
 `Array.prototype.reverse()`颠倒顺序,改变原数组,返回改变后的数组
 
-`Array.prototype.concat(x,y,z,...)`将x,y,z...拼接在数组后面,x,y,z...既可以是一个数组,也可以是其他数据类型的新数据,不改变原有数组,返回新数组
+`Array.prototype.concat(x, y, z, ...)`将x,y,z...拼接在数组后面,x,y,z...既可以是一个数组,也可以是其他数据类型的新数据,不改变原有数组,返回新数组
 
 `Array.prototype.join(x)`用x将数组的元素连接在一起（不传x则默认为逗号）,不修改原数组,返回拼接好的字符串
 
 `Array.isArray(x)`判断x是否是数组,如果是返回true,否则返回false
 
-`array.forEach(function(currentValue, index, arr), thisValue)`数组的遍历
+`Array.prototype.forEach(function(currentValue, index, arr)[, thisValue])`数组的遍历
 
 - `currentValue`为当前的数据
 - `index`为当前的序号
-- `arr`为数组本身(很少使用)
+- `arr`为数组本身
 - `thisValue`为函数中`this`的指向
 
-*forEach不兼容IE8及其以下*
+> forEach不兼容IE8及其以下
+>
+> 类数组`HTMLCollection`不支持使用`forEach`
+>
+> 类数组`NodeList`支持使用`forEach`
 
-*类数组`HTMLCollection`不支持使用`forEach`*
-
-*类数组`NodeList`支持使用`forEach`*
-
-`Array.prototype.map(x)`数组的映射(遍历数组并产生新数组,新数组的元素是x中的返回值),返回值为新数组,不改变原数组.x是一个function,函数执行时会传入三个参数(需要选中设置形参接收),分别是item,index,arr
-
-- item为当前的数据
-- index为当前的序号
-- arr为数组本身(很少使用)
-
-`Array.prototype.filter(x)`数组的筛选(遍历数组,并产生新数组,新数组的元素是x返回为true时对应原数组的元素),返回值为新数组,不改变原数组.x是一个function,函数自行是会传入三个参数(需要选中设置形参接收),分别是item,index,arr
+`Array.prototype.map(function(item,index,arr)[, thisValue])`数组的映射(遍历数组并执行函数产生新数组,新数组的每个元素是每次执行函数的返回值),返回值为新数组,不改变原数组.
 
 - item为当前的数据
 - index为当前的序号
-- arr为数组本身(很少使用)
+- arr为数组本身
+- `thisValue`为函数中`this`的指向
+
+`Array.prototype.filter(function(item, index, arr)[, thisValue])`数组的筛选(遍历数组并执行函数产生新数组,新数组的元素是每次执行函数返回为true时对应原数组的元素),返回值为新数组,不改变原数组.
+
+- item为当前的数据
+- index为当前的序号
+- arr为数组本身
+- `thisValue`为函数中`this`的指向
+
+`Array.prototype.some(function(item, index, arr)[, thisValue])`遍历数组，并执行函数，每次执行函数的返回值中如果有一个返回true则整个函数返回true，否则返回false
+
+- item为当前的数据
+- index为当前的序号
+- arr为数组本身
+- `thisValue`为函数中`this`的指向
+
+`Array.prototype.every(function(item, index, arr)[, thisValue])`遍历数组，并执行函数，每次执行函数的返回值中全都返回true则整个函数返回true，否则返回false
+
+- item为当前的数据
+- index为当前的序号
+- arr为数组本身
+- `thisValue`为函数中`this`的指向
 
 ---
 
@@ -601,7 +617,8 @@ function fn(a,b,c = 0, d) {};
 console.log(fn.length, fn.name); // 3 "fn"
 ```
 
-- 在函数中可以调用函数自身，这种方式成为**递归**
+- 在函数中可以调用函数自身，这种方式称为**递归**
+- 参数为函数，或返回值为函数的函数称为**高阶函数**
 - 函数中存在一个`this`，会指向**调用函数的对象**,函数直接加括号执行属于window调用的,但在严格模式下,函数加括号直接执行this指向undefined
 - <span style="color:yellowgreen;font-weight:600;">[ES6]</span>从ES2017开始，允许函数实参有尾逗号
 - <span style="color:yellowgreen;font-weight:600;">[ES6]</span>箭头函数
@@ -902,6 +919,15 @@ let fn = function(a, b, ...c) {
 }
 fn(1,2,3,4,5,6); // [3,4,5,6]
 ```
+
+`...`运算符后面也可以通过一个表达式来得到一个数组，例如：
+
+```javascript
+let x = 10;
+console.log(...x > 5 ? [1, 2, 3] : ['a', 'b', 'c']); // ...运算符后面整个表达式的优先级高于...运算符的优先级
+```
+
+
 
 ### 5.9 运算符的优先级
 
