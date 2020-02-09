@@ -1811,7 +1811,7 @@ map.set(obj,"qwe");
 console.log(map.get(obj),map.get(true));
 ```
 
-## 14. <span style="color:yellowgreen;font-weight:600;">[ES6]</span>回调地狱及Promise
+## 14. <span style="color:yellowgreen;font-weight:600;">[ES6]</span>回调地狱及window.Promise
 
 如果代码中有多处异步代码(异步中还有异步),例如:
 
@@ -1830,7 +1830,7 @@ console.log(1);
 
 可以看到,上述代码有横向发展的趋势,看起来不好看,也不利于代码维护.通常把这种情况称为**回调地狱**.
 
-**Promise**
+**window.Promise**
 
 `Promise`是一个构造函数(类),需要用`new`来创建一个对象,创建这个对象时,需要两个参数,这两个参数在内部会被定义为函数,第一个表示成功(一般使用resolve),第二个表示失败(一般使用reject),当这部分代码执行完毕后,需要根据状态调用`resolve`或`reject`,调用`resolve`后会停止当前的执行,并执行属性`then`传入的函数的第一个参数,调用`reject`或会停止档期至今,并执行属性`then`传入的第二个参数或属性`catch`传入的参数
 
@@ -1899,7 +1899,296 @@ new Promise((resolve,reject) => {
 });
 ```
 
-## 15.DOM操作
+## 15.正则表达式
+
+可以用来高效便捷的处理字符串
+
+### 15.1 定义正则表达式
+
+**双斜杠定义**
+
+例如:`let reg = /abc/;`
+
+**利用`RegExp`定义**
+
+例如`let reg = new RegExp("x");`括号中可以传入一个字符串变量,也可以直接传入字符串(字符串的内容为正则表达式)
+
+### 15.2 正则表达规则
+
+#### 15.2.1 转义字符
+
+普通转移字符`\`(将有特殊意义的字符变为普通字符)
+
+`\n`匹配换行符
+
+`\t`匹配制表符(tab)
+
+`\r`
+
+`\d`匹配所有数字字符(1位)
+
+`\D`匹配除了数字字符外的所有字符
+
+`\s`匹配如下字符:
+
+- `(空格字符)`
+- `\t`
+- `\n`
+- `\r`
+
+`\S`匹配除了下面字符外的所有字符
+
+- `(空格字符)`
+- `\t`
+- `\n`
+- `\r`
+
+`\w`匹配如下字符:
+
+- 数字
+- 字母
+- 下划线
+
+`\W`匹配除了下面字符外的所有字符
+
+- 数字
+- 字母
+- 下划线
+
+`\b`匹配如下内容:
+
+- 起始位置
+- 结束位置
+- `\W`能匹配的所有字符
+
+`\B`匹配除了下面内容外的所有内容
+
+- 起始位置
+- 结束位置
+- `\W`能匹配的所有字符
+
+#### 15.2.2 标识
+
+*写在正则表达式结尾/的后面,可以写多个,不区分先后顺序,在使用RegExp定义时,标识以字符串形式作为第二个参数传入*
+
+`g`全局,表示在整个字符串中匹配(而不是只匹配到第一个就结束)
+
+`i`不区分大小写
+
+`m`换行匹配
+
+#### 15.2.3 量词
+
+*写在对应规则后面*
+
+`{n}`n个
+
+`{n,m}`最少n个,最多m个,包括n和m
+
+`{n,}`最少n个,包括n
+
+`+`最少1个,等价于`{1,}`
+
+`*`最少0个,等价于`{0,}`
+
+`?`0个或1个,等价于`{0,1}`
+
+**量词的贪婪和惰性**
+
+贪婪(默认):尽量按多的去匹配
+
+惰性(在量词后面加`?`表示惰性量词):尽量按少的去匹配
+
+#### 15.2.4 子项
+
+使用小括号可以将里面的内容作为一个子项
+
+#### 19.2.5 字符集
+
+用中括号表示
+
+- 表示"或者"
+
+  - `[abc]`表示字符`a`或字符`b`或字符`c`
+  - `[abc]{2}`表示`aa`或`ab`或`ac`或`ba`或`bb`或`bc`或`ca`或`cb`或`cc`
+
+- 字符集中的`-`表示一个区间(按Unicode码的区间)
+
+  - `[0-5]`表示`0`到`5`之间的任意数字
+  - [a-z]表示所有小写字母
+  - [A-Z]表示所有大写字母
+  - [0-<]表示所有数字或冒号或分号或小于号(Unicode码中冒号和分号和小于号是9后面紧接着的三个)
+
+  *在字符集之外`-`没有特殊意义*
+
+- 如果字符集中第1个字符是`^`整个子项表示排除
+
+  - `[^abc]`表示除了字符a和字符b和字符c外的任意字符
+
+- 字符集中小括号/大括号/正斜杠/问号/星号/加号等无特殊含义
+
+#### 15.2.6 其他有特殊意义的字符
+
+- `^`表示起始位置
+- `$`表示结束位置
+- `.`表示匹配除了以下内容的任意字符
+  - `\n`
+  - `\r`
+- `|`表示或者(前后是两个独立的正则)
+
+#### 15.2.7 捕获组
+
+`\数字x`表示第x个子项,再次匹配第x个子项
+
+*并不是第x个子项的匹配规则,而是第x个子项的内容*
+
+#### 15.2.8 断言
+
+`(?=xx)`(不算做子项)某字符后面要含有xx字符,但匹配到的东西不包含xx
+
+`(?!xx)`(不算做子项)某字符后面要不含有xx字符,但匹配到的东西不包含xx
+
+`(?<=xx)`(不算做子项)某字符前面要含有xx字符,但匹配到的东西不包含xx
+
+`(?<!xx)`(不算做子项)某字符前面要不含有xx字符,但匹配到的东西不包含xx
+
+### 15.3 使用正则表达式的方法
+
+**正则表达式的方法**
+
+`.test(字符串)`检查字符串中是否存在对应正则规则,存在则返回`true`否则返回`false`
+
+`.exec(字符串)`返回第一次出现对应规则的字符串有关的对象,若为匹配成功则返回null(不常用)
+
+**字符串的方法**
+
+`.match(正则表达式)`返回字符串中匹配成功的字符串组成的数组(数组有匹配的内容与子项组成,在规则中使用全局`g`则组成的数组中不包含子项)
+
+### 15.4 RegExp对象
+
+RegExp中存储了上一次的子项,可以通过这个对象直接拿到数据.(可以先test然后通过RegExp得到子项)
+
+## 16.ajax
+
+> ajax即“Asynchronous Javascript And XML”（异步 JavaScript 和 XML），是指一种创建交互式网页应用的网页开发技术。 
+
+ajax可以在不刷新页面的前提下向后端 发送/请求 数据，在开发中是必然会用的技术。
+
+### 16.1 JavaScript原生ajax
+
+```javascript
+let xhr;
+if (window.XMLHttpRequest) {　 // 标准浏览器
+    xhr = new XMLHttpRequest();
+} else if (window.ActiveXObject) { // 低版本IE
+    try {
+        xhr = new ActiveXObject('Msxml2.XMLHTTP');
+    } catch () {
+            xhr = new ActiveXObject('Microsoft.XMLHTTP');
+    }
+}
+if (xhr) {
+    xhr.onreadystatechange = onReadyStateChange;
+    xhr.open('POST', '/url', true);
+    // 设置 Content-Type 为 application/x-www-form-urlencoded
+    // 以表单的形式传递数据
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.send('username=admin&password=root');
+}
+
+// onreadystatechange 方法
+function onReadyStateChange() {
+    /*
+    xhr.readyState：
+        0: 请求未初始化
+        1: 服务器连接已建立
+        2: 请求已接收
+        3: 请求处理中
+        4: 请求已完成，且响应已就绪
+     */
+    if (xhr.readyState === 4) {
+        // 请求处理到了最后一步
+        //xhr.status HTTP状态码
+        if (xhr.status >= 200 && xhr.status < 300) {
+            console.log(xhr.responseText);//xhr.responseText请求返回的文本内容
+        } else {
+            console.log('There was a problem with the request.');
+        }
+    } else {
+        // 请求还没处理到最后一步
+        console.log('still not ready...');
+    }
+}
+```
+
+### 16.2 jQuery的ajax
+
+```javascript
+// 列出部分参数
+$.ajax({
+    method : "POST" // 请求方式
+    ,url : "/url" // 请求地址
+    ,data : {} // 需要发送的数据
+    ,dataType : "json" // 对请求返回的数据预处理
+    ,success : function(data){} // 请求成功的回调函数
+    ,error : function(err){} // 请求失败的回调函数
+});
+```
+
+### 16.3 axios
+
+**发送单个请求**
+
+```javascript
+axios({
+	method : "post",
+    url : "http://example.com",
+    data : {name:"Rivalsa",age:18}
+}).then(res => {
+    console.log(res);
+}).catch(err => {
+    console.log(err);
+});
+```
+
+**发送多个请求**
+
+同时发送两个请求,全都处理完成后才执行回调
+
+```javascript
+function reqA(){
+    return axios.get("url1");
+}
+function reqB(){
+    return axios.get("url2");
+}
+axios.all([ reqA(),reqB() ]).then(res => {
+    console.log(res);
+});
+```
+
+### 16.4 跨域问题
+
+发送ajax请求时需要确保当前页面与请求页面同源(必须协议\\主机\\端口号全都相同),否则需要后端发送相应的HTTP Header才能正常访问.
+
+### 16.5 jsonp
+
+由于HTML页面中调用JavaScript是没有同源限制的,所以可以利用此方法发送数据,举例如下:
+
+假设:请求地址为https://example.com返回数据为`rivalsa({"name":"rivalsa","age":18});`
+
+则前端请求为:
+
+```html
+<script>
+    let rivalsa = m => {
+        console.log(m);
+    };
+</script>
+<script src="https://example.com"></script>
+```
+
+## 17.DOM操作
 
 > DOM（文档对象模型 document object model）是针对HTML文档的一个API.
 > DOM 描绘了一个层次化的节点树，允许开发人员添加、移除和修改页面元素(元素的文字也是DOM的一个节点)
@@ -1918,7 +2207,7 @@ DOM节点共有12种
 
 `attributes`为节点的属性
 
-### 15.1 获取DOM对象基础方式
+### 17.1 获取DOM对象基础方式
 
 **通过ID获取**
 
@@ -1963,7 +2252,7 @@ element.querySelectorAll('选择器') // 返回类数组NodeList, element的后�
 
 获取head:`document.head`
 
-### 15.2 操作DOM的属性及内容
+### 17.2 操作DOM的属性及内容
 
 **操作标签原有属性**
 
@@ -2164,7 +2453,7 @@ innerHTML 与 innerText 的区别：
 
 *低版本火狐浏览器不支持`innerText`,用`textContent`代替*
 
-### 15.3 更多DOM操作
+### 17.3 更多DOM操作
 
 `.childNodes`获取元素的所有子节点(主流浏览器是获取所有子节点,低版本IE浏览器是获取所有子元素节点)
 
@@ -2233,9 +2522,9 @@ innerHTML 与 innerText 的区别：
 - 主流浏览器:获取上一个兄弟节点
 - IE9及其以下:获取上一个兄弟元素节点
 
-## 16. DOM事件
+## 18. DOM事件
 
-### 16.1 0级事件
+### 18.1 0级事件
 
 *采用赋值的方式绑定函数,新事件替代旧事件*
 
@@ -2320,7 +2609,7 @@ element.event = fun;
 
 `onscroll`滚动条滚动事件
 
-### 16.2 2级事件
+### 18.2 2级事件
 
 *2级事件的绑定与解绑方式与0级事件不同，所有0级事件都可以在2级事件中使用*
 
@@ -2338,7 +2627,7 @@ element.event = fun;
 
 **DOM 3级事件的绑定与解绑方式与DOM 2级事件相同，只是增加了一些新的事件，在此暂不列出。**
 
-### 16.3 事件捕获与事件冒泡
+### 18.3 事件捕获与事件冒泡
 
 当采用2级事件绑定事件函数时，第三个参数为true则事件绑定在捕获阶段。
 
@@ -2455,11 +2744,11 @@ element.event = fun;
 
 **阻止事件冒泡的方法请参考事件对象一节**
 
-### 16.4事件委托
+### 18.4事件委托
 
 把事件加给父级,利用事件对象中的`target`来判断是哪个元素触发的。
 
-### 16.5 事件对象
+### 18.5 事件对象
 
 在主流浏览器中：当事件被触发时，会默认传一个实参，为事件对象,可以在事件函数中设置形参(通常用e或ev)接收
 
@@ -2505,7 +2794,7 @@ element.event = fun;
 
 `keyCode`按键的键值（也有用`witch`的）
 
-## 17.BOM相关
+## 19.BOM相关
 
 **BOM事件**
 
@@ -2547,7 +2836,7 @@ element.event = fun;
 
 `screen`屏幕相关信息对象
 
-## 18.元素各种尺寸和距离
+## 20.元素各种尺寸和距离
 
 `window.innerHeight`浏览器窗口高度(带窗口边框)
 
@@ -2590,293 +2879,3 @@ element.event = fun;
 *`document.documentElement.scrollTop`在老版本的Google Chrome,及有些手机版的浏览器中不支持，可使用`document.body.scrollTop`代替*
 
 `window.scrollTo(top:x)`将滚动高度设置为x
-
-## 19.正则表达式
-
-可以用来高效便捷的处理字符串
-
-### 19.1 定义正则表达式
-
-**双斜杠定义**
-
-例如:`let reg = /abc/;`
-
-**利用`RegExp`定义**
-
-例如`let reg = new RegExp("x");`括号中可以传入一个字符串变量,也可以直接传入字符串(字符串的内容为正则表达式)
-
-### 19.2 正则表达规则
-
-#### 19.2.1 转义字符
-
-普通转移字符`\`(将有特殊意义的字符变为普通字符)
-
-`\n`匹配换行符
-
-`\t`匹配制表符(tab)
-
-`\r`
-
-`\d`匹配所有数字字符(1位)
-
-`\D`匹配除了数字字符外的所有字符
-
-`\s`匹配如下字符:
-
-- `(空格字符)`
-- `\t`
-- `\n`
-- `\r`
-
-`\S`匹配除了下面字符外的所有字符
-
-- `(空格字符)`
-- `\t`
-- `\n`
-- `\r`
-
-`\w`匹配如下字符:
-
-- 数字
-- 字母
-- 下划线
-
-`\W`匹配除了下面字符外的所有字符
-
-- 数字
-- 字母
-- 下划线
-
-`\b`匹配如下内容:
-
-- 起始位置
-- 结束位置
-- `\W`能匹配的所有字符
-
-`\B`匹配除了下面内容外的所有内容
-
-- 起始位置
-- 结束位置
-- `\W`能匹配的所有字符
-
-#### 19.2.2 标识
-
-*写在正则表达式结尾/的后面,可以写多个,不区分先后顺序,在使用RegExp定义时,标识以字符串形式作为第二个参数传入*
-
-`g`全局,表示在整个字符串中匹配(而不是只匹配到第一个就结束)
-
-`i`不区分大小写
-
-`m`换行匹配
-
-#### 19.2.3 量词
-
-*写在对应规则后面*
-
-`{n}`n个
-
-`{n,m}`最少n个,最多m个,包括n和m
-
-`{n,}`最少n个,包括n
-
-`+`最少1个,等价于`{1,}`
-
-`*`最少0个,等价于`{0,}`
-
-`?`0个或1个,等价于`{0,1}`
-
-**量词的贪婪和惰性**
-
-贪婪(默认):尽量按多的去匹配
-
-惰性(在量词后面加`?`表示惰性量词):尽量按少的去匹配
-
-#### 19.2.4 子项
-
-使用小括号可以将里面的内容作为一个子项
-
-#### 19.2.5 字符集
-
-用中括号表示
-
-- 表示"或者"
-
-  - `[abc]`表示字符`a`或字符`b`或字符`c`
-  - `[abc]{2}`表示`aa`或`ab`或`ac`或`ba`或`bb`或`bc`或`ca`或`cb`或`cc`
-
-- 字符集中的`-`表示一个区间(按Unicode码的区间)
-
-  - `[0-5]`表示`0`到`5`之间的任意数字
-  - [a-z]表示所有小写字母
-  - [A-Z]表示所有大写字母
-  - [0-<]表示所有数字或冒号或分号或小于号(Unicode码中冒号和分号和小于号是9后面紧接着的三个)
-
-  *在字符集之外`-`没有特殊意义*
-
-- 如果字符集中第1个字符是`^`整个子项表示排除
-
-  - `[^abc]`表示除了字符a和字符b和字符c外的任意字符
-
-- 字符集中小括号/大括号/正斜杠/问号/星号/加号等无特殊含义
-
-#### 19.2.6 其他有特殊意义的字符
-
-- `^`表示起始位置
-- `$`表示结束位置
-- `.`表示匹配除了以下内容的任意字符
-  - `\n`
-  - `\r`
-- `|`表示或者(前后是两个独立的正则)
-
-#### 19.2.7 捕获组
-
-`\数字x`表示第x个子项,再次匹配第x个子项
-
-*并不是第x个子项的匹配规则,而是第x个子项的内容*
-
-#### 19.2.8 断言
-
-`(?=xx)`(不算做子项)某字符后面要含有xx字符,但匹配到的东西不包含xx
-
-`(?!xx)`(不算做子项)某字符后面要不含有xx字符,但匹配到的东西不包含xx
-
-`(?<=xx)`(不算做子项)某字符前面要含有xx字符,但匹配到的东西不包含xx
-
-`(?<!xx)`(不算做子项)某字符前面要不含有xx字符,但匹配到的东西不包含xx
-
-### 19.3 使用正则表达式的方法
-
-**正则表达式的方法**
-
-`.test(字符串)`检查字符串中是否存在对应正则规则,存在则返回`true`否则返回`false`
-
-`.exec(字符串)`返回第一次出现对应规则的字符串有关的对象,若为匹配成功则返回null(不常用)
-
-**字符串的方法**
-
-`.match(正则表达式)`返回字符串中匹配成功的字符串组成的数组(数组有匹配的内容与子项组成,在规则中使用全局`g`则组成的数组中不包含子项)
-
-### 19.4 RegExp对象
-
-RegExp中存储了上一次的子项,可以通过这个对象直接拿到数据.(可以先test然后通过RegExp得到子项)
-
-## 20.ajax
-
-> ajax即“Asynchronous Javascript And XML”（异步 JavaScript 和 XML），是指一种创建交互式网页应用的网页开发技术。 
-
-ajax可以在不刷新页面的前提下向后端 发送/请求 数据，在开发中是必然会用的技术。
-
-### 20.1 JavaScript原生ajax
-
-```javascript
-let xhr;
-if (window.XMLHttpRequest) {　 // 标准浏览器
-    xhr = new XMLHttpRequest();
-} else if (window.ActiveXObject) { // 低版本IE
-    try {
-        xhr = new ActiveXObject('Msxml2.XMLHTTP');
-    } catch () {
-            xhr = new ActiveXObject('Microsoft.XMLHTTP');
-    }
-}
-if (xhr) {
-    xhr.onreadystatechange = onReadyStateChange;
-    xhr.open('POST', '/url', true);
-    // 设置 Content-Type 为 application/x-www-form-urlencoded
-    // 以表单的形式传递数据
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.send('username=admin&password=root');
-}
-
-// onreadystatechange 方法
-function onReadyStateChange() {
-    /*
-    xhr.readyState：
-        0: 请求未初始化
-        1: 服务器连接已建立
-        2: 请求已接收
-        3: 请求处理中
-        4: 请求已完成，且响应已就绪
-     */
-    if (xhr.readyState === 4) {
-        // 请求处理到了最后一步
-        //xhr.status HTTP状态码
-        if (xhr.status >= 200 && xhr.status < 300) {
-            console.log(xhr.responseText);//xhr.responseText请求返回的文本内容
-        } else {
-            console.log('There was a problem with the request.');
-        }
-    } else {
-        // 请求还没处理到最后一步
-        console.log('still not ready...');
-    }
-}
-```
-
-### 20.2 jQuery的ajax
-
-```javascript
-// 列出部分参数
-$.ajax({
-    method : "POST" // 请求方式
-    ,url : "/url" // 请求地址
-    ,data : {} // 需要发送的数据
-    ,dataType : "json" // 对请求返回的数据预处理
-    ,success : function(data){} // 请求成功的回调函数
-    ,error : function(err){} // 请求失败的回调函数
-});
-```
-
-### 20.3 axios
-
-**发送单个请求**
-
-```javascript
-axios({
-	method : "post",
-    url : "http://example.com",
-    data : {name:"Rivalsa",age:18}
-}).then(res => {
-    console.log(res);
-}).catch(err => {
-    console.log(err);
-});
-```
-
-**发送多个请求**
-
-同时发送两个请求,全都处理完成后才执行回调
-
-```javascript
-function reqA(){
-    return axios.get("url1");
-}
-function reqB(){
-    return axios.get("url2");
-}
-axios.all([ reqA(),reqB() ]).then(res => {
-    console.log(res);
-});
-```
-
-### 20.4 跨域问题
-
-发送ajax请求时需要确保当前页面与请求页面同源(必须协议\\主机\\端口号全都相同),否则需要后端发送相应的HTTP Header才能正常访问.
-
-### 20.5 jsonp
-
-由于HTML页面中调用JavaScript是没有同源限制的,所以可以利用此方法发送数据,举例如下:
-
-假设:请求地址为https://example.com返回数据为`rivalsa({"name":"rivalsa","age":18});`
-
-则前端请求为:
-
-```html
-<script>
-    let rivalsa = m => {
-        console.log(m);
-    };
-</script>
-<script src="https://example.com"></script>
-```
-
