@@ -246,7 +246,7 @@ let {x: c, y: d} = {x: 50, y: 80}; // 相当于let c = 50, d = 80;
 
 *函数的参数也可以通过解构赋值的方式进行传值*
 
-## 3. 控制台输出（console对象）
+## 3. 控制台输出
 
 `console.log`普通输出，如有多个参数则依次输出
 
@@ -306,7 +306,7 @@ throw new Error('xxx');
 
 `String.fromCharCode(x)`返回对应编码的字符
 
-`String.prototype.subString(x[,y])`截取字符串,如果x小于y则从第x个字符(含)开始截取到y个字符(不含)；如果x大于y则从第y个字符(含)开始截取到x个字符(不含)，x与y传负数时按0计，若省略y，则从此处一直截取到字符串结尾，返回截取的字符串。
+`String.prototype.subString(x[, y])`截取字符串,如果x小于y则从第x个字符(含)开始截取到y个字符(不含)；如果x大于y则从第y个字符(含)开始截取到x个字符(不含)，x与y传负数时按0计，若省略y，则从此处一直截取到字符串结尾，返回截取的字符串。
 
 `String.prototype.substr(x[, y])`截取字符串,从第x个字符(含)开始截取y个字符,省略y时截取到末尾。x可以传负数，表示从结尾开始计，返回截取的字符串。
 
@@ -391,7 +391,7 @@ console.log(0o88); // 报错 Uncaught SyntaxError: invalid or unexpected token
 
 <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Number.isNaN(x)`如果x为数字类型，且x为NaN，则返回true，否则返回false
 
-`window.isNaN(x)`判断x转换为数字类型是否是`NaN`，若是则返回true，否则返回false
+`window.isNaN(x)`判断x转换为数字类型是否是NaN，若是则返回true，否则返回false
 
 <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Number.isInteger(x)`如果x为数字，且x为整数，则返回true，否则返回false
 
@@ -415,7 +415,7 @@ let obj = {
 console.log(obj.name); // Rivalsa
 ```
 
-值可以是任意一种数据类型(包含对象),也可以是变量
+值可以是任意一种数据类型，也可以是变量
 
 <span style="color:yellowgreen;font-weight:600;">[ES6]</span>当对象值得变量名与属性名相同时可以简写，如下所示。方法也可以简写，如下所示:
 
@@ -464,20 +464,28 @@ a.age = 16;
 console.log(obj.age); // 16
 ```
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>对象的`Object.keys()`,`Object.values()`与`Object.entries()`方法分别表示获取对象的键,值以及键值对
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>对象的`Object.keys()`,`Object.values()`与`Object.entries()`方法分别表示获取对象的键,值以及键值对组成的数组
 
 利用`for 变量 in 对象`可以遍历对象的键（能遍历到键了，自然也能取到值了）。
 
 ---
 
-**数组**属于对象的一种,可以使用`[值1,值2,值3,...,值n]`来定义一个数组,也可以通过`new Array(x,y,z,...)`来创建一个数组,如果x为数字且没有其他参数,则返回的为有x项的数组,每项内容为空,否则,返回有x,y,z...组成的数组
+**数组**属于对象的一种，可以通过如下方式创建一个数组：
+
+- 通过`[值1,值2,值3,...,值n]`来定义一个数组
+- 通过`new Array(x[, y[, z[, ...]]])`来创建一个数组，如果x为数字且没有其他参数,则返回有x项的数组且每项内容为空；否则，返回由x,y,z...组成的数组
+- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>通过`Array.of(x, y, z, ...)`将一组散列的值转换为数组
+
+*JS不同方法对数组的空位的处理不一致，很乱，所以要尽量避免空位的出现*
 
 <span style="color:red;font-weight:600;">数组常用方法</span>
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>利用`for...of...`遍历对象（实际是遍历数组），但不常用，因为常用`forEach`来遍历,举例如下:
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Array.prototype.keys()`、`Array.prototype.values()`、`Array.prototype.entries()`方法分别表示获取数组的下标组成的数组，数组的数据组成的数组以及数组的下标数据对组成的数组
+
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>利用`for val of array`遍历数组（部署Symbol.Iterator的就可以用），举例如下:
 
 ```javascript
-//遍历对象
+//遍历对象（本质上也是遍历数组）
 let obj = {name:"Rivalsa",age:18,sex:"M"};
 for(let key of Object.keys(obj)){ //keys对应换成values或entries
     console.log(key);
@@ -491,23 +499,23 @@ for(let value of arr){
 
 `array.length`返回数组的长度
 
-`Array.prototype.push(x,y,z,...)`向数组中添加新数据x,y,z,...(新增到结尾),返回新增数据后数组的长度.(改变原数组)
+`Array.prototype.push(x[, y[, z[, ...]]])`向数组中添加新数据x,y,z,...(新增到结尾),返回新增数据后数组的长度.(改变原数组)
 
-`Array.prototype.unshift(x,y,z,...)`向数组中添加新数据x,y,z,...(新增到开头),返回新增数据后数组的长度.(改变原数组)
+`Array.prototype.unshift(x[, y[, z[, ...]]])`向数组中添加新数据x,y,z,...(新增到开头),返回新增数据后数组的长度.(改变原数组)
 
 `Array.prototype.pop()`无参数,把原数组的最后一位删掉,改变原数组,返回被删除的数据
 
 `Array.prototype.shift()`无参数,把原数组的第一位删掉,改变原数组,返回被删除的数据
 
-`Array.prototype.splice(a,b[,data[,data[,data[,...]]]])`从数组下标为a的位开始删除b个数据,再增加数据data,改变原数组,返回由被删除的数据组成的数组(若未删除则返回空数组)
+`Array.prototype.splice(a, b[, data[, data[, data[,...]]]])`从数组下标为a的位开始删除b个数据,再增加数据data,改变原数组,返回由被删除的数据组成的数组(若未删除则返回空数组)
 
 - a可以传入负数,表示从末尾的某处开始删除
 
-`Array.prototype.indexOf(x,y)`从下标为y处开始查找数组中的第一个数据x,返回数据下标,若未找到则返回-1，省略y则从第一个元素开始查找
+`Array.prototype.indexOf(x[, y])`从下标为y处开始查找数组中的第一个数据x,返回数据下标,若未找到则返回-1，省略y则从第一个元素开始查找
 
-`Array.prototype.lastIndexOf(x,y)`从下标为y处开始反向查找数组中的第一个数据x,返回数据下标,若未找到则返回-1，省略y则从最后一个元素开始查找
+`Array.prototype.lastIndexOf(x[, y])`从下标为y处开始反向查找数组中的第一个数据x,返回数据下标,若未找到则返回-1，省略y则从最后一个元素开始查找
 
-`Array.prototype.slice(x,y)`截取数组,从下标为x的数据(含)开始到下标为y的数据(不含)结束,如果省略y则截取到最后,不修改原数组,返回得到的新数组
+`Array.prototype.slice(x[, y])`截取数组,从下标为x的数据(含)开始到下标为y的数据(不含)结束,如果省略y则截取到最后,不修改原数组,返回得到的新数组
 
 - x与y均可以传入负数,表示从末尾开始计
 
@@ -524,13 +532,13 @@ console.log(arr)
 
 `Array.prototype.reverse()`颠倒顺序,改变原数组,返回改变后的数组
 
-`Array.prototype.concat(x, y, z, ...)`将x,y,z...拼接在数组后面,x,y,z...既可以是一个数组,也可以是其他数据类型的新数据,不改变原有数组,返回新数组
+`Array.prototype.concat(x[, y[, z[, ...]]])`将x,y,z...拼接在数组后面,x,y,z...既可以是一个数组,也可以是其他数据类型的新数据,不改变原有数组,返回新数组
 
 `Array.prototype.join(x)`用x将数组的元素连接在一起（不传x则默认为逗号）,不修改原数组,返回拼接好的字符串
 
 `Array.isArray(x)`判断x是否是数组,如果是返回true,否则返回false
 
-`Array.prototype.forEach(function(currentValue, index, arr)[, thisValue])`数组的遍历
+`Array.prototype.forEach(function(currentValue[, index[, arr]])[, thisValue])`数组的遍历
 
 - `currentValue`为当前的数据
 - `index`为当前的序号
@@ -543,52 +551,108 @@ console.log(arr)
 >
 > 类数组`NodeList`支持使用`forEach`
 
-`Array.prototype.map(function(item,index,arr)[, thisValue])`数组的映射(遍历数组并执行函数产生新数组,新数组的每个元素是每次执行函数的返回值),返回值为新数组,不改变原数组.
+`Array.prototype.map(function(item[, index[, arr]])[, thisValue])`数组的映射(遍历数组，遍历时执行函数，返回以每次执行函数的返回值为元素的数组)，不改变原数组
 
 - item为当前的数据
 - index为当前的序号
 - arr为数组本身
 - `thisValue`为函数中`this`的指向
 
-`Array.prototype.filter(function(item, index, arr)[, thisValue])`数组的筛选(遍历数组并执行函数产生新数组,新数组的元素是每次执行函数返回为true时对应原数组的元素),返回值为新数组,不改变原数组.
+`Array.prototype.filter(function(item[, index[, arr]])[, thisValue])`数组的筛选(遍历数组，遍历时执行函数，返回由函数返回值为true的元素组成的新数组)，不改变原数组
 
 - item为当前的数据
 - index为当前的序号
 - arr为数组本身
 - `thisValue`为函数中`this`的指向
 
-`Array.prototype.some(function(item, index, arr)[, thisValue])`遍历数组，并执行函数，每次执行函数的返回值中如果有一个返回true则整个函数返回true，否则返回false
+`Array.prototype.some(function(item[, index[, arr]])[, thisValue])`遍历数组，并执行函数，每次执行函数的返回值中如果有一个返回true则整个函数返回true，否则返回false，若对空数组使用此方法，则无论任何情况都返回false
 
 - item为当前的数据
 - index为当前的序号
 - arr为数组本身
 - `thisValue`为函数中`this`的指向
 
-`Array.prototype.every(function(item, index, arr)[, thisValue])`遍历数组，并执行函数，每次执行函数的返回值中全都返回true则整个函数返回true，否则返回false
+`Array.prototype.every(function(item[, index[, arr]])[, thisValue])`遍历数组，并执行函数，每次执行函数的返回值中全都返回true则整个函数返回true，否则返回false，若对空数组使用此方法，则无论任何情况都返回false
 
 - item为当前的数据
 - index为当前的序号
 - arr为数组本身
 - `thisValue`为函数中`this`的指向
+
+`Array.prototype.reduce(function(prev, currentValue[, index[, arr]])[, initialValue])`
+
+> 当未传initialValue时，按照如下步骤执行：
+>
+> - 执行回调函数（prev为数组的第0项，currentValue为数组的第1项，index时CurrentValue的索引，arr为数组本身）
+> - 再次执行回调函数（prev为上一次执行回调函数的返回值，currentValue为数组的第2项，index时CurrentValue的索引，arr为数组本身）
+> - 再次执行回调函数（prev为上一次执行回调函数的返回值，currentValue为数组的第3项，index时CurrentValue的索引，arr为数组本身）
+> - ...
+> - 再次执行回调函数（prev为上一次回调执行函数的返回值，currentValue为数组的第最后一项，index时CurrentValue的索引，arr为数组本身）
+> - 整个函数返回值为最后一次执行回调函数的返回值
+>
+> 当传了initialValue时，按照如下步骤执行：
+>
+> - 执行回调函数（prev为initialValue，currentValue为数组的第0项，index时CurrentValue的索引，arr为数组本身）
+> - 再次执行回调函数（prev为上一次执行回调函数的返回值，currentValue为数组的第1项，index时CurrentValue的索引，arr为数组本身）
+> - 再次执行回调函数（prev为上一次执行回调函数的返回值，currentValue为数组的第2项，index时CurrentValue的索引，arr为数组本身）
+> - ...
+> - 再次执行回调函数（prev为上一次回调执行函数的返回值，currentValue为数组的第最后一项，index时CurrentValue的索引，arr为数组本身）
+> - 整个函数返回值为最后一次执行回调函数的返回值
+
+`Array.prototype.reduceRight(function(prev, currentValue[, index[, arr]])[, initialValue])`
+
+> 当未传initialValue时，按照如下步骤执行：
+>
+> - 执行回调函数（prev为数组的最后一项项，currentValue为数组的倒数第二项，index时CurrentValue的索引，arr为数组本身）
+> - 再次执行回调函数（prev为上一次执行回调函数的返回值，currentValue为数组的倒数第三项，index时CurrentValue的索引，arr为数组本身）
+> - 再次执行回调函数（prev为上一次执行回调函数的返回值，currentValue为数组的倒数第四项，index时CurrentValue的索引，arr为数组本身）
+> - ...
+> - 再次执行回调函数（prev为上一次回调执行函数的返回值，currentValue为数组的第0项，index时CurrentValue的索引，arr为数组本身）
+> - 整个函数返回值为最后一次执行回调函数的返回值
+>
+> 当传了initialValue时，按照如下步骤执行：
+>
+> - 执行回调函数（prev为initialValue，currentValue为数组的最后一项，index时CurrentValue的索引，arr为数组本身）
+> - 再次执行回调函数（prev为上一次执行回调函数的返回值，currentValue为数组的倒数第二项，index时CurrentValue的索引，arr为数组本身）
+> - 再次执行回调函数（prev为上一次执行回调函数的返回值，currentValue为数组的倒数第三项，index时CurrentValue的索引，arr为数组本身）
+> - ...
+> - 再次执行回调函数（prev为上一次回调执行函数的返回值，currentValue为数组的第0项，index时CurrentValue的索引，arr为数组本身）
+> - 整个函数返回值为最后一次执行回调函数的返回值
+
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Array.from(arrayLike[, mapFn[, thisArg]])`将类数组或可迭代对象转换为数组
+
+- arrayLike为想要转换成数组的伪数组对象或可迭代对象
+- mapFn为如果指定了此参数，新数组将由此函数的返回值组成
+- thisArg为回调函数中的this指向
+
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Array.prototype.find(function(val[, index[, arr]])[, thisArg])`返回数组中第一个使回调函数返回为true的值。若无则返回undefined
+
+- val当前的元素
+- index当前元素的索引
+- arr数组本身
+- thisArg回调函数中的this指向
+
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Array.prototype.findIndex(function(val, index, arr))`返回数组中第一个使回调函数返回为true的索引值。若无则返回-1
+
+- val当前的元素
+- index当前元素的索引
+- arr数组本身
+- thisArg回调函数中的this指向
+
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Array.prototype.fill(value[, start[, end]])`用value填充一个数组中从start（含）到end（不含）的全部元素，省略start则从第0位开始填充，省略end则填充到最后一位
+
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>[ES2016]`Array.prototype.includes(x)`数组中是否包含x，包含则返回true，否则返回false
 
 ---
 
 **函数**属于对象的一种
 
-- 定义函数可以通过`function`关键字进行定义,如`function 函数名(){}`,也可以通过赋值的方式进行定义,如`var/let 函数名 = function(){};`,有时也可以不给函数取名(称为匿名函数),例如`function(){}`
-- 对于通过`function 函数名(){}`关键字定义的函数或通过`var/let 函数名 = function(){}`来定义的函数，可以在函数内部以及作用域内通过函数名来调用函数
-- 对于通过`var 函数名1 = function 函数名2(){}`来定义的函数，可以在函数内部以及作用域内通过函数名1来调用函数，但在函数名2只能在函数的内部使用
-- 当函数中有`return`时,函数的返回值为对应的内容，当函数中没有`return`或内容为空时,返回`undefined`
+- 定义函数可以通过`function`关键字进行声明,如`function 函数名(){}`,也可以通过赋值的方式进行定义,如`var/let 函数名 = function(){};`,有时也可以不给函数取名(称为匿名函数),例如`function(){}`
+- 对于通过`function 函数名(){}`定义的函数或通过`var/let 函数名 = function(){}`来定义的函数，可以在函数内部以及函数所在作用域内通过函数名来调用函数
+- 对于通过`var 函数名1 = function 函数名2(){}`来定义的函数，可以在函数内部以及函数所在作用域内通过函数名1来调用函数，但在函数名2只能在函数的内部使用
+- 当函数中有`return`时,函数的返回值为对应的内容，当函数中没有`return`或内容为空时,返回`undefined`，执行函数时，一旦遇到`retutn`则直接跳出函数
 - 函数表达式可以加小括号去执行,函数定义`function(){}`可以通过小括号括起来转换为表达式,再在后面加小括号就可以直接执行,称为**立即执行函数(IIFE)**。立即执行函数可以将代码模块化,避免污染全局环境
 - 函数实际传入的参数称为**实参**,在函数内部用于接受实参值的变量称为**形参**,实参与形参按顺序一一对应
-
-```javascript
-function fn(形参1,形参2,...,形参n) {
-    ...
-}
-fn(实参1,实参2,...,实参n);
-```
-
 - 实参个数可以等于形参个数,也可以大于形参个数,也可以小于形参个数.传参时,形参与实参按顺序一一对应,对于形参多于实参的情况,未传值的形参值为undefined,对于实参多于形参的情况,在函数中无法通过形参拿到值,但可以通过`arguments`(实参列表)来拿到值
 - <span style="color:yellowgreen;font-weight:600;">[ES6]</span>在ES6中可以在形参中通过等号来设置默认值，当对应的实参为undefined时，将使用默认值
 
@@ -614,12 +678,12 @@ function fn(形参 = 默认值) {
 
 ```javascript
 function fn(a,b,c = 0, d) {};
-console.log(fn.length, fn.name); // 3 "fn"
+console.log(fn.length, fn.name); // 2 "fn"
 ```
 
 - 在函数中可以调用函数自身，这种方式称为**递归**
 - 参数为函数，或返回值为函数的函数称为**高阶函数**
-- 函数中存在一个`this`，会指向**调用函数的对象**,函数直接加括号执行属于window调用的,但在严格模式下,函数加括号直接执行this指向undefined
+- 函数中存在一个`this`，会指向**调用函数的对象**,函数直接加括号执行属于window调用的,但在严格模式下,函数加括号直接执行this指向undefined（箭头函数除外）
 - <span style="color:yellowgreen;font-weight:600;">[ES6]</span>从ES2017开始，允许函数实参有尾逗号
 - <span style="color:yellowgreen;font-weight:600;">[ES6]</span>箭头函数
 
