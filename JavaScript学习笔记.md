@@ -405,7 +405,63 @@ console.log(0o88); // 报错 Uncaught SyntaxError: invalid or unexpected token
 
 在es5中,键必须是字符串形式（不能是变量）,可以加引号也可以不加引号,但不加引号时必须符合变量的命名规则
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>在es6中键可以写`[变量]`,这时会使用变量的值转换为字符串形式作为对象的键,例如:
+获取对象属性的值有两种方法：
+
+- 可以使用`对象名.属性名`的方式来获取对应的值，但属性名必须满足变量的命名规则（纯数字会转换为字符串），且不能使用变量，属性名不必加引号会自动按字符串处理
+- 也可以使用`对象名[变量或表达式]`的方式来获取变量或表达式的值对应的属性值，如果变量或表达式的值为纯数字，则会转换为字符串处理，属性名为字符串需要使用引号。
+
+新增对象属性值有两种方法：
+
+- 直接通过赋值运算符进行赋值，例如：`obj.prop = 'abc'`
+- 通过`Object.defineProperty(obj, prop, descriptor)`方法
+
+> Object.defineProperty(obj, prop, descriptor)直接在obj上定义一个新属性，或者修改一个对象的现有属性， 并返回这个对象。
+>
+> - obj为要在其上定义属性的对象
+> - prop为要定义或修改的属性名称
+> - descriptor为将被定义或修改的属性的描述
+>
+> > descriptor为一个对象，包含如下属性：
+> >
+> > - configurable属性，当且仅当此属性为true时，obj的prop属性的descriptor能被改变，同时此属性也能从对象上被删除，默认为false
+> > - enumerable属性，当且仅当此属性为true时，obj的prop属性才能够出行在obj的枚举属性中（可以被遍历到），默认为false
+> > - value属性，obj的prop属性对应的值，默认为undefined
+> > - writable属性，当且仅当此属性为true是，obj的prop属性值才能被赋值运算符改变，默认为false
+> > - get属性于set属性，请参考[这篇文章](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty)
+
+**例1**
+
+```javascript
+let obj = {age: 16};
+Object.defineProperty(obj, 'name', {
+    value: 'Rivalsa'
+});
+console.log(obj); // {age: 16, name: "Rivalsa"}
+for(let v of Object.entries(obj)) {
+    console.log(v); // 仅打印一次["age", 16]，因为enumerable属性为默认值false，所以name属性不能被遍历到
+}
+obj.name = 'Jerry'; // 因为writable属性为默认值false，所以name属性不能被赋值运算符改变(严格模式下此行报错，非严格模式下此行不生效)
+console.log(obj); // {age: 16, name: "Rivalsa"} 非严格模式下才有此行输出
+```
+
+**例2**
+
+```javascript
+let obj = {age: 16};
+Object.defineProperty(obj, 'name', {
+    value: 'Rivalsa',
+    enumerable: true,
+    writable: true
+});
+console.log(obj); // {age: 16, name: "Rivalsa"}
+for(let v of Object.entries(obj)) {
+    console.log(v); // 第一次["age", 16]，第二次["name"， “Rivalsa”]
+}
+obj.name = 'Jerry';
+console.log(obj); // {age: 16, name: "Jerry"}
+```
+
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>在es6中键可以写`[变量或表达式]`,这时会使用变量或表达式的值转换为字符串形式作为对象的键，例如:
 
 ```javascript
 let key = "name";
@@ -417,7 +473,7 @@ console.log(obj.name); // Rivalsa
 
 值可以是任意一种数据类型，也可以是变量
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>当对象值得变量名与属性名相同时可以简写，如下所示。方法也可以简写，如下所示:
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>当对象的属性值为变量且与属性名相同时可以简写，当属性值为函数时也可以简写，如下所示：
 
 ```javascript
 //未简写
@@ -426,7 +482,7 @@ let x = 10,
     obj = {
         x: x,
         y: y,
-        sum:function() {
+        sum: function() {
             return this.x + this.y;
         }
     };
@@ -442,14 +498,9 @@ let x = 10,
     };
 ```
 
-读取对象中不存在的属性不会报错，值为undefined`
+读取对象中不存在的属性不会报错，值为undefined
 
-使用`delete`可以删除对象中的变量,例如:`delete obj.pet`，删除成功返回`true`否则返回`false`(在严格模式下无法使用)
-
-获取对象属性的值有以下两种方案:
-
-- 可以使用`对象名.属性名`的方式来获取对应的值,但属性名必须满足变量的命名规则,且不能使用变量,属性名会自动按字符串处理
-- 也可以使用`对象名[属性]`的方式来获取对应的值,属性名可以使用变量，如果中括号中的数据为数字，则会转换为字符串处理。
+使用`delete`可以删除对象中的属性，例如:`delete obj.pet`，删除成功返回`true`否则返回`false`(在严格模式下无法使用)
 
 将对象赋值给一个变量是将对象的指针给这个变量,对变量的修改等价于直接修改对象,举例如下:
 
@@ -464,9 +515,23 @@ a.age = 16;
 console.log(obj.age); // 16
 ```
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>对象的`Object.keys()`,`Object.values()`与`Object.entries()`方法分别表示获取对象的键,值以及键值对组成的数组
+`Object.getOwnPropertyNames(obj)`返回对象obj的所有属性名（包括不可枚举的属性，但不包含Symbol值作为属性名的属性）组成的数组
+
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Object.getOwnPropertySymbols(obj)`返回对象obj所有Symbol值作为属性名的数组
+
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>对象的`Object.keys(obj)`,`Object.values(obj)`与`Object.entries(obj)`方法分别表示获取对象的键,值以及键值对组成的数组
 
 利用`for 变量 in 对象`可以遍历对象的键（能遍历到键了，自然也能取到值了）。
+
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Object.is(x, y)`判断x与y是否是相同的值（不发生数据类型转换），例如：
+
+```javascript
+console.log(Object.is(NaN, NaN)); // true
+console.log(Object.is(+0, -0)); // false
+console.log(Object.is({}, {})); // false 比较的仍然是地址
+```
+
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Object.assign(target, ...sources)`将source对象拼接在target对象上（如果属性名重复，则使用最后一个属性值），target对象会被改变，sources对象不改变，返回修改后的target对象
 
 ---
 
@@ -482,7 +547,7 @@ console.log(obj.age); // 16
 
 <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Array.prototype.keys()`、`Array.prototype.values()`、`Array.prototype.entries()`方法分别表示获取数组的下标组成的数组，数组的数据组成的数组以及数组的下标数据对组成的数组
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>利用`for val of array`遍历数组（部署Symbol.Iterator的就可以用），举例如下:
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>利用`for 变量 of 数组`遍历数组（需要部署了Symbol.Iterator才可用），举例如下:
 
 ```javascript
 //遍历对象（本质上也是遍历数组）
@@ -724,16 +789,20 @@ console.log(fn.length, fn.name); // 2 "fn"
 
 **<span style="color:yellowgreen;font-weight:600;">[ES6]</span>Symbol类型**
 
-每次新建的Symbol都是不一样的。ES6中symbol数据也可以当做属性名，例如
+每次新建的Symbol都是不一样的。在ES5中对象的属性名都是字符串，如果要使用其他人提供的对象，又想为此对象新增一些属性，为了不让新属性的属性名与原有的属性重名，就可以使用Symbol数据类型。例如：
 
 ```javascript
 let obj={name:"Rivalsa",age:18};
 let name=Symbol();
 obj[name]="Jerry";
-console.log(obj);
+console.log(obj); // {name: "Rivalsa", age: 18, Symbol(): "Jerry"}
 ```
 
-Symbol的参数是它的标识，只是便于开发者区分，没有实际意义。
+Symbol的参数是它的标识，只是便于开发者区分，运行时没有实际意义
+
+定义Symbol数据类型的变量时，不能用`var`关键字
+
+在遍历对象时，拿不到属性值为Symbol类型的属性
 
 ### 4.3 数据类型的检测
 
@@ -794,13 +863,76 @@ Symbol的参数是它的标识，只是便于开发者区分，没有实际意�
 - 若x为`NaN`则返回`false`
 - 其他情况均返回`true`
 
-## 5.运算符
+## 5.Symbol.iterator
+
+iterator成为迭代器，是一种接口、机制。
+
+iterator 的作用有三个：
+
+- 为各种数据结构，提供一个统一的、简便的访问接口；
+- 使得数据结构的成员能够按某种次序排列；
+- 主要供`for...of`消费。
+
+**iterator本质上，就是一个指针对象**
+
+过程是这样的：
+
+（1）创建一个指针对象，指向当前数据结构的起始位置。
+
+（2）第一次调用指针对象的`next`方法，可以将指针指向数据结构的第一个成员。
+
+（3）第二次调用指针对象的`next`方法，指针就指向数据结构的第二个成员。
+
+（4）不断调用指针对象的`next`方法，直到它指向数据结构的结束位置。
+
+**为了理解iterator，现在以数组为例，逐步说明**
+
+```javascript
+let arr = [10, 20, 30];
+// 迭代器通常不直接使用，而是在调用如for...in...等内容是，在逻辑内部自动调用，为了方便说明，这里采用手动的方式来一步步调用迭代器。
+let ite = arr[Symbol.iterator](); // 迭代器是一个函数，执行这个函数
+console.log(ite); // 迭代器的返回值的原型链中有next函数
+console.log(ite.next()); // 执行next函数，会返回一个对象，对象中value属性为数组的第0个值，done属性为false表示当前没有迭代完成
+console.log(ite.next()); // 执行next函数，会返回一个对象，对象中value属性为数组的第1个值，done属性为false表示当前没有迭代完成
+console.log(ite.next()); // 执行next函数，会返回一个对象，对象中value属性为数组的第2个值，done属性为false表示当前没有迭代完成
+console.log(ite.next()); // 执行next函数，会返回一个对象，对象中value属性为数组的第undefined个值，done属性为true表示当前已经迭代完成
+```
+
+上例中，经过反复执行next函数，就能够依次遍历到数组中的每一个值，而类似for...of...的内部，就是利用迭代器来得到数组中每一个值的，所以只有部署了Symbol.iterator的对象才能使用for...of...
+
+**原生具备 Iterator 接口的对象**
+
+- Array
+- Map
+- Set
+- String
+- 函数的arguments对象
+- Nodelist对象
+
+**给类数组部署Symbol.iterator接口**
+
+```javascript
+let obj = {
+    ['0']: 'a',
+    ['1']: 'b',
+    ['2']: 'c',
+    length: 3,
+    [Symbol.iterator]: Array.prototype[Symbol.iterator]
+};
+for(let v of obj) {
+    console.log(v); // 分别打印a，b，c
+}
+```
+
+不能给普通对象部署Symbol.iterator，如果强行部署，会因为没有属性名为“0“，”1“，”2“，... 的属性，所以每次返回的对象中value的值均为undefined
+
+## 6.运算符
 
 运算符按照按照参数的个数可以分为**一元运算符**,**二元运算符**和**三元运算符**
 
 运算符按照作用可以分为**赋值运算符**,**算数运算符**,**比较运算符**,**逻辑运算符**,**三目运算符**,**逗号运算符**和**位运算符**
 
-### 5.1 赋值运算符
+### 6.1 赋值运算符
 
 赋值运算符`=`的左侧为一个变量,右侧为一个值,表示将值赋给变量
 
@@ -842,7 +974,7 @@ a %= 1; // 相当于 a = a % 1;
 a **= 1； // 相当于 a = a ** 1 [ES6];
 ```
 
-### 5.2 算数运算符
+### 6.2 算数运算符
 
 算数运算符分为`+(正)`\\`-(负)`\\`+(加)`\\`-(减)`\\`*(乘)`\\`/(除)`\\`%(取余)`
 
@@ -867,7 +999,7 @@ console.log(-'24'); // -24 - 数字
 - 如果`+`两侧有一侧是对象,则会将两侧全部转换为字符串再进行运算
 - 其他情况一律全部转换为数字再进行运算
 
-### 5.3 比较运算符
+### 6.3 比较运算符
 
 比较运算符包含`<`,`<=`,`>`,`>=`,`==`,`===`,`!=`,`!==`
 
@@ -916,7 +1048,7 @@ console.log('30' > '4'); // false
 
 任何与`NaN`的比较都返回`false`,即使`NaN == NaN`也会返回`false`
 
-### 5.4 逻辑运算符
+### 6.4 逻辑运算符
 
 逻辑运算符包含`&&`,`||`,`!`
 
@@ -935,17 +1067,17 @@ var a = 0 && alert('hhh'); // 弹窗不执行, a为0
 var b = alert("hhh") && 0; // 弹窗，b为undefined
 ```
 
-### 5.5 三目运算符
+### 6.5 三目运算符
 
 三目运算符语法为`值1 ? 值2 : 值3`
 
 当`值1`转换为布尔值为`true`时,整个返回`值2`,否则返回`值3`
 
-### 5.6 逗号运算符
+### 6.6 逗号运算符
 
 逗号运算符的语法为`语句1,语句2`,执行时,先执行语句1,再执行语句2,整个表达式的返回值为语句2的值
 
-### 5.7 位运算符
+### 6.7 位运算符
 
 位运算符包括`&`,`|`,`~`,`^`,`<<`,`>>`,`>>>`
 
@@ -969,7 +1101,7 @@ var b = alert("hhh") && 0; // 弹窗，b为undefined
 
 更多关于位运算的知识,请参考[《JavaScript中的位运算》](https://www.rivalsa.cn/s/article/Frontend/bit_operation?utm=SlPlrabkuaDnrJTorrA=)
 
-### <span style="color:yellowgreen;font-weight:600;">[ES6]</span>5.8 ...运算符
+### <span style="color:yellowgreen;font-weight:600;">[ES6]</span>6.8 ...运算符
 
 `...`运算符也称为扩展运算符、重置运算符、剩余运算符、rest运算符、rest参数等
 
@@ -993,13 +1125,13 @@ console.log(...x > 5 ? [1, 2, 3] : ['a', 'b', 'c']); // ...运算符后面整个
 
 
 
-### 5.9 运算符的优先级
+### 6.9 运算符的优先级
 
 请参考[这份资料](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Operator_Precedence)
 
-## 6 判断与循环
+## 7 判断与循环
 
-### 6.1 if...else...
+### 7.1 if...else...
 
 **用法1**
 
@@ -1047,7 +1179,7 @@ if(值1) {
 
 较简单的判断语句可以用逻辑运算符或三目运算符代替
 
-### 6.2 switch
+### 7.2 switch
 
 **基本语法**
 
@@ -1072,7 +1204,7 @@ switch(值0) {
 
 switch的比较需要值与数据类型都完全相同
 
-### 6.3 for
+### 7.3 for
 
 **语法**
 
@@ -1093,7 +1225,7 @@ for(语句1;语句2;语句3) {
 
 语句1,语句2和语句3均可以省略不写,但分号不可省略
 
-### 6.4 while
+### 7.4 while
 
 **语法**
 
@@ -1112,7 +1244,7 @@ while(值) {
 
 **while循环即for循环的一种特殊写法，for循环只是把与循环有关的代码集中在了一个位置**
 
-### 6.5 do ... while
+### 7.5 do ... while
 
 **语法**
 
@@ -1129,7 +1261,7 @@ do {
 2. 判断值转换为的布尔值,如果为false则跳出循环,否则继续向下执行;
 3. 返回第1步继续执行
 
-### 6.6 跳出循环
+### 7.6 跳出循环
 
 **break**
 
@@ -1155,7 +1287,7 @@ for(let i = 0; i < 5; i++) {
 
 跳出循环时,只跳出`break`或`continue`所在的循环,想跳出外层循环请参考循环命名
 
-### 6.7 循环命名
+### 7.7 循环命名
 
 用于跳出指定的循环
 
@@ -1169,7 +1301,7 @@ aaa:for(var i = 0; i < 5; i++) {
 }
 ```
 
-### 6.8 循环添加异步事件中的循环变量
+### 7.8 循环添加异步事件中的循环变量
 
 例如如下代码
 
@@ -1202,7 +1334,7 @@ aaa:for(var i = 0; i < 5; i++) {
 
 解决此问题有两种方案：利用自定义属性和利用闭包，请参考[《循环添加异步事件中的循环变量》](https://www.rivalsa.cn/s/article/Frontend/variable_in_loop?utm=SlPlrabkuaDnrJTorrA=)
 
-## 7.改变this指向
+## 8.改变this指向
 
 `Function.prototype.call`函数加`.call()`后,会立即执行函数,传入的第一个实参为函数中的this指向(原参数对应写在后面)
 例如:
@@ -1237,9 +1369,9 @@ function fn(a, b){
 fn.bind(document, 1)(2);
 ```
 
-## 8.作用域与解析顺序
+## 9.作用域与解析顺序
 
-### 8.1 作用域及作用域链
+### 9.1 作用域及作用域链
 
 **作用域**可以通俗的理解为起作用的范围,分为全局作用域与局部作用域,**在es5中,只有函数运行时会创建一个局部作用域,<span style="color:yellowgreen;font-weight:600;">[ES6]</span>在es6中执行代码块（通常有大括号包裹）时就会创建一个局部作用域**
 
@@ -1263,7 +1395,7 @@ console.log(c); // 报错:Uncaught ReferenceError: c is not defined
 
 当AO对象今后无法再用到时，这个作用域内的AO对象会被自动删除，将对应内存释放，称为**垃圾回收机制**
 
-### 8.2 闭包
+### 9.2 闭包
 
 现有A、B和C三个作用域，B是A的子作用域，C是B的子作用域，在C作用域中用到了B作用域中的AO对象，当C作用域中的内容直接在A作用域中被访问时，由于没有执行B作用域中的内容所以没有重新创建B作用域对应的AO对象，所以C作用域中能用到B作用域内上次的值。将这种情况称为**闭包**，举例如下：
 
@@ -1303,7 +1435,7 @@ fn(); // 2
 
 上述例子中，有三个作用域，全局作用域，outer形成的局部作用域和inner形成的局部作用域，outer的是全局作用域的子作用域，inner的是outer的子作用域，inner的作用域中用到了outer的作用域中的变量a，且inner形成的作用域可以在全局作用域中直接访问（通过执行fn相当于在不执行outer的情况下直接执行inner），在直接执行时由于outer中的代码没有执行，所以没在outter作用域内创建全新的变量a，所以inner中就可以直接使用outer中原有的a
 
-### 8.3 变量提升与解析顺序
+### 9.3 变量提升与解析顺序
 
 在es5中,即使把定义变量的语句写在后面,也会先进行变量的定义(但不会赋值),把这个现象称为**变量提升**,例如:
 
@@ -1324,7 +1456,7 @@ alert(a); // 报错:Uncaught ReferenceError: a is not defined
 
 2.执行 - 从上到下执行剩余代码
 
-### 8.4 作用域与解析顺序的举例
+### 9.4 作用域与解析顺序的举例
 
 **例0**
 
@@ -1598,7 +1730,7 @@ c();
 >
 > 弹窗:12
 
-## 9.Math对象
+## 10.Math对象
 
 - `Math.abs(x)`返回x的绝对值
 - `Math.random()`返回0-1之间的随机数(包含0,不包含1)
@@ -1622,7 +1754,7 @@ c();
 - <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Math.cbrt(x)`返回x的立方根
 - <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Math.hypot(x[, y[, z[, ...]]])`返回所有参数的平方和的平方根
 
-## 10.定时器
+## 11.定时器
 
 `window.setInterval(a,b,c,d,e,...)`设置重复定时器,参数a为一个函数（或JS语句字符串，不建议）,当定时器时间到后执行函数或字符串中的语句,参数b为定时时间,c,d,e,...为给a函数传的实参，返回定时器的编号。（除了第一个参数外，均是可选的）
 
@@ -1644,7 +1776,7 @@ setTimeout((...arr) => {
 
 `window.cancelAnimationFrame(a)`取消编号为a的`requestAnimationFrame`定时器
 
-## 11.日期对象
+## 12.日期对象
 
 **Date()为构造函数（类）,需要通过new创建一个对象**
 
@@ -1696,9 +1828,9 @@ setTimeout((...arr) => {
 
 日期对象可以相减,返回值为两个日期相差的毫秒数(相当于时间戳相减)
 
-## 12.面向对象
+## 13.面向对象
 
-### 12.1 构造函数
+### 13.1 构造函数
 
 构造函数的本质就是一个函数（箭头函数不能作为构造函数）。但构造函数通常不是直接调用，而是通过`new`关键词来调用，直接调用与通过`new`调用的区别如下：
 
@@ -1716,7 +1848,7 @@ console.log(str.length);
 console.log(new String(str).length);
 ```
 
-### 12.2 原型与原型链
+### 13.2 原型与原型链
 
 在函数中，存在一个`prototype`属性,这个属性值是一个对象,.此函数通过`new`操作符创建的对象中会默认含有一个`__proto__`属性,此属性值与其构造函数的`prototype`属性指向同一个对象.我们将这个对象称为**原型**
 
@@ -1808,7 +1940,7 @@ JavaScript中没有继承构造函数的方法,但我们可以通过一些方式
 
 用法:`object instanceof function`
 
-### 12.3 <span style="color:yellowgreen;font-weight:600;">[ES6]</span>类及其继承
+### 13.3 <span style="color:yellowgreen;font-weight:600;">[ES6]</span>类及其继承
 
 在ES5中没有类的概念，用构造函数代替，在ES6中可以用class定义一个类，定义的类只能用new执行，不能自执行，继承可以直接使用extends，大大简化了原型及原型链的复杂逻辑.举例如下：
 
@@ -1845,7 +1977,7 @@ console.log(r);
 r.showName();
 ```
 
-## 13. <span style="color:yellowgreen;font-weight:600;">[ES6]</span>Set和Map两种数据结构
+## 14. <span style="color:yellowgreen;font-weight:600;">[ES6]</span>Set和Map两种数据结构
 
 ES6中新增Set和Map两种数据结构，需用new创建对象
 
@@ -1875,7 +2007,7 @@ map.set(obj,"qwe");
 console.log(map.get(obj),map.get(true));
 ```
 
-## 14. <span style="color:yellowgreen;font-weight:600;">[ES6]</span>回调地狱及window.Promise
+## 15. <span style="color:yellowgreen;font-weight:600;">[ES6]</span>回调地狱及window.Promise
 
 如果代码中有多处异步代码(异步中还有异步),例如:
 
@@ -1963,11 +2095,11 @@ new Promise((resolve,reject) => {
 });
 ```
 
-## 15.正则表达式
+## 16.正则表达式
 
 可以用来高效便捷的处理字符串
 
-### 15.1 定义正则表达式
+### 16.1 定义正则表达式
 
 **双斜杠定义**
 
@@ -1977,9 +2109,9 @@ new Promise((resolve,reject) => {
 
 例如`let reg = new RegExp("x");`括号中可以传入一个字符串变量,也可以直接传入字符串(字符串的内容为正则表达式)
 
-### 15.2 正则表达规则
+### 16.2 正则表达规则
 
-#### 15.2.1 转义字符
+#### 16.2.1 转义字符
 
 普通转移字符`\`(将有特殊意义的字符变为普通字符)
 
@@ -2031,7 +2163,7 @@ new Promise((resolve,reject) => {
 - 结束位置
 - `\W`能匹配的所有字符
 
-#### 15.2.2 标识
+#### 16.2.2 标识
 
 *写在正则表达式结尾/的后面,可以写多个,不区分先后顺序,在使用RegExp定义时,标识以字符串形式作为第二个参数传入*
 
@@ -2041,7 +2173,7 @@ new Promise((resolve,reject) => {
 
 `m`换行匹配
 
-#### 15.2.3 量词
+#### 16.2.3 量词
 
 *写在对应规则后面*
 
@@ -2063,11 +2195,11 @@ new Promise((resolve,reject) => {
 
 惰性(在量词后面加`?`表示惰性量词):尽量按少的去匹配
 
-#### 15.2.4 子项
+#### 16.2.4 子项
 
 使用小括号可以将里面的内容作为一个子项
 
-#### 19.2.5 字符集
+#### 16.2.5 字符集
 
 用中括号表示
 
@@ -2091,7 +2223,7 @@ new Promise((resolve,reject) => {
 
 - 字符集中小括号/大括号/正斜杠/问号/星号/加号等无特殊含义
 
-#### 15.2.6 其他有特殊意义的字符
+#### 16.2.6 其他有特殊意义的字符
 
 - `^`表示起始位置
 - `$`表示结束位置
@@ -2100,13 +2232,13 @@ new Promise((resolve,reject) => {
   - `\r`
 - `|`表示或者(前后是两个独立的正则)
 
-#### 15.2.7 捕获组
+#### 16.2.7 捕获组
 
 `\数字x`表示第x个子项,再次匹配第x个子项
 
 *并不是第x个子项的匹配规则,而是第x个子项的内容*
 
-#### 15.2.8 断言
+#### 16.2.8 断言
 
 `(?=xx)`(不算做子项)某字符后面要含有xx字符,但匹配到的东西不包含xx
 
@@ -2116,7 +2248,7 @@ new Promise((resolve,reject) => {
 
 `(?<!xx)`(不算做子项)某字符前面要不含有xx字符,但匹配到的东西不包含xx
 
-### 15.3 使用正则表达式的方法
+### 16.3 使用正则表达式的方法
 
 **正则表达式的方法**
 
@@ -2128,17 +2260,17 @@ new Promise((resolve,reject) => {
 
 `.match(正则表达式)`返回字符串中匹配成功的字符串组成的数组(数组有匹配的内容与子项组成,在规则中使用全局`g`则组成的数组中不包含子项)
 
-### 15.4 RegExp对象
+### 16.4 RegExp对象
 
 RegExp中存储了上一次的子项,可以通过这个对象直接拿到数据.(可以先test然后通过RegExp得到子项)
 
-## 16.ajax
+## 17.ajax
 
 > ajax即“Asynchronous Javascript And XML”（异步 JavaScript 和 XML），是指一种创建交互式网页应用的网页开发技术。 
 
 ajax可以在不刷新页面的前提下向后端 发送/请求 数据，在开发中是必然会用的技术。
 
-### 16.1 JavaScript原生ajax
+### 17.1 JavaScript原生ajax
 
 ```javascript
 let xhr;
@@ -2185,7 +2317,7 @@ function onReadyStateChange() {
 }
 ```
 
-### 16.2 jQuery的ajax
+### 17.2 jQuery的ajax
 
 ```javascript
 // 列出部分参数
@@ -2199,7 +2331,7 @@ $.ajax({
 });
 ```
 
-### 16.3 axios
+### 17.3 axios
 
 **发送单个请求**
 
@@ -2231,11 +2363,11 @@ axios.all([ reqA(),reqB() ]).then(res => {
 });
 ```
 
-### 16.4 跨域问题
+### 17.4 跨域问题
 
 发送ajax请求时需要确保当前页面与请求页面同源(必须协议\\主机\\端口号全都相同),否则需要后端发送相应的HTTP Header才能正常访问.
 
-### 16.5 jsonp
+### 17.5 jsonp
 
 由于HTML页面中调用JavaScript是没有同源限制的,所以可以利用此方法发送数据,举例如下:
 
@@ -2252,7 +2384,7 @@ axios.all([ reqA(),reqB() ]).then(res => {
 <script src="https://example.com"></script>
 ```
 
-## 17.DOM操作
+## 18.DOM操作
 
 > DOM（文档对象模型 document object model）是针对HTML文档的一个API.
 > DOM 描绘了一个层次化的节点树，允许开发人员添加、移除和修改页面元素(元素的文字也是DOM的一个节点)
@@ -2271,7 +2403,7 @@ DOM节点共有12种
 
 `attributes`为节点的属性
 
-### 17.1 获取DOM对象基础方式
+### 18.1 获取DOM对象基础方式
 
 **通过ID获取**
 
@@ -2316,7 +2448,7 @@ element.querySelectorAll('选择器') // 返回类数组NodeList, element的后�
 
 获取head:`document.head`
 
-### 17.2 操作DOM的属性及内容
+### 18.2 操作DOM的属性及内容
 
 **操作标签原有属性**
 
@@ -2517,7 +2649,7 @@ innerHTML 与 innerText 的区别：
 
 *低版本火狐浏览器不支持`innerText`,用`textContent`代替*
 
-### 17.3 更多DOM操作
+### 18.3 更多DOM操作
 
 `.childNodes`获取元素的所有子节点(主流浏览器是获取所有子节点,低版本IE浏览器是获取所有子元素节点)
 
@@ -2586,9 +2718,9 @@ innerHTML 与 innerText 的区别：
 - 主流浏览器:获取上一个兄弟节点
 - IE9及其以下:获取上一个兄弟元素节点
 
-## 18. DOM事件
+## 19. DOM事件
 
-### 18.1 0级事件
+### 19.1 0级事件
 
 *采用赋值的方式绑定函数,新事件替代旧事件*
 
@@ -2673,7 +2805,7 @@ element.event = fun;
 
 `onscroll`滚动条滚动事件
 
-### 18.2 2级事件
+### 19.2 2级事件
 
 *2级事件的绑定与解绑方式与0级事件不同，所有0级事件都可以在2级事件中使用*
 
@@ -2691,7 +2823,7 @@ element.event = fun;
 
 **DOM 3级事件的绑定与解绑方式与DOM 2级事件相同，只是增加了一些新的事件，在此暂不列出。**
 
-### 18.3 事件捕获与事件冒泡
+### 19.3 事件捕获与事件冒泡
 
 当采用2级事件绑定事件函数时，第三个参数为true则事件绑定在捕获阶段。
 
@@ -2808,11 +2940,11 @@ element.event = fun;
 
 **阻止事件冒泡的方法请参考事件对象一节**
 
-### 18.4事件委托
+### 19.4事件委托
 
 把事件加给父级,利用事件对象中的`target`来判断是哪个元素触发的。
 
-### 18.5 事件对象
+### 19.5 事件对象
 
 在主流浏览器中：当事件被触发时，会默认传一个实参，为事件对象,可以在事件函数中设置形参(通常用e或ev)接收
 
@@ -2858,7 +2990,7 @@ element.event = fun;
 
 `keyCode`按键的键值（也有用`witch`的）
 
-## 19.BOM相关
+## 20.BOM相关
 
 **BOM事件**
 
@@ -2900,7 +3032,7 @@ element.event = fun;
 
 `screen`屏幕相关信息对象
 
-## 20.元素各种尺寸和距离
+## 21.元素各种尺寸和距离
 
 `window.innerHeight`浏览器窗口高度(带窗口边框)
 
