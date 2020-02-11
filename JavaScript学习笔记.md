@@ -895,7 +895,7 @@ console.log(ite); // 迭代器的返回值的原型链中有next函数
 console.log(ite.next()); // 执行next函数，会返回一个对象，对象中value属性为数组的第0个值，done属性为false表示当前没有迭代完成
 console.log(ite.next()); // 执行next函数，会返回一个对象，对象中value属性为数组的第1个值，done属性为false表示当前没有迭代完成
 console.log(ite.next()); // 执行next函数，会返回一个对象，对象中value属性为数组的第2个值，done属性为false表示当前没有迭代完成
-console.log(ite.next()); // 执行next函数，会返回一个对象，对象中value属性为数组的第undefined个值，done属性为true表示当前已经迭代完成
+console.log(ite.next()); // 执行next函数，会返回一个对象，对象中value属性为undefined，done属性为true表示当前已经迭代完成
 ```
 
 上例中，经过反复执行next函数，就能够依次遍历到数组中的每一个值，而类似for...of...的内部，就是利用迭代器来得到数组中每一个值的，所以只有部署了Symbol.iterator的对象才能使用for...of...
@@ -913,9 +913,9 @@ console.log(ite.next()); // 执行next函数，会返回一个对象，对象中
 
 ```javascript
 let obj = {
-    ['0']: 'a',
-    ['1']: 'b',
-    ['2']: 'c',
+    0: 'a',
+    1: 'b',
+    2: 'c',
     length: 3,
     [Symbol.iterator]: Array.prototype[Symbol.iterator]
 };
