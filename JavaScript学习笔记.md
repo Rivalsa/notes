@@ -863,7 +863,113 @@ Symbol的参数是它的标识，只是便于开发者区分，运行时没有�
 - 若x为`NaN`则返回`false`
 - 其他情况均返回`true`
 
-## 5.Symbol.iterator
+## 5.Math对象
+
+- `Math.abs(x)`返回x的绝对值
+- `Math.random()`返回0-1之间的随机数(包含0,不包含1)
+- `Math.round(x)`返回x的四舍五入取整值
+- `Math.ceil(x)`返回大于或等于x的最小整数
+- `Math.floor(x)`返回小于或等于x的最大整数
+- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Math.trunc(x)`返回x的整数部分，对于undefined和无法截取证书的值，返回NaN（可以用~~x代替）(传入该函数的参数会被转换为数字类型)
+- `Math.min(a,b,c,...)`接收多个数字参数,返回最小值（如果不传参返回`Infinity`）
+- `Math.max(a,b,c,...)`接收多个数字参数,返回最大值（如果不传参返回`-Infinity`）
+- `Math.pow(a,b)`返回a的b次幂(<span style="color:yellowgreen;font-weight:600;">[ES6]</span>在es6中可以用`a ** b`表示)
+- `Math.sqrt(x)`返回x的算术平方根
+- `Math.cos(x)`计算x的余弦值，x是以弧度为单位的数字
+- `Math.sin(x)`计算x的正弦值，x是以弧度为单位的数字
+- `Math.tan(x)`计算x的正切值，x是以弧度为单位的数字
+- `Math.PI`圆周率的值
+- `Math.LN10`10的自然对数
+- `Math.LN2`2的自然对数
+- `Math.LOG10E`以10为底e的对数
+- `Math.LOG2E`以2为底e的对数
+- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Math.sign(x)`此函数共有5种返回值, 分别是 **1, -1, 0, -0, NaN.** 代表的各是**正数, 负数, 正零, 负零, NaN**(传入该函数的参数会被转换为数字类型)
+- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Math.cbrt(x)`返回x的立方根
+- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Math.hypot(x[, y[, z[, ...]]])`返回所有参数的平方和的平方根
+
+## 6.日期对象
+
+**Date()为构造函数（类）,需要通过new创建一个对象**
+
+*Date后面加括号可以指定时间(年,月,日,时,分,秒),月份从0起,注意减一,或者括号中可以直接写以毫秒为单位的时间戳,或者传格式为"年/月/日 时:分:秒"的字符串("/"可以替换为"-")).传字符串时月份不必考虑加减1的问题*
+
+`Date.prototype.toLocalString()`转换为本地格式的日期时间
+
+`Date.prototype.toLocalDateString()`转换为本地格式的日期
+
+`Date.prototype.toLocalTimeString()`转换为本地格式的时间
+
+`Date.prototype.getFullYear()`获取完整年份
+
+`Date.prototype.getYear()`获取年份(19xx年用两位数表示,后续会超过100,不常用)
+
+`Date.prototype.getMonth()`获取月份,0-11月,所以通常要加1
+
+`Date.prototype.getDay()`获取星期,从零开始,星期日为0
+
+`Date.prototype.getDate()`获取日
+
+`Date.prototype.getHours()`获取时
+
+`Date.prototype.getMinutes()`获取分
+
+`Date.prototype.getSeconds()`获取秒
+
+`Date.prototype.getMilliSeconds()`获取毫秒
+
+`Date.prototype.toUTCSting()`转换为UTC时间,返回值为字符串
+
+`Date.prototype.getTime()`转换为以毫秒为单位的时间戳(从1970年1月1日0时整开始计算)
+
+`Date.prototype.getTimezoneOffset()`获取GMT时间与本地时间相差的分钟数(GMT时间减去本地时间)
+
+`Date.prototype.setFullYear(x)`将年份设置为x
+
+`Date.prototype.setMonth(x)`将月份设置为x,范围为0-11
+
+`Date.prototype.setDate(x)`将日设置为x
+
+`Date.prototype.setHours(x)`将小时设置为x
+
+`Date.prototype.setMinutes(x)`将分钟设置为x
+
+`Date.prototype.setSeconds(x)`将秒设置为x
+
+`Date.prototype.setMilliseconds(x)`将毫秒设置为x
+
+日期对象可以相减,返回值为两个日期相差的毫秒数(相当于时间戳相减)
+
+## 7. <span style="color:yellowgreen;font-weight:600;">[ES6]</span>Set和Map两种数据结构
+
+ES6中新增Set和Map两种数据结构，需用new创建对象
+
+set对象将传进的数组去重，例如：
+
+```javascript
+let arr=[1,2,4,6,6,8,3,8,1];
+let x=[...new Set(arr)];
+console.log(x);
+```
+
+Set的属性
+
+- `set.size` 长度
+- `Set.prototype.add(x)` 添加数据x（数据有相同内容时不会被添加）
+- `Set.prototype.clear()` 全部清除
+- `Set.prototype.delete(x)` 删除数据（删除数据x，没有序号）
+- 等等
+
+Map可以让任何数据类型都能作为键，但只能`Map.prototype.set(键, 值)`存值，`Map.prototype.get(键)`取值。例如：
+
+```javascript
+let obj={};
+let map=new Map();
+map.set(true,123);
+map.set(obj,"qwe");
+console.log(map.get(obj),map.get(true));
+```
+
+## 8.Symbol.iterator
 
 iterator成为迭代器，是一种接口、机制。
 
@@ -926,13 +1032,52 @@ for(let v of obj) {
 
 不能给普通对象部署Symbol.iterator，如果强行部署，会因为没有属性名为“0“，”1“，”2“，... 的属性，所以每次返回的对象中value的值均为undefined
 
-## 6.运算符
+## 9.Proxy
+
+
+
+## 10.改变this指向
+
+`Function.prototype.call`函数加`.call()`后,会立即执行函数,传入的第一个实参为函数中的this指向(原参数对应写在后面)
+例如:
+
+```javascript
+function fn(a, b){
+    console.log(this);
+    console.log(a + b);
+}
+fn.call(document, 5, 6);
+```
+
+`Function.prototype.apply`函数加`.apply`后,会立即执行函数,传入的第一个实参为函数中的this指向(原参数作为数组在第二个参数传入)(无须改变this指向时可以在第一个参数传null)
+
+例如:
+
+```javascript
+function fn(a, b){
+    console.log(this);
+    console.log(a + b);
+}
+fn.apply(document, [5, 6]);
+```
+
+`Function.prototype.bind`*[不兼容IE8及其以下]*函数加`.bind`后,不执行这个函数,其返回值为新函数,但新函数的内容与原函数相同,新函数的this指向为参数中规定的指向(如果传入函数的参数,则可以固定参数,期返回的函数无须再传此参数也无法修改,传参的方法与`call`相同)(无须改变this指向时可以在第一个参数传null)
+
+```javascript
+function fn(a, b){
+    console.log(this);
+    console.log(a + b);
+}
+fn.bind(document, 1)(2);
+```
+
+## 11.运算符
 
 运算符按照按照参数的个数可以分为**一元运算符**,**二元运算符**和**三元运算符**
 
 运算符按照作用可以分为**赋值运算符**,**算数运算符**,**比较运算符**,**逻辑运算符**,**三目运算符**,**逗号运算符**和**位运算符**
 
-### 6.1 赋值运算符
+### 11.1 赋值运算符
 
 赋值运算符`=`的左侧为一个变量,右侧为一个值,表示将值赋给变量
 
@@ -974,7 +1119,7 @@ a %= 1; // 相当于 a = a % 1;
 a **= 1； // 相当于 a = a ** 1 [ES6];
 ```
 
-### 6.2 算数运算符
+### 11.2 算数运算符
 
 算数运算符分为`+(正)`\\`-(负)`\\`+(加)`\\`-(减)`\\`*(乘)`\\`/(除)`\\`%(取余)`
 
@@ -999,7 +1144,7 @@ console.log(-'24'); // -24 - 数字
 - 如果`+`两侧有一侧是对象,则会将两侧全部转换为字符串再进行运算
 - 其他情况一律全部转换为数字再进行运算
 
-### 6.3 比较运算符
+### 11.3 比较运算符
 
 比较运算符包含`<`,`<=`,`>`,`>=`,`==`,`===`,`!=`,`!==`
 
@@ -1048,7 +1193,7 @@ console.log('30' > '4'); // false
 
 任何与`NaN`的比较都返回`false`,即使`NaN == NaN`也会返回`false`
 
-### 6.4 逻辑运算符
+### 11.4 逻辑运算符
 
 逻辑运算符包含`&&`,`||`,`!`
 
@@ -1067,17 +1212,17 @@ var a = 0 && alert('hhh'); // 弹窗不执行, a为0
 var b = alert("hhh") && 0; // 弹窗，b为undefined
 ```
 
-### 6.5 三目运算符
+### 11.5 三目运算符
 
 三目运算符语法为`值1 ? 值2 : 值3`
 
 当`值1`转换为布尔值为`true`时,整个返回`值2`,否则返回`值3`
 
-### 6.6 逗号运算符
+### 11.6 逗号运算符
 
 逗号运算符的语法为`语句1,语句2`,执行时,先执行语句1,再执行语句2,整个表达式的返回值为语句2的值
 
-### 6.7 位运算符
+### 11.7 位运算符
 
 位运算符包括`&`,`|`,`~`,`^`,`<<`,`>>`,`>>>`
 
@@ -1101,7 +1246,7 @@ var b = alert("hhh") && 0; // 弹窗，b为undefined
 
 更多关于位运算的知识,请参考[《JavaScript中的位运算》](https://www.rivalsa.cn/s/article/Frontend/bit_operation?utm=SlPlrabkuaDnrJTorrA=)
 
-### <span style="color:yellowgreen;font-weight:600;">[ES6]</span>6.8 ...运算符
+### <span style="color:yellowgreen;font-weight:600;">[ES6]</span>11.8 ...运算符
 
 `...`运算符也称为扩展运算符、重置运算符、剩余运算符、rest运算符、rest参数等
 
@@ -1123,15 +1268,13 @@ let x = 10;
 console.log(...x > 5 ? [1, 2, 3] : ['a', 'b', 'c']); // ...运算符后面整个表达式的优先级高于...运算符的优先级
 ```
 
-
-
-### 6.9 运算符的优先级
+### 11.9 运算符的优先级
 
 请参考[这份资料](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Operators/Operator_Precedence)
 
-## 7 判断与循环
+## 12 判断与循环
 
-### 7.1 if...else...
+### 12.1 if...else...
 
 **用法1**
 
@@ -1179,7 +1322,7 @@ if(值1) {
 
 较简单的判断语句可以用逻辑运算符或三目运算符代替
 
-### 7.2 switch
+### 12.2 switch
 
 **基本语法**
 
@@ -1204,7 +1347,7 @@ switch(值0) {
 
 switch的比较需要值与数据类型都完全相同
 
-### 7.3 for
+### 12.3 for
 
 **语法**
 
@@ -1225,7 +1368,7 @@ for(语句1;语句2;语句3) {
 
 语句1,语句2和语句3均可以省略不写,但分号不可省略
 
-### 7.4 while
+### 12.4 while
 
 **语法**
 
@@ -1244,7 +1387,7 @@ while(值) {
 
 **while循环即for循环的一种特殊写法，for循环只是把与循环有关的代码集中在了一个位置**
 
-### 7.5 do ... while
+### 12.5 do ... while
 
 **语法**
 
@@ -1261,7 +1404,7 @@ do {
 2. 判断值转换为的布尔值,如果为false则跳出循环,否则继续向下执行;
 3. 返回第1步继续执行
 
-### 7.6 跳出循环
+### 12.6 跳出循环
 
 **break**
 
@@ -1287,7 +1430,7 @@ for(let i = 0; i < 5; i++) {
 
 跳出循环时,只跳出`break`或`continue`所在的循环,想跳出外层循环请参考循环命名
 
-### 7.7 循环命名
+### 12.7 循环命名
 
 用于跳出指定的循环
 
@@ -1301,7 +1444,7 @@ aaa:for(var i = 0; i < 5; i++) {
 }
 ```
 
-### 7.8 循环添加异步事件中的循环变量
+### 12.8 循环添加异步事件中的循环变量
 
 例如如下代码
 
@@ -1334,44 +1477,9 @@ aaa:for(var i = 0; i < 5; i++) {
 
 解决此问题有两种方案：利用自定义属性和利用闭包，请参考[《循环添加异步事件中的循环变量》](https://www.rivalsa.cn/s/article/Frontend/variable_in_loop?utm=SlPlrabkuaDnrJTorrA=)
 
-## 8.改变this指向
+## 13.作用域与解析顺序
 
-`Function.prototype.call`函数加`.call()`后,会立即执行函数,传入的第一个实参为函数中的this指向(原参数对应写在后面)
-例如:
-
-```javascript
-function fn(a, b){
-    console.log(this);
-    console.log(a + b);
-}
-fn.call(document, 5, 6);
-```
-
-`Function.prototype.apply`函数加`.apply`后,会立即执行函数,传入的第一个实参为函数中的this指向(原参数作为数组在第二个参数传入)(无须改变this指向时可以在第一个参数传null)
-
-例如:
-
-```javascript
-function fn(a, b){
-    console.log(this);
-    console.log(a + b);
-}
-fn.apply(document, [5, 6]);
-```
-
-`Function.prototype.bind`*[不兼容IE8及其以下]*函数加`.bind`后,不执行这个函数,其返回值为新函数,但新函数的内容与原函数相同,新函数的this指向为参数中规定的指向(如果传入函数的参数,则可以固定参数,期返回的函数无须再传此参数也无法修改,传参的方法与`call`相同)(无须改变this指向时可以在第一个参数传null)
-
-```javascript
-function fn(a, b){
-    console.log(this);
-    console.log(a + b);
-}
-fn.bind(document, 1)(2);
-```
-
-## 9.作用域与解析顺序
-
-### 9.1 作用域及作用域链
+### 13.1 作用域及作用域链
 
 **作用域**可以通俗的理解为起作用的范围,分为全局作用域与局部作用域,**在es5中,只有函数运行时会创建一个局部作用域,<span style="color:yellowgreen;font-weight:600;">[ES6]</span>在es6中执行代码块（通常有大括号包裹）时就会创建一个局部作用域**
 
@@ -1395,7 +1503,7 @@ console.log(c); // 报错:Uncaught ReferenceError: c is not defined
 
 当AO对象今后无法再用到时，这个作用域内的AO对象会被自动删除，将对应内存释放，称为**垃圾回收机制**
 
-### 9.2 闭包
+### 13.2 闭包
 
 现有A、B和C三个作用域，B是A的子作用域，C是B的子作用域，在C作用域中用到了B作用域中的AO对象，当C作用域中的内容直接在A作用域中被访问时，由于没有执行B作用域中的内容所以没有重新创建B作用域对应的AO对象，所以C作用域中能用到B作用域内上次的值。将这种情况称为**闭包**，举例如下：
 
@@ -1435,7 +1543,7 @@ fn(); // 2
 
 上述例子中，有三个作用域，全局作用域，outer形成的局部作用域和inner形成的局部作用域，outer的是全局作用域的子作用域，inner的是outer的子作用域，inner的作用域中用到了outer的作用域中的变量a，且inner形成的作用域可以在全局作用域中直接访问（通过执行fn相当于在不执行outer的情况下直接执行inner），在直接执行时由于outer中的代码没有执行，所以没在outter作用域内创建全新的变量a，所以inner中就可以直接使用outer中原有的a
 
-### 9.3 变量提升与解析顺序
+### 13.3 变量提升与解析顺序
 
 在es5中,即使把定义变量的语句写在后面,也会先进行变量的定义(但不会赋值),把这个现象称为**变量提升**,例如:
 
@@ -1456,7 +1564,7 @@ alert(a); // 报错:Uncaught ReferenceError: a is not defined
 
 2.执行 - 从上到下执行剩余代码
 
-### 9.4 作用域与解析顺序的举例
+### 13.4 作用域与解析顺序的举例
 
 **例0**
 
@@ -1730,31 +1838,7 @@ c();
 >
 > 弹窗:12
 
-## 10.Math对象
-
-- `Math.abs(x)`返回x的绝对值
-- `Math.random()`返回0-1之间的随机数(包含0,不包含1)
-- `Math.round(x)`返回x的四舍五入取整值
-- `Math.ceil(x)`返回大于或等于x的最小整数
-- `Math.floor(x)`返回小于或等于x的最大整数
-- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Math.trunc(x)`返回x的整数部分，对于undefined和无法截取证书的值，返回NaN（可以用~~x代替）(传入该函数的参数会被转换为数字类型)
-- `Math.min(a,b,c,...)`接收多个数字参数,返回最小值（如果不传参返回`Infinity`）
-- `Math.max(a,b,c,...)`接收多个数字参数,返回最大值（如果不传参返回`-Infinity`）
-- `Math.pow(a,b)`返回a的b次幂(<span style="color:yellowgreen;font-weight:600;">[ES6]</span>在es6中可以用`a ** b`表示)
-- `Math.sqrt(x)`返回x的算术平方根
-- `Math.cos(x)`计算x的余弦值，x是以弧度为单位的数字
-- `Math.sin(x)`计算x的正弦值，x是以弧度为单位的数字
-- `Math.tan(x)`计算x的正切值，x是以弧度为单位的数字
-- `Math.PI`圆周率的值
-- `Math.LN10`10的自然对数
-- `Math.LN2`2的自然对数
-- `Math.LOG10E`以10为底e的对数
-- `Math.LOG2E`以2为底e的对数
-- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Math.sign(x)`此函数共有5种返回值, 分别是 **1, -1, 0, -0, NaN.** 代表的各是**正数, 负数, 正零, 负零, NaN**(传入该函数的参数会被转换为数字类型)
-- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Math.cbrt(x)`返回x的立方根
-- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Math.hypot(x[, y[, z[, ...]]])`返回所有参数的平方和的平方根
-
-## 11.定时器
+## 14.定时器
 
 `window.setInterval(a,b,c,d,e,...)`设置重复定时器,参数a为一个函数（或JS语句字符串，不建议）,当定时器时间到后执行函数或字符串中的语句,参数b为定时时间,c,d,e,...为给a函数传的实参，返回定时器的编号。（除了第一个参数外，均是可选的）
 
@@ -1776,61 +1860,11 @@ setTimeout((...arr) => {
 
 `window.cancelAnimationFrame(a)`取消编号为a的`requestAnimationFrame`定时器
 
-## 12.日期对象
 
-**Date()为构造函数（类）,需要通过new创建一个对象**
 
-*Date后面加括号可以指定时间(年,月,日,时,分,秒),月份从0起,注意减一,或者括号中可以直接写以毫秒为单位的时间戳,或者传格式为"年/月/日 时:分:秒"的字符串("/"可以替换为"-")).传字符串时月份不必考虑加减1的问题*
+## 15.面向对象
 
-`Date.prototype.toLocalString()`转换为本地格式的日期时间
-
-`Date.prototype.toLocalDateString()`转换为本地格式的日期
-
-`Date.prototype.toLocalTimeString()`转换为本地格式的时间
-
-`Date.prototype.getFullYear()`获取完整年份
-
-`Date.prototype.getYear()`获取年份(19xx年用两位数表示,后续会超过100,不常用)
-
-`Date.prototype.getMonth()`获取月份,0-11月,所以通常要加1
-
-`Date.prototype.getDay()`获取星期,从零开始,星期日为0
-
-`Date.prototype.getDate()`获取日
-
-`Date.prototype.getHours()`获取时
-
-`Date.prototype.getMinutes()`获取分
-
-`Date.prototype.getSeconds()`获取秒
-
-`Date.prototype.getMilliSeconds()`获取毫秒
-
-`Date.prototype.toUTCSting()`转换为UTC时间,返回值为字符串
-
-`Date.prototype.getTime()`转换为以毫秒为单位的时间戳(从1970年1月1日0时整开始计算)
-
-`Date.prototype.getTimezoneOffset()`获取GMT时间与本地时间相差的分钟数(GMT时间减去本地时间)
-
-`Date.prototype.setFullYear(x)`将年份设置为x
-
-`Date.prototype.setMonth(x)`将月份设置为x,范围为0-11
-
-`Date.prototype.setDate(x)`将日设置为x
-
-`Date.prototype.setHours(x)`将小时设置为x
-
-`Date.prototype.setMinutes(x)`将分钟设置为x
-
-`Date.prototype.setSeconds(x)`将秒设置为x
-
-`Date.prototype.setMilliseconds(x)`将毫秒设置为x
-
-日期对象可以相减,返回值为两个日期相差的毫秒数(相当于时间戳相减)
-
-## 13.面向对象
-
-### 13.1 构造函数
+### 15.1 构造函数
 
 构造函数的本质就是一个函数（箭头函数不能作为构造函数）。但构造函数通常不是直接调用，而是通过`new`关键词来调用，直接调用与通过`new`调用的区别如下：
 
@@ -1848,7 +1882,7 @@ console.log(str.length);
 console.log(new String(str).length);
 ```
 
-### 13.2 原型与原型链
+### 15.2 原型与原型链
 
 在函数中，存在一个`prototype`属性,这个属性值是一个对象,.此函数通过`new`操作符创建的对象中会默认含有一个`__proto__`属性,此属性值与其构造函数的`prototype`属性指向同一个对象.我们将这个对象称为**原型**
 
@@ -1940,7 +1974,7 @@ JavaScript中没有继承构造函数的方法,但我们可以通过一些方式
 
 用法:`object instanceof function`
 
-### 13.3 <span style="color:yellowgreen;font-weight:600;">[ES6]</span>类及其继承
+### 15.3 <span style="color:yellowgreen;font-weight:600;">[ES6]</span>类及其继承
 
 在ES5中没有类的概念，用构造函数代替，在ES6中可以用class定义一个类，定义的类只能用new执行，不能自执行，继承可以直接使用extends，大大简化了原型及原型链的复杂逻辑.举例如下：
 
@@ -1977,37 +2011,7 @@ console.log(r);
 r.showName();
 ```
 
-## 14. <span style="color:yellowgreen;font-weight:600;">[ES6]</span>Set和Map两种数据结构
-
-ES6中新增Set和Map两种数据结构，需用new创建对象
-
-set对象将传进的数组去重，例如：
-
-```javascript
-let arr=[1,2,4,6,6,8,3,8,1];
-let x=[...new Set(arr)];
-console.log(x);
-```
-
-Set的属性（方法）（不常用）
-
-- size 长度
-- add 添加数据（数据有相同内容时不会被添加）
-- clear 全部清除
-- delete 删除数据（删除哪一个数据，没有序号）
-- 等等
-
-Map可以让任何数据类型都能作为键，但只能set存值，get取值。例如：
-
-```javascript
-let obj={};
-let map=new Map();
-map.set(true,123);
-map.set(obj,"qwe");
-console.log(map.get(obj),map.get(true));
-```
-
-## 15. <span style="color:yellowgreen;font-weight:600;">[ES6]</span>回调地狱及window.Promise
+## 16. <span style="color:yellowgreen;font-weight:600;">[ES6]</span>回调地狱及window.Promise
 
 如果代码中有多处异步代码(异步中还有异步),例如:
 
@@ -2095,11 +2099,11 @@ new Promise((resolve,reject) => {
 });
 ```
 
-## 16.正则表达式
+## 17.正则表达式
 
 可以用来高效便捷的处理字符串
 
-### 16.1 定义正则表达式
+### 17.1 定义正则表达式
 
 **双斜杠定义**
 
@@ -2109,9 +2113,9 @@ new Promise((resolve,reject) => {
 
 例如`let reg = new RegExp("x");`括号中可以传入一个字符串变量,也可以直接传入字符串(字符串的内容为正则表达式)
 
-### 16.2 正则表达规则
+### 17.2 正则表达规则
 
-#### 16.2.1 转义字符
+#### 17.2.1 转义字符
 
 普通转移字符`\`(将有特殊意义的字符变为普通字符)
 
@@ -2163,7 +2167,7 @@ new Promise((resolve,reject) => {
 - 结束位置
 - `\W`能匹配的所有字符
 
-#### 16.2.2 标识
+#### 17.2.2 标识
 
 *写在正则表达式结尾/的后面,可以写多个,不区分先后顺序,在使用RegExp定义时,标识以字符串形式作为第二个参数传入*
 
@@ -2173,7 +2177,7 @@ new Promise((resolve,reject) => {
 
 `m`换行匹配
 
-#### 16.2.3 量词
+#### 17.2.3 量词
 
 *写在对应规则后面*
 
@@ -2195,11 +2199,11 @@ new Promise((resolve,reject) => {
 
 惰性(在量词后面加`?`表示惰性量词):尽量按少的去匹配
 
-#### 16.2.4 子项
+#### 17.2.4 子项
 
 使用小括号可以将里面的内容作为一个子项
 
-#### 16.2.5 字符集
+#### 17.2.5 字符集
 
 用中括号表示
 
@@ -2223,7 +2227,7 @@ new Promise((resolve,reject) => {
 
 - 字符集中小括号/大括号/正斜杠/问号/星号/加号等无特殊含义
 
-#### 16.2.6 其他有特殊意义的字符
+#### 17.2.6 其他有特殊意义的字符
 
 - `^`表示起始位置
 - `$`表示结束位置
@@ -2232,13 +2236,13 @@ new Promise((resolve,reject) => {
   - `\r`
 - `|`表示或者(前后是两个独立的正则)
 
-#### 16.2.7 捕获组
+#### 17.2.7 捕获组
 
 `\数字x`表示第x个子项,再次匹配第x个子项
 
 *并不是第x个子项的匹配规则,而是第x个子项的内容*
 
-#### 16.2.8 断言
+#### 17.2.8 断言
 
 `(?=xx)`(不算做子项)某字符后面要含有xx字符,但匹配到的东西不包含xx
 
@@ -2248,7 +2252,7 @@ new Promise((resolve,reject) => {
 
 `(?<!xx)`(不算做子项)某字符前面要不含有xx字符,但匹配到的东西不包含xx
 
-### 16.3 使用正则表达式的方法
+### 17.3 使用正则表达式的方法
 
 **正则表达式的方法**
 
@@ -2260,17 +2264,17 @@ new Promise((resolve,reject) => {
 
 `.match(正则表达式)`返回字符串中匹配成功的字符串组成的数组(数组有匹配的内容与子项组成,在规则中使用全局`g`则组成的数组中不包含子项)
 
-### 16.4 RegExp对象
+### 17.4 RegExp对象
 
 RegExp中存储了上一次的子项,可以通过这个对象直接拿到数据.(可以先test然后通过RegExp得到子项)
 
-## 17.ajax
+## 18.ajax
 
 > ajax即“Asynchronous Javascript And XML”（异步 JavaScript 和 XML），是指一种创建交互式网页应用的网页开发技术。 
 
 ajax可以在不刷新页面的前提下向后端 发送/请求 数据，在开发中是必然会用的技术。
 
-### 17.1 JavaScript原生ajax
+### 18.1 JavaScript原生ajax
 
 ```javascript
 let xhr;
@@ -2317,7 +2321,7 @@ function onReadyStateChange() {
 }
 ```
 
-### 17.2 jQuery的ajax
+### 18.2 jQuery的ajax
 
 ```javascript
 // 列出部分参数
@@ -2331,7 +2335,7 @@ $.ajax({
 });
 ```
 
-### 17.3 axios
+### 18.3 axios
 
 **发送单个请求**
 
@@ -2363,11 +2367,11 @@ axios.all([ reqA(),reqB() ]).then(res => {
 });
 ```
 
-### 17.4 跨域问题
+### 18.4 跨域问题
 
 发送ajax请求时需要确保当前页面与请求页面同源(必须协议\\主机\\端口号全都相同),否则需要后端发送相应的HTTP Header才能正常访问.
 
-### 17.5 jsonp
+### 18.5 jsonp
 
 由于HTML页面中调用JavaScript是没有同源限制的,所以可以利用此方法发送数据,举例如下:
 
@@ -2384,7 +2388,7 @@ axios.all([ reqA(),reqB() ]).then(res => {
 <script src="https://example.com"></script>
 ```
 
-## 18.DOM操作
+## 19.DOM操作
 
 > DOM（文档对象模型 document object model）是针对HTML文档的一个API.
 > DOM 描绘了一个层次化的节点树，允许开发人员添加、移除和修改页面元素(元素的文字也是DOM的一个节点)
@@ -2403,7 +2407,7 @@ DOM节点共有12种
 
 `attributes`为节点的属性
 
-### 18.1 获取DOM对象基础方式
+### 19.1 获取DOM对象基础方式
 
 **通过ID获取**
 
@@ -2448,7 +2452,7 @@ element.querySelectorAll('选择器') // 返回类数组NodeList, element的后�
 
 获取head:`document.head`
 
-### 18.2 操作DOM的属性及内容
+### 19.2 操作DOM的属性及内容
 
 **操作标签原有属性**
 
@@ -2649,7 +2653,7 @@ innerHTML 与 innerText 的区别：
 
 *低版本火狐浏览器不支持`innerText`,用`textContent`代替*
 
-### 18.3 更多DOM操作
+### 19.3 更多DOM操作
 
 `.childNodes`获取元素的所有子节点(主流浏览器是获取所有子节点,低版本IE浏览器是获取所有子元素节点)
 
@@ -2718,9 +2722,9 @@ innerHTML 与 innerText 的区别：
 - 主流浏览器:获取上一个兄弟节点
 - IE9及其以下:获取上一个兄弟元素节点
 
-## 19. DOM事件
+## 20. DOM事件
 
-### 19.1 0级事件
+### 20.1 0级事件
 
 *采用赋值的方式绑定函数,新事件替代旧事件*
 
@@ -2805,7 +2809,7 @@ element.event = fun;
 
 `onscroll`滚动条滚动事件
 
-### 19.2 2级事件
+### 20.2 2级事件
 
 *2级事件的绑定与解绑方式与0级事件不同，所有0级事件都可以在2级事件中使用*
 
@@ -2823,7 +2827,7 @@ element.event = fun;
 
 **DOM 3级事件的绑定与解绑方式与DOM 2级事件相同，只是增加了一些新的事件，在此暂不列出。**
 
-### 19.3 事件捕获与事件冒泡
+### 20.3 事件捕获与事件冒泡
 
 当采用2级事件绑定事件函数时，第三个参数为true则事件绑定在捕获阶段。
 
@@ -2940,11 +2944,11 @@ element.event = fun;
 
 **阻止事件冒泡的方法请参考事件对象一节**
 
-### 19.4事件委托
+### 20.4事件委托
 
 把事件加给父级,利用事件对象中的`target`来判断是哪个元素触发的。
 
-### 19.5 事件对象
+### 20.5 事件对象
 
 在主流浏览器中：当事件被触发时，会默认传一个实参，为事件对象,可以在事件函数中设置形参(通常用e或ev)接收
 
@@ -2990,7 +2994,7 @@ element.event = fun;
 
 `keyCode`按键的键值（也有用`witch`的）
 
-## 20.BOM相关
+## 21.BOM相关
 
 **BOM事件**
 
@@ -3032,7 +3036,7 @@ element.event = fun;
 
 `screen`屏幕相关信息对象
 
-## 21.元素各种尺寸和距离
+## 22.元素各种尺寸和距离
 
 `window.innerHeight`浏览器窗口高度(带窗口边框)
 
