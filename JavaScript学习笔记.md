@@ -54,7 +54,7 @@ V8引擎为解析js代码最快的js引擎
 
 **2003年**： 页面上漂浮的广告、弹窗广告；所以当时的浏览器就推出一个功能，禁用广告，实际上本质就是禁用JavaScript。
 
-**2004年**：谷歌打开了Ajax这个潘多拉的盒子，从此JavaScript被人重视，很多人开始学习JS语言。
+**2004年**：谷歌在JavaScript中添加了ajax，从此JavaScript被人重视，很多人开始学习JS语言。
 
 **2007年**：三层分离，iPhone发布，人们开始重视用户体验。大家发现了，JavaScript是web页面中制作交互效果唯一的语言，所以把JS的重视程度，提到了相当高的一个地位。
 
@@ -92,7 +92,7 @@ V8引擎为解析js代码最快的js引擎
 <script async src="script.js"></script>
 ```
 
-当有`async`属性时，会立刻下载脚本，并在下载完毕后立即执行脚本。下载脚本时，html不停止解析，执行脚本时html解析暂停。所以此时脚本的执行顺序与书写顺序无关。
+当有`async`属性时，会立刻下载脚本，并在下载完毕后立即执行脚本。下载脚本时，html不停止解析，执行脚本时html解析暂停。所以此时脚本的执行顺序并不仅与书写顺序有关。
 
 `defer`模式
 
@@ -114,11 +114,11 @@ V8引擎为解析js代码最快的js引擎
 
 `window.decodeURIComponent(x)`将`window.encodeURIComponent`编码的x进行解码
 
-`window.alert(x)`警告弹窗，x为弹窗的内容
+`window.alert([x])`警告弹窗，x为弹窗的内容
 
-`window.prompt(x,y)`输入弹窗,x是提示内容,y为在输入框中默认输入的内容,返回输入的字符串,如果点"取消"则返回null
+`window.prompt([x[, y]])`输入弹窗,x是提示内容,y为在输入框中默认输入的内容,返回输入的字符串,如果点"取消"则返回null(在IE7和IE8中，省略y会导致输入框中显示默认值undefined)
 
-`window.confirm(x)`确认弹窗,x是提示内容,点击"是"返回true,否则返回false
+`window.confirm([x])`确认弹窗,x是提示内容,点击"是"返回true,否则返回false
 
 `JSON.parse(x)`将JSON格式的字符串x转换为对象，返回这个对象（IE7及其以下不支持）
 
@@ -139,19 +139,19 @@ try{
 `'use strict'`将此字符串放在第一行表示使用严格模式，在严格模式下，有如下特殊要求：
 
 - 禁用`with`
-- 禁止给未声明的变量赋值
-- arguments对象是传入函数内实参列表的静态脚本，而不是与对应的实参指向同一个值得引用
-- 禁止删除声明的变量或参数
-- 禁止定义重复的变量名或属性名
+- 禁止给未定义的变量赋值
+- arguments对象是传入函数内实参列表的静态脚本，而不是与对应的实参指向同一个值的引用
+- 禁止删除定义的变量或参数
 - 八进制必须以0o开头
 - eval有独立的作用域
 - 禁止给基础数据类型添加属性
 - 函数自执行时，this指向undefined而不是window
 - 禁止使用arguments.callee
-- arguments和eval呗当做关键字，不能被赋值和用作变量名
-- call，apply，bind传入null或undefined时函数的this指向不改变而不是转换为window
+- arguments和eval被当做关键字，不能被赋值和用作变量名
+- call，apply，bind传入null或undefined时函数的this指向null或undefined而不是window
+- (其它特殊要求)
 
-`with`\[严格模式不支持\]\[不推荐使用\]延长作用域链里面的变量都从传入的对象中取得,例如:
+`with`\[严格模式不支持\]延长作用域链，里面的变量都从传入的对象中取得,例如:
 
 ```javascript
 var a=20,
@@ -178,7 +178,7 @@ var a=20,
 
 ### 2.2 变量命名规范
 
-命名规范是为了方便代码维护、阅读、团队协作开发而制定的,违反这些规范并不会报错,而且不同团队会有自己的规范.这里列出的是通常被大多数团队使用的规范.
+命名规范是为了方便代码维护、阅读、团队协作开发而制定的,违反这些规范并不会报错,而且每个团队会有自己的规范.这里列出的是通常被大多数团队使用的规范
 
 - 只允许使用 数字(0-9)/字母(A-Z,a-z)/下划线(_)/美元符号($)
 - 语义化命名
@@ -229,7 +229,6 @@ console.log(window.b); //undefined
 
 ```javascript
 let [a, b] = [10, 20]; // 相当于let a = 10, b = 20;
-let [aa, bb, cc, dd] = '解构赋值'; // 相当于 let aa = '解', bb = '构', cc = '赋', dd = '值';
 let [q, w, e] = [1, [2, 3]]; // 相当于 let q = 1, w = [2, 3], e;
 let [q, [w, e]] = [1, [2, 3]]; // 相当于 let q = 1, w = 2 , e = 3;
 let [a, b, c] = ['1', 'ss']; // 相当于 let a = '1', b = 'ss', c; （不成功的解构）
@@ -238,25 +237,22 @@ let [, a, b] = [10, 20, 30] // 相当于 let a = 20, b = 30; （不完全解构�
 let [a, b = 10] = [5]; // 相当于let a = 5, b = 10; （传undefined也使用默认值）
 let [x = f()] = [1]; // 相当于let x = 1; 函数f不执行
 let [x = f()] = []; // 相当于let x = f();
-let [x = 1, y = x] = [] // 相当于 let x = 1, y = x;
 let {x: c, y: d} = {x: 50, y: 80}; // 相当于let c = 50, d = 80;
 	// 上面一条也可写为 let {c, d} = {c: 50, d: 80};
 	// 完整写出来为 let {c: c, d: d} = {c: 50, d: 80};
 ```
 
-*函数的参数也可以通过解构赋值的方式进行传值*
-
 ## 3. 控制台输出
 
-`console.log`普通输出，如有多个参数则依次输出
+`console.log([x[, y[, z[, ...]]]])`普通输出，如有多个参数则依次输出
 
-`console.info`输出信息
+`console.info([x])`输出信息
 
 *`console.log`与`console.info`只是语义上的差别,效果上差别不大,在有有的浏览器中有info的标记,但在Google Chrome中完全一样*
 
-`console.warn`输出警告信息,不阻碍代码继续执行
+`console.warn(x)`输出警告信息,不阻碍代码继续执行
 
-`console.error`输出错误信息,不阻碍代码继续执行
+`console.error(x)`输出错误信息,不阻碍代码继续执行
 
 *如想阻止代码继续执行,可以使用`throw`抛出错误,例如*
 
@@ -265,7 +261,7 @@ throw 'xxx';
 throw new Error('xxx');
 ```
 
-`console.dir`如果输出的是对象,则可以显示对象的所有属性与方法,如果不是对象,则出只能接收一个参数外与`log`无明显差异
+`console.dir`如果输出的是对象,则可以显示对象的所有属性与方法,如果不是对象,则除只能接收一个参数外与`log`无明显差异
 
 ## 4.数据类型
 
@@ -290,17 +286,17 @@ throw new Error('xxx');
 
 - 单引号(') - 例如:`'hello world'`
 - 双引号(") - 例如:`"hello world"`
-- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>反引号(\`)（称为模板字符串） - 例如:\`hello word\` - 使用此符号时，内部可以换行，而且可以使用`${值}`来直接得到对应的值，避免多次拼接
+- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>反引号(\`)（称为模板字符串） - 例如:\`hello word\` - 使用此符号时，内部可以换行，而且可以使用`${变量或表达式}`来直接得到对应的值，避免多次拼接
 
 <span style="color:red;font-weight:600;">字符串常用方法</span>
 
 **以下提到的字符串方法均不改变原字符串的内容**
 
-字符串可以加下标（用中括号表示）,表示取其中字符,只读，低版本IE不支持，x超出下标范围时返回undefined
+字符串可以加下标（用中括号）,表示取其中字符，只读，低版本IE不支持，x超出下标范围时返回undefined
 
 `String.prototype.charAt(x)`只读,用法同字符串的下标，任何浏览器都支持，x超出下标范围时返回空字符串
 
-`String.prototype.length`只读,获取字符长的长度
+`String.prototype.length`只读,获取字符串的长度
 
 `String.prototype.charCodeAt(x)`第x位的编码
 
@@ -324,9 +320,9 @@ throw new Error('xxx');
 
 `String.prototype.split(x)`以参数中的字符串或正则表达式切割字符串,返回一个数组,如果传参为**空字符串**,则逐字符切割,如果不传参数则将整体作为数组的一个元素。
 
-`String.prototype.indexOf(x[, y])`从自左向右第y位开始查询,返回x在字符串中第一次出现的位置,若未出现该字符串,则返回-1，y可以省略表示从第一个字符开始查询
+`String.prototype.indexOf(x[, y])`从自左向右第y位开始查询,返回x在字符串中第一次出现的位置,若未出现该字符串,则返回-1，y可以省略表示从第0个字符开始查询
 
-`String.prototype.lastIndexOf(x[, y])`从自左向右第y位开始向左查询,返回x在字符串中第一次出现的位置,若未出现x,则返回-1，y可以省略表示从最后一个字符开始查询
+`String.prototype.lastIndexOf(x[, y])`从自左向右第y位开始向左查询,返回x在字符串中第一次出现的位置,若未出现x,则返回-1，y可以省略表示从最后0个字符开始查询
 
 `String.prototype.search(x)`返回x在字符串中第一次出现的位置,x可以为字符串也可以为正则表达式（传正则时不执行全局检索）,若未出现该字符串,则返回-1
 
@@ -362,7 +358,7 @@ throw new Error('xxx');
 
 **number类型**
 
-JavaScript中的数字有最大值和最小值的限制,对于正数最大值可以利用`Number.MAX_VALUE`取得,若数字大于此值,则会转换为`Infinity`最小值可以利用`Number.MIN_VALUE`取得,若数字小于此值,则为`0`;对于负数则为`-Infinity`和`0`
+JavaScript中的数字有最大值和最小值的限制,对于正数最大值可以利用`Number.MAX_VALUE`取得,若数字大于此值,则会转换为`Infinity`最小值可以利用`Number.MIN_VALUE`取得,若数字小于此值,则为`0`
 
 在设置数字的时候可以设置十六进制/十进制/八进制/二进制
 
@@ -403,7 +399,9 @@ console.log(0o88); // 报错 Uncaught SyntaxError: invalid or unexpected token
 - 通过`new Object()`的方式来创建一个对象
 - 通过`Object.create(x)`来创建一个对象，创建的对象的原型指向x
 
-在es5中,键必须是字符串形式（不能是变量）,可以加引号也可以不加引号,但不加引号时必须符合变量的命名规则
+在es5中,键必须是字符串形式（纯数字会转换为字符串，不能是变量）,可以加引号也可以不加引号,但不加引号时必须符合变量的命名规则（纯数字除外）
+
+值可以是任意一种数据类型，也可以是变量
 
 获取对象属性的值有两种方法：
 
@@ -412,7 +410,7 @@ console.log(0o88); // 报错 Uncaught SyntaxError: invalid or unexpected token
 
 新增对象属性值有两种方法：
 
-- 直接通过赋值运算符进行赋值，例如：`obj.prop = 'abc'`
+- 直接通过赋值运算符进行赋值，例如：`obj.prop = 'abc'`，若prop属性原本不存在，则会新增此属性，原本存在会被修改
 - 通过`Object.defineProperty(obj, prop, descriptor)`方法
 
 > Object.defineProperty(obj, prop, descriptor)直接在obj上定义一个新属性，或者修改一个对象的现有属性， 并返回这个对象。
@@ -471,8 +469,6 @@ let obj = {
 console.log(obj.name); // Rivalsa
 ```
 
-值可以是任意一种数据类型，也可以是变量
-
 <span style="color:yellowgreen;font-weight:600;">[ES6]</span>当对象的属性值为变量且与属性名相同时可以简写，当属性值为函数时也可以简写，如下所示：
 
 ```javascript
@@ -502,7 +498,7 @@ let x = 10,
 
 使用`delete`可以删除对象中的属性，例如:`delete obj.pet`，删除成功返回`true`否则返回`false`(在严格模式下无法使用)
 
-将对象赋值给一个变量是将对象的指针给这个变量,对变量的修改等价于直接修改对象,举例如下:
+将对象赋值给一个变量是将对象的地址给这个变量,对变量的修改等价于直接修改对象,举例如下:
 
 ```javascript
 let obj = {
@@ -519,9 +515,11 @@ console.log(obj.age); // 16
 
 <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Object.getOwnPropertySymbols(obj)`返回对象obj所有Symbol值作为属性名的数组
 
+`Object.prototype.hasOwnProperty(prop)`判断对象中是否存在prop属性，存在返回true，不存在返回false
+
 <span style="color:yellowgreen;font-weight:600;">[ES6]</span>对象的`Object.keys(obj)`,`Object.values(obj)`与`Object.entries(obj)`方法分别表示获取对象的键,值以及键值对组成的数组
 
-利用`for 变量 in 对象`可以遍历对象的键（能遍历到键了，自然也能取到值了）。
+利用`for 变量 in 对象`可以遍历对象的键。
 
 <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Object.is(x, y)`判断x与y是否是相同的值（不发生数据类型转换），例如：
 
@@ -547,7 +545,7 @@ console.log(Object.is({}, {})); // false 比较的仍然是地址
 
 <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Array.prototype.keys()`、`Array.prototype.values()`、`Array.prototype.entries()`方法分别表示获取数组的下标组成的数组，数组的数据组成的数组以及数组的下标数据对组成的数组
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>利用`for 变量 of 数组`遍历数组（需要部署了Symbol.Iterator才可用），举例如下:
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>利用`for 变量 of 数组`遍历数组（部署了Symbol.Iterator的类数组也能用），举例如下:
 
 ```javascript
 //遍历对象（本质上也是遍历数组）
@@ -599,7 +597,7 @@ console.log(arr)
 
 `Array.prototype.concat(x[, y[, z[, ...]]])`将x,y,z...拼接在数组后面,x,y,z...既可以是一个数组,也可以是其他数据类型的新数据,不改变原有数组,返回新数组
 
-`Array.prototype.join(x)`用x将数组的元素连接在一起（不传x则默认为逗号）,不修改原数组,返回拼接好的字符串
+`Array.prototype.join([x])`用x将数组的元素连接在一起（不传x则默认为逗号）,不修改原数组,返回拼接好的字符串
 
 `Array.isArray(x)`判断x是否是数组,如果是返回true,否则返回false
 
@@ -712,13 +710,14 @@ console.log(arr)
 
 **函数**属于对象的一种
 
-- 定义函数可以通过`function`关键字进行声明,如`function 函数名(){}`,也可以通过赋值的方式进行定义,如`var/let 函数名 = function(){};`,有时也可以不给函数取名(称为匿名函数),例如`function(){}`
-- 对于通过`function 函数名(){}`定义的函数或通过`var/let 函数名 = function(){}`来定义的函数，可以在函数内部以及函数所在作用域内通过函数名来调用函数
-- 对于通过`var 函数名1 = function 函数名2(){}`来定义的函数，可以在函数内部以及函数所在作用域内通过函数名1来调用函数，但在函数名2只能在函数的内部使用
+- 定义函数可以通过`function`关键字进行定义,如`function 函数名(形参){}`,也可以通过赋值的方式进行定义,如`var/let 函数名 = function(形参){};`,有时也可以不给函数取名(称为匿名函数),例如`function(形参){}`
+- 对于通过`function 函数名(形参){}`定义的函数或通过`var/let 函数名 = function(形参){}`来定义的函数，可以在函数内部以及函数所在作用域内通过函数名来调用函数
+- 对于通过`var 函数名1 = function 函数名2(形参){}`来定义的函数，可以在函数内部以及函数所在作用域内通过函数名1来调用函数，但在函数名2只能在函数的内部使用
 - 当函数中有`return`时,函数的返回值为对应的内容，当函数中没有`return`或内容为空时,返回`undefined`，执行函数时，一旦遇到`retutn`则直接跳出函数
-- 函数表达式可以加小括号去执行,函数定义`function(){}`可以通过小括号括起来转换为表达式,再在后面加小括号就可以直接执行,称为**立即执行函数(IIFE)**。立即执行函数可以将代码模块化,避免污染全局环境
+- 函数表达式可以加小括号去执行（小括号中的内容为传递的实参）,函数定义`function(形参){}`可以通过小括号括起来转换为表达式,再在后面加小括号就可以直接执行,称为**立即执行函数(IIFE)**。立即执行函数可以将代码模块化,避免污染全局环境
 - 函数实际传入的参数称为**实参**,在函数内部用于接受实参值的变量称为**形参**,实参与形参按顺序一一对应
 - 实参个数可以等于形参个数,也可以大于形参个数,也可以小于形参个数.传参时,形参与实参按顺序一一对应,对于形参多于实参的情况,未传值的形参值为undefined,对于实参多于形参的情况,在函数中无法通过形参拿到值,但可以通过`arguments`(实参列表)来拿到值
+- 函数的参数也可以通过解构赋值的方式进行传值
 - <span style="color:yellowgreen;font-weight:600;">[ES6]</span>在ES6中可以在形参中通过等号来设置默认值，当对应的实参为undefined时，将使用默认值
 
 ```javascript
@@ -800,9 +799,7 @@ console.log(obj); // {name: "Rivalsa", age: 18, Symbol(): "Jerry"}
 
 Symbol的参数是它的标识，只是便于开发者区分，运行时没有实际意义
 
-定义Symbol数据类型的变量时，不能用`var`关键字
-
-在遍历对象时，拿不到属性值为Symbol类型的属性
+在遍历对象时，通常拿不到属性值为Symbol类型的属性
 
 ### 4.3 数据类型的检测
 
@@ -870,7 +867,7 @@ Symbol的参数是它的标识，只是便于开发者区分，运行时没有�
 - `Math.round(x)`返回x的四舍五入取整值
 - `Math.ceil(x)`返回大于或等于x的最小整数
 - `Math.floor(x)`返回小于或等于x的最大整数
-- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Math.trunc(x)`返回x的整数部分，对于undefined和无法截取证书的值，返回NaN（可以用~~x代替）(传入该函数的参数会被转换为数字类型)
+- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Math.trunc(x)`返回x的整数部分，对于undefined和无法截取整数的值，返回NaN（可以用~~x代替）(传入该函数的参数会被转换为数字类型)
 - `Math.min(a,b,c,...)`接收多个数字参数,返回最小值（如果不传参返回`Infinity`）
 - `Math.max(a,b,c,...)`接收多个数字参数,返回最大值（如果不传参返回`-Infinity`）
 - `Math.pow(a,b)`返回a的b次幂(<span style="color:yellowgreen;font-weight:600;">[ES6]</span>在es6中可以用`a ** b`表示)
@@ -971,7 +968,7 @@ console.log(map.get(obj),map.get(true));
 
 ## 8.Symbol.iterator
 
-iterator成为迭代器，是一种接口、机制。
+iterator称为迭代器，是一种接口、机制。
 
 iterator 的作用有三个：
 
@@ -1038,8 +1035,7 @@ for(let v of obj) {
 
 ## 10.改变this指向
 
-`Function.prototype.call`函数加`.call()`后,会立即执行函数,传入的第一个实参为函数中的this指向(原参数对应写在后面)
-例如:
+`Function.prototype.call(a[, b[, c[, ...]]])`立即执行函数,a为函数中的this指向，b,c,...为向函数中传递的实参，例如:
 
 ```javascript
 function fn(a, b){
@@ -1049,9 +1045,7 @@ function fn(a, b){
 fn.call(document, 5, 6);
 ```
 
-`Function.prototype.apply`函数加`.apply`后,会立即执行函数,传入的第一个实参为函数中的this指向(原参数作为数组在第二个参数传入)(无须改变this指向时可以在第一个参数传null)
-
-例如:
+`Function.prototype.apply(a[, b])`立即执行函数，a为函数中的this指向，b为向函数中传的的实参组成的数组，例如:
 
 ```javascript
 function fn(a, b){
@@ -1061,7 +1055,7 @@ function fn(a, b){
 fn.apply(document, [5, 6]);
 ```
 
-`Function.prototype.bind`*[不兼容IE8及其以下]*函数加`.bind`后,不执行这个函数,其返回值为新函数,但新函数的内容与原函数相同,新函数的this指向为参数中规定的指向(如果传入函数的参数,则可以固定参数,期返回的函数无须再传此参数也无法修改,传参的方法与`call`相同)(无须改变this指向时可以在第一个参数传null)
+`Function.prototype.bind(a[, b[, c[, ...]]])`*[不兼容IE8及其以下]*不执行这个函数,返回值为新函数,但新函数的内容与原函数相同,新函数的this指向为实参对象a，实参b,c,...为函数的实参,返回的函数无须再传此参数也无法修改
 
 ```javascript
 function fn(a, b){
@@ -1859,8 +1853,6 @@ setTimeout((...arr) => {
 `window.requestAnimationFrame(a)`按照刷新率执行函数a,相当于一个重复定时器,时间定为刷新率
 
 `window.cancelAnimationFrame(a)`取消编号为a的`requestAnimationFrame`定时器
-
-
 
 ## 15.面向对象
 
