@@ -942,21 +942,39 @@ Symbol的参数是它的标识，只是便于开发者区分，运行时没有�
 
 ES6中新增Set和Map两种数据结构，需用new创建对象
 
-set对象将传进的数组去重，例如：
+创建set对象时需要传一个数组，创建的set对象有数组中的元素去重后组成(不传值或传空数组均返回没有元素的set对象)
 
 ```javascript
-let arr=[1,2,4,6,6,8,3,8,1];
+let set = new Set(['a', 'b', 10, 20, true, 'b', true]);
+console.log(set); // Set(5) {"a", "b", 10, 20, true}
+```
+
+通过`Set.prototype.keys()`,`Set.prototype.values()`以及`Set.prototype.entries()`的执行，可以看出一个set对象的键与值是完全一样的，例如上例中的set对象的键分别为`"a", "b", 10, 20, true`，值也分别为`"a", "b", 10, 20, true`
+
+利用set对象将传进的数组去重，例如：
+
+```javascript
+let arr=[1, 2, 4, 6, 6, 8, 3, 8, 1];
 let x=[...new Set(arr)];
 console.log(x);
 ```
 
-Set的属性
+set对象的属性
 
 - `set.size` 长度
-- `Set.prototype.add(x)` 添加数据x（数据有相同内容时不会被添加）
+- `Set.prototype.add(x)` 添加数据x（数据有相同内容时不会被添加），改变原set对象，返回改变后的set对象
 - `Set.prototype.clear()` 全部清除
-- `Set.prototype.delete(x)` 删除数据（删除数据x，没有序号）
-- 等等
+- `Set.prototype.delete(x)` 删除数据x，成功返回true，失败返回false
+
+由于`Set.prototype.add(x)`的返回值仍是此set对象，所以可以进行链式操作，例如：
+
+```javascript
+let s = new Set();
+s.add(10).add(20).add(30).add(40);
+console.log(s);
+```
+
+set对象部署有`Symbol.iterator`接口，可以利用`for ... of...`循环
 
 Map可以让任何数据类型都能作为键，但只能`Map.prototype.set(键, 值)`存值，`Map.prototype.get(键)`取值。例如：
 
@@ -970,13 +988,13 @@ console.log(map.get(obj),map.get(true));
 
 ## <span style="color:yellowgreen;font-weight:600;">[ES6]</span>8.Symbol.iterator
 
-iterator称为迭代器，是一种接口、机制。
+iterator在ES6之前就存在，但它是非标准的，不是目前任何标准文档的一部分。到了ES2015才有了Symbol.iterator的规范。以下所提到的任何iterator都指的是Symbol.iterator
 
-iterator 的作用有三个：
+iterator称为迭代器，其作用有三个：
 
-- 为各种数据结构，提供一个统一的、简便的访问接口；
-- 使得数据结构的成员能够按某种次序排列；
-- 主要供`for...of`消费。
+- 为各种数据结构，提供一个统一的、简便的访问接口
+- 使得数据结构的成员能够按某种次序排列
+- 主要供`for...of`
 
 **iterator本质上，就是一个指针对象**
 
