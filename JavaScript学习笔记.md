@@ -531,6 +531,8 @@ console.log(Object.is({}, {})); // false 比较的仍然是地址
 
 <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Object.assign(target, ...sources)`将source对象拼接在target对象上（如果属性名重复，则使用最后一个属性值），target对象会被改变，sources对象不改变，返回修改后的target对象
 
+`a in obj`如果a是obj的属性，则返回true，否则返回false。
+
 ---
 
 **数组**属于对象的一种，可以通过如下方式创建一个数组：
@@ -966,7 +968,7 @@ map.set(obj,"qwe");
 console.log(map.get(obj),map.get(true));
 ```
 
-## 8.Symbol.iterator
+## <span style="color:yellowgreen;font-weight:600;">[ES6]</span>8.Symbol.iterator
 
 iterator称为迭代器，是一种接口、机制。
 
@@ -1029,9 +1031,72 @@ for(let v of obj) {
 
 不能给普通对象部署Symbol.iterator，如果强行部署，会因为没有属性名为“0“，”1“，”2“，... 的属性，所以每次返回的对象中value的值均为undefined
 
-## 9.Proxy
+## <span style="color:yellowgreen;font-weight:600;">[ES6]</span>9.Proxy
 
+代理用于修改某些操作的默认行为，等同于在语言层面做出修改，所以属于一种“元编程”，即对编程语言进行编程
 
+通过代理允许自定义函数，在对代理对象执行相关操作时，执行对应函数。
+
+可通过如下方法创建一个对象的代理：
+
+```javascript
+let proxy = new Proxy(target, handler);
+```
+
+- `target`为被代理的对象
+- `handler`指定对代理对象执行对应操作时执行函数
+
+> handler为一个对象，可由如下属性组成：
+>
+> **set(a, b, c, d){}**修改代理对象的属性值时执行此函数
+>
+> - 形参a为被代理对象
+> - 形参b为被访问的属性名
+> - 形参c为预被设置为的属性值
+> - 形参d为代理对象
+>
+> **get(a, b, c){}**读取代理对象的属性值时执行此函数，得到的属性的值为此函数的返回值
+>
+> - 形参a为被代理对象
+> - 形参b为被访问的属性名
+> - 形参c为代理对象
+>
+> **has(target, propKey)**：拦截`propKey in proxy`的操作，返回一个布尔值
+>
+> **deleteProperty(target, propKey)**：拦截`delete proxy[propKey]`的操作，返回一个布尔值
+>
+> **ownKeys(target)**：拦截`Object.getOwnPropertyNames(proxy)`、`Object.getOwnPropertySymbols(proxy)`、`Object.keys(proxy)`，返回一个数组。该方法返回目标对象所有自身的属性的属性名，而`Object.keys()`的返回结果仅包括目标对象自身的可遍历属性
+>
+> **getOwnPropertyDescriptor(target, propKey)**：拦截`Object.getOwnPropertyDescriptor(proxy, propKey)`，返回属性的描述对象
+>
+> **defineProperty(target, propKey, propDesc)**：拦截`Object.defineProperty(proxy, propKey, propDesc）`、`Object.defineProperties(proxy, propDescs)`，返回一个布尔值
+>
+> **preventExtensions(target)**：拦截`Object.preventExtensions(proxy)`，返回一个布尔值
+>
+> **getPrototypeOf(target)**：拦截`Object.getPrototypeOf(proxy)`，返回一个对象
+>
+> **isExtensible(target)**：拦截`Object.isExtensible(proxy)`，返回一个布尔值
+>
+> **setPrototypeOf(target, proto)**：拦截`Object.setPrototypeOf(proxy, proto)`，返回一个布尔值。如果目标对象是函数，那么还有两种额外操作可以拦截
+>
+> **apply(target, object, args)**：拦截 Proxy 实例作为函数调用的操作，比如`proxy(...args)`、`proxy.call(object, ...args)`、`proxy.apply(...)`
+>
+> **construct(target, args)**：拦截 Proxy 实例作为构造函数调用的操作，比如`new proxy(...args)`
+
+**可撤销的代理**
+
+利用`Proxy.revocable(target, handler)`可以创建一个可撤销的代理，其返回值为一个对象，由如下两个属性组成：
+
+- `proxy`代理的对象
+- `revoke`函数，执行此函数可以撤销代理
+
+```javascript
+let {proxy, revoke} = Proxy.revocable({}, {});
+proxy.foo = 123;
+console.log(proxy.foo); // 123
+revoke();
+console.log(proxy.foo); // Uncaught TypeError: Cannot perform 'get' on a proxy that has been revoked
+```
 
 ## 10.改变this指向
 
@@ -2003,7 +2068,7 @@ console.log(r);
 r.showName();
 ```
 
-## 16. <span style="color:yellowgreen;font-weight:600;">[ES6]</span>回调地狱及window.Promise
+## 16. <span style="color:yellowgreen;font-weight:600;">[ES6]</span>回调地狱及及解决方案
 
 如果代码中有多处异步代码(异步中还有异步),例如:
 
@@ -2020,65 +2085,131 @@ setTimeout(() => {
 console.log(1);
 ```
 
-可以看到,上述代码有横向发展的趋势,看起来不好看,也不利于代码维护.通常把这种情况称为**回调地狱**.
+可以看到,上述代码有横向发展的趋势,看起来不好看,也不利于代码维护.通常把这种情况称为**回调地狱**
 
-**window.Promise**
+### 16.1 generator
 
-`Promise`是一个构造函数(类),需要用`new`来创建一个对象,创建这个对象时,需要两个参数,这两个参数在内部会被定义为函数,第一个表示成功(一般使用resolve),第二个表示失败(一般使用reject),当这部分代码执行完毕后,需要根据状态调用`resolve`或`reject`,调用`resolve`后会停止当前的执行,并执行属性`then`传入的函数的第一个参数,调用`reject`或会停止档期至今,并执行属性`then`传入的第二个参数或属性`catch`传入的参数
-
-*执行到resolve或reject后,会直接进入对应部分代码*
-
-实例化后的Promise对象有两个常用属性,一个是`then`,另一个是`catch`,这两个属性都是函数,`then`需要传入两个函数参数,第一个是resolve时执行的函数,第二个是reject时执行的函数,但通常习惯上不传入第二个参数,而是用`catch`来捕捉reject.
-
-代码如下:
+定义一个generator基本语法如下
 
 ```javascript
-new Promise((resolve,reject) => {
-    ...
-    if(...) resolve(); else reject();
-}).then(() => {
-    //resolve时执行的代码
-    ...
-}).catch(() => {
-    //reject时执行的代码
-    ...
+function * 函数名() {
+    yield 值或表达式1；
+    yield 值或表达式2;
+    yield 值或表达式3;
+}
+```
+
+执行函数后，会生成一个generator对象，此对象的原型链中有next函数，当执行这个函数时，会取得包含值或表达式1的对象，当再次执行时会取得包含值或表达式2的对象，...举例如下：
+
+```javascript
+function * gen() {
+    yield 1;
+    yield 2;
+    yield 3;
+}
+let g = gen();
+console.log(g); // gen {<suspended>}
+console.log(g.next()); // {value: 1, done: false}
+console.log(g.next()); // {value: 2, done: false}
+console.log(g.next()); // {value: 3, done: false}
+console.log(g.next()); // {value: undefined, done: true}
+```
+
+###  16.2 window.Promise
+
+`Promise`是一个构造函数，需要通过`new`来创建一个promise对象，创建对象时，需要传递一个函数参数fn1(resolve, reject)，当创建这个对象时，系统会执行函数fn1，执行时形参resolve和reject所对应的实参为函数fn2和函数fn3，我们只要把想进行的异步操作放在fn1中执行，根据执行的结果的成功与否在函数fn1中手动执行函数fn2（即执行resolve）或执行函数fn3（即执行reject）即可。
+
+```javascript
+let promise - new Promise((res, rej) => {
+    ... // 执行异步代码（可能成功可能失败）,创建promise对象时系统会自动执行
+    if(...) res(); else rej(); // 根据执行结果是否成功，分别执行不同的函数
 });
 ```
 
-由于当Promise实例执行到resolve时会继续执行then传入的代码,则可以在then部分通过return设置返回值,这个返回值就是整个实例的返回值,如果让整个实例返回一个新的Promise对象,则可以实例又可以继续有then及catch属性,这样就可以将横向发展的代码变成纵向发展,也就解决了回调地狱问题,代码如下:
+通常，我们需要在根据执行成功与否的情况来做出一些操作，所以系统允许我们自定义两个函数fn4与fn5，在函数fn2（即resolve）内部自动调用函数fn4，在函数fn3（即reject）内部自动调用fn5。我们通常通过如下两种方案定义函数fn4与函数fn5：
+
+- `Promise.prototype.then(fn4, fn5)`promise对象有then属性(方法)，调用此方法时需要传递两个函数，函数fn4会在成功时自动执行，函数fn5会在失败时自动执行
+- `Promise.prototype.then(fn4)`和`Promise.prototype.catch(fn5)`，promise对象有then和catch属性（方法），调用这两个方法时，分别传递两个函数，函数fn4会在成功时自动执行，函数fn5会在失败时自动执行
 
 ```javascript
-new Promise (res => {
-    ...
+// 接续上一段代码，方案一
+promise.then(() => {
+    ... // 成功时执行的代码
+}, () => {
+    ... // 失败时执行的代码
+});
+
+// 接续上一段代码，方案二
+promise.then(() => {
+    ... // 成功时执行的代码
+});
+promise.catch(() => {
+    ... // 失败时执行的代码
+});
+```
+
+**利用Promise解决回调地狱问题**
+
+promise对象中的fn4函数的返回值会被then函数再次返回，所以可以通过在fn4中返回另一个promise对象来解决回调地狱问题
+
+```javascript
+// 例子中所有的res()要放在异步代码内部
+let p1 = new Promise(res => {
+    ... // 异步代码
+    res();
+});
+let p2 = p1.then(() => {
+    return new Promise(res => {
+        ... // 异步代码
+        res();
+    });
+});
+let p3 = p2.then(() => {
+    return new Promise(res => {
+        ... // 异步代码
+        res();
+    });
+});
+p3.then(() => {
+    ... // 异步代码
+});
+```
+
+**Promise的链式操作**
+
+由于promise对象的then方法返回的还是promise对象，所以以上代码可以通过如下的方式进行链式操作：
+
+```javascript
+// 例子中所有的res()要放在异步代码内部
+new Promise(res => {
+    ... // 异步代码
     res();
 }).then(() => {
     return new Promise(res => {
-        ...
+        ... // 异步代码
         res();
     });
 }).then(() => {
     return new Promise(res => {
-        ...
+        ... // 异步代码
         res();
     });
 }).then(() => {
-    ...
+    ... // 异步代码
 });
 ```
 
-*如果需要捕捉reject则在最后增加`catch`即可,由于上面的代码中没有任何地方用到`reject`则`catch`并没有意义,所以没有定义`catch`*
-
-利用此方法可以解决本节第一个代码额回调地狱问题,代码如下:
+利用Promise可以解决本章第一个代码额回调地狱问题,代码如下:
 
 ```javascript
 console.log(1);
-new Promise((resolve,reject) => {
+new Promise(resolve => {
     setTimeout(() => {
         console.log(2);
         resolve();
     },100);
 }).then(() => {
-    return new Promise(resolve ={
+    return new Promise(resolve => {
         setTimeout(() => {
             console.log(3);
             resolve();
@@ -2088,6 +2219,64 @@ new Promise((resolve,reject) => {
     setTimeout(() => {
         console.log(4);
     },100);
+});
+```
+
+除了直接利用Promise，我们还可以将generator与Promise结合来解决回调地狱的问题
+
+```javascript
+function * gen() {
+    yield new Promise(res => {
+        ... // 异步代码1
+        res();
+    });
+    yield new Promise(res => {
+        ... // 异步代码2
+        res();
+    });
+    yield new Promise(res => {
+        ... // 异步代码3
+        res();
+    });
+}
+let g = gen();
+g.next().value.then(() => {
+    ...
+    return g.next().value;
+}).then(() => {
+    ...
+    return g.next().value;
+}).then(() => {
+    ...
+});
+```
+
+利用generator与Promise结合可以解决本章第一个代码额回调地狱问题,代码如下:
+
+```javascript
+console.log(1);
+function * gen() {
+    yield new Promise(resolve => {
+        setTimeout(() => {
+            console.log(2);
+            resolve();
+        },100);
+    })
+    yield new Promise(resolve => {
+        setTimeout(() => {
+            console.log(3);
+            resolve();
+        },100);
+	});
+    yield setTimeout(() => {
+        console.log(4);
+    },100);
+}
+let g = gen();
+g.next().value.then(() => {
+    return g.next().value;
+}).then(() => {
+    g.next();
 });
 ```
 
