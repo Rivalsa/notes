@@ -2105,66 +2105,54 @@ console.log(1);
 
 可以看到,上述代码有横向发展的趋势,看起来不好看,也不利于代码维护.通常把这种情况称为**回调地狱**
 
-### 16.1 generator
+###  16.1 Promise
 
-定义一个generator基本语法如下
-
-```javascript
-function * 函数名() {
-    yield 值或表达式1；
-    yield 值或表达式2;
-    yield 值或表达式3;
-}
-```
-
-执行函数后，会生成一个generator对象，此对象的原型链中有next函数，当执行这个函数时，会取得包含值或表达式1的对象，当再次执行时会取得包含值或表达式2的对象，...举例如下：
-
-```javascript
-function * gen() {
-    yield 1;
-    yield 2;
-    yield 3;
-}
-let g = gen();
-console.log(g); // gen {<suspended>}
-console.log(g.next()); // {value: 1, done: false}
-console.log(g.next()); // {value: 2, done: false}
-console.log(g.next()); // {value: 3, done: false}
-console.log(g.next()); // {value: undefined, done: true}
-```
-
-###  16.2 window.Promise
-
-`Promise`是一个构造函数，需要通过`new`来创建一个promise对象，创建对象时，需要传递一个函数参数fn1(resolve, reject)，当创建这个对象时，系统会执行函数fn1，执行时形参resolve和reject所对应的实参为函数fn2和函数fn3，我们只要把想进行的异步操作放在fn1中执行，根据执行的结果的成功与否在函数fn1中手动执行函数fn2（即执行resolve）或执行函数fn3（即执行reject）即可。
+`Promise`是一个构造函数，需要通过`new`来创建一个promise对象，创建对象时，需要传递一个函数参数fn1(resolve, reject)，当创建这个对象时，系统会执行函数fn1，执行时形参resolve和reject所对应的实参为函数fn2和函数fn3，我们只要把想进行的异步操作放在fn1中执行，根据执行的结果在函数fn1中手动执行函数fn2（即执行resolve）或执行函数fn3（即执行reject）即可。当函数f2函数（即resolve）被执行时，promise对象由pending状态转换为resolve状态，当函数f3（即reject）被执行时，promise对象由pending状态转换为reject状态。
 
 ```javascript
 let promise - new Promise((res, rej) => {
     ... // 执行异步代码（可能成功可能失败）,创建promise对象时系统会自动执行
-    if(...) res(); else rej(); // 根据执行结果是否成功，分别执行不同的函数
+    if(...) res(实参); else rej(实参); // 根据执行结果是否成功，分别执行不同的函数
 });
 ```
 
-通常，我们需要在根据执行成功与否的情况来做出一些操作，所以系统允许我们自定义两个函数fn4与fn5，在函数fn2（即resolve）内部自动调用函数fn4，在函数fn3（即reject）内部自动调用fn5。我们通常通过如下两种方案定义函数fn4与函数fn5：
+通常，我们需要在根据执行成功与否的情况来做出一些操作，所以系统允许我们自定义两个函数fn4与fn5，函数f4会在promise对象转换为resolve状态时自动调用，函数f5会在promise对象转换为reject状态时自动调用，函数f4与函数f5的定义方法如下：
 
-- `Promise.prototype.then(fn4, fn5)`promise对象有then属性(方法)，调用此方法时需要传递两个函数，函数fn4会在成功时自动执行，函数fn5会在失败时自动执行
-- `Promise.prototype.then(fn4)`和`Promise.prototype.catch(fn5)`，promise对象有then和catch属性（方法），调用这两个方法时，分别传递两个函数，函数fn4会在成功时自动执行，函数fn5会在失败时自动执行
+- `Promise.prototype.then(fn4, fn5)`promise对象有then属性(方法)，可以通过调用此方法传递f4与f5两个函数
+- `Promise.prototype.then(fn4)`和`Promise.prototype.catch(fn5)`，promise对象有then和catch属性（方法），可以通过调用这两个方法分别传递f4与f5两个函数
 
 ```javascript
 // 接续上一段代码，方案一
-promise.then(() => {
+promise.then((形参) => { // 此处的形参为执行resolve函数（即fn2)时传递的实参
     ... // 成功时执行的代码
-}, () => {
+}, (形参) => { // 此处的形参为执行reject函数（即fn3)时传递的实参
     ... // 失败时执行的代码
 });
 
 // 接续上一段代码，方案二
-promise.then(() => {
+promise.then((形参) => { // 此处的形参为执行resolve函数（即fn2)时传递的实参
     ... // 成功时执行的代码
 });
-promise.catch(() => {
+promise.catch((形参) => { // 此处的形参为执行reject函数（即fn3)时传递的实参
     ... // 失败时执行的代码
 });
 ```
+
+**Promise的更多属性**
+
+`Promise.resolve(x)`返回一个promise对象（若x为promise对象，则返回x，若x非promise对象，则返回一个新的状态为resolve内容为x的promise对象），等价于如下内容：
+
+```javascript
+new Promise(resolve => resolve(x));
+```
+
+`Promise.reject(x)`返回状态为reject内容为x的Promise对象，等价于如下内容：
+
+```javascript
+new Promise((resolve, reject) => reject(x));
+```
+
+`Promise.all(x)`参数x为由多个promise对象组成的数组，返回的promise对象当x中的所有promise对象都转换为resolve状态时才会转换为resolve状态。
 
 **利用Promise解决回调地狱问题**
 
@@ -2240,7 +2228,35 @@ new Promise(resolve => {
 });
 ```
 
-除了直接利用Promise，我们还可以将generator与Promise结合来解决回调地狱的问题
+### 16.2 generator
+
+定义一个generator基本语法如下
+
+```javascript
+function * 函数名() {
+    yield 值或表达式1；
+    yield 值或表达式2;
+    yield 值或表达式3;
+}
+```
+
+执行函数后，会生成一个generator对象，此对象的原型链中有next函数，当执行这个函数时，会取得包含值或表达式1的对象，当再次执行时会取得包含值或表达式2的对象，...举例如下：
+
+```javascript
+function * gen() {
+    yield 1;
+    yield 2;
+    yield 3;
+}
+let g = gen();
+console.log(g); // gen {<suspended>}
+console.log(g.next()); // {value: 1, done: false}
+console.log(g.next()); // {value: 2, done: false}
+console.log(g.next()); // {value: 3, done: false}
+console.log(g.next()); // {value: undefined, done: true}
+```
+
+我们可以将generator与Promise结合来解决回调地狱的问题
 
 ```javascript
 function * gen() {
@@ -2296,6 +2312,57 @@ g.next().value.then(() => {
 }).then(() => {
     g.next();
 });
+```
+
+### 16.3 async
+
+在ES2017中引入了async函数，让异步的操作更加方便，async函数时generator函数的语法糖
+
+async通常配合promise使用：
+
+```javascript
+async function fn() {
+    await new Promise(res => {
+        ... // 异步代码1
+        res();
+    });
+    await new Promise(res => {
+        ... // 异步代码2
+        res();
+    });
+    await new Promise(res => {
+        ... // 异步代码3
+        res();
+    });
+}
+fn();
+```
+
+执行await异步时，函数内部后面的内容会等待，一直到promise返回成功，再继续执行。
+
+await语句的返回值，就是内部promise对象执行resolve时所传的参数，如果需要用到此参数则定义变量接收即可。
+
+利用async可以解决本章第一个代码额回调地狱问题,代码如下:
+
+```javascript
+console.log(1);
+(async function() {
+    await new Promise(resolve => {
+        setTimeout(() => {
+            console.log(2);
+            resolve();
+        },100);
+    })
+    await new Promise(resolve => {
+        setTimeout(() => {
+            console.log(3);
+            resolve();
+        },100);
+	});
+    setTimeout(() => {
+        console.log(4);
+    },100);
+})();
 ```
 
 ## 17.正则表达式
