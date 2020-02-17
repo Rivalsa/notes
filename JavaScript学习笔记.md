@@ -2054,30 +2054,30 @@ JavaScript中没有继承构造函数的方法,但我们可以通过一些方式
 在ES5中没有类的概念，用构造函数代替，在ES6中可以用class定义一个类，定义的类只能用new执行，不能自执行，继承可以直接使用extends，大大简化了原型及原型链的复杂逻辑.举例如下：
 
 ```javascript
-class Person{
-    //私有属性需要在constructor中定义
-    constructor(n,a){
+class Person {
+    constructor(n,a) { // constructor函数会在实例化时自动执行
+        // 定义私有属性
         this.name=n;
         this.age=a;
     }
-    //定义原型中的方法
-    showName(){
+    // 定义原型中的属性
+    showName() {
         console.log(this.name);
     }
-    showAge(){
+    showAge() {
         console.log(this.age);
     }
 }
-class Teacher extends Person{ //Teacher继承自Person
-    constructor(n,a,i){
-        super(n,a); //继承所有私有属性（传值过去）
-        this.id=i; //新增的私有属性
+class Teacher extends Person { //T eacher继承自Person
+    constructor(n,a,i) {
+        super(n,a); // 继承所有私有属性（传值过去）
+        this.id=i; // 新增的私有属性
     }
-    showName(){ //修改原有的原型中的方法
-        super.showName(); //执行原有的原型方法
-        console.log("123"); //原型方法中新增的语句
+    showName() { // 修改原有的原型中的方法
+        super.showName(); // 执行原有的原型方法
+        console.log("123"); // 原型方法中新增的语句
     }
-    showId(){ //新增的原型方法
+    showId() { // 新增的原型方法
         console.log(this.id);
     }
 }
@@ -2086,7 +2086,36 @@ console.log(r);
 r.showName();
 ```
 
-## 16. <span style="color:yellowgreen;font-weight:600;">[ES6]</span>回调地狱及及解决方案
+定义一个类除了利用`class 类名()`外也可以通过定义的方式来创建，例如`let 类名 = class{}`
+
+当没有constructor时，会默认创建一个空constructor
+
+原型链中的属性名可以是变量，用`[变量]`表示
+
+类的定义不会被提升（必须先定义再使用）
+
+在方法前加`static`可以使此方法创建为私有方法（构造函数的属性，而不是在原型上）
+
+class中可以通过get和set来对获取或设置私有属性前进行操作，例如：
+
+```javascript
+class Person {
+    constructor(n) {
+        this.name = n;
+    }
+    get name() {
+        console.log('你在获取属性');
+    }
+    set name(val) {
+        console.log(`你在将属性值设置为${val}`);
+    }
+}
+let xm = new Person('小明');
+xm.name = 'xxx';
+console.log(xm.name);
+```
+
+## 16. <span style="color:yellowgreen;font-weight:600;">[ES6]</span>回调地狱及其解决方案
 
 如果代码中有多处异步代码(异步中还有异步),例如:
 
