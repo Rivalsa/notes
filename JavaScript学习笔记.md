@@ -2068,9 +2068,9 @@ class Person {
         console.log(this.age);
     }
 }
-class Teacher extends Person { //T eacher继承自Person
+class Teacher extends Person { // Teacher继承自Person
     constructor(n,a,i) {
-        super(n,a); // 继承所有私有属性（传值过去）
+        super(n,a); // 继承所有私有属性（如果没有constructor会默认创建带有super的constructor，如果有constructor则必须执行super）
         this.id=i; // 新增的私有属性
     }
     showName() { // 修改原有的原型中的方法
@@ -2121,7 +2121,7 @@ console.log(xm.name);
 
 ```javascript
 setTimeout(() => {
-    setTimeour(() => {
+    setTimeout(() => {
         setTimeout(() => {
             console.log(4);
         },100);
