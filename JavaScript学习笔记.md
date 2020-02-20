@@ -2572,9 +2572,7 @@ RegExp中存储了上一次的子项,可以通过这个对象直接拿到数据.
 
 ## 18.ajax
 
-> ajax即“Asynchronous Javascript And XML”（异步 JavaScript 和 XML），是指一种创建交互式网页应用的网页开发技术。 
-
-ajax可以在不刷新页面的前提下向后端 发送/请求 数据，在开发中是必然会用的技术。
+> ajax即“Asynchronous Javascript And XML”（异步 JavaScript 和 XML）,可以在不刷新页面的前提下向后端发送请求
 
 ### 18.1 JavaScript原生ajax
 
@@ -2582,7 +2580,7 @@ ajax可以在不刷新页面的前提下向后端 发送/请求 数据，在开�
 let xhr;
 if (window.XMLHttpRequest) {　 // 标准浏览器
     xhr = new XMLHttpRequest();
-} else if (window.ActiveXObject) { // 低版本IE
+} else if (window.ActiveXObject) { // 低版本IE（比较复杂，写的可能不完整）
     try {
         xhr = new ActiveXObject('Msxml2.XMLHTTP');
     } catch () {
@@ -2590,7 +2588,7 @@ if (window.XMLHttpRequest) {　 // 标准浏览器
     }
 }
 if (xhr) {
-    xhr.onreadystatechange = onReadyStateChange;
+    xhr.onreadystatechange = onReadyStateChange; // 状态发生变化时会调用此函数
     xhr.open('POST', '/url', true);
     // 设置 Content-Type 为 application/x-www-form-urlencoded
     // 以表单的形式传递数据
@@ -2612,46 +2610,39 @@ function onReadyStateChange() {
         // 请求处理到了最后一步
         //xhr.status HTTP状态码
         if (xhr.status >= 200 && xhr.status < 300) {
-            console.log(xhr.responseText);//xhr.responseText请求返回的文本内容
+            console.log(xhr.responseText); // xhr.responseText请求返回的文本内容
         } else {
             console.log('There was a problem with the request.');
         }
     } else {
         // 请求还没处理到最后一步
-        console.log('still not ready...');
+        console.log('still not ready...', xhr.readyState);
     }
 }
 ```
 
-### 18.2 jQuery的ajax
+### 18.2 封装的ajax方法
 
-```javascript
-// 列出部分参数
-$.ajax({
-    method : "POST" // 请求方式
-    ,url : "/url" // 请求地址
-    ,data : {} // 需要发送的数据
-    ,dataType : "json" // 对请求返回的数据预处理
-    ,success : function(data){} // 请求成功的回调函数
-    ,error : function(err){} // 请求失败的回调函数
-});
-```
-
-### 18.3 axios
+常用的封装的ajax方法有很多，比如jQuery中就有`$.ajax`，但本文中介绍的是封装的axios方法。
 
 **发送单个请求**
 
 ```javascript
 axios({
-	method : "post",
-    url : "http://example.com",
-    data : {name:"Rivalsa",age:18}
+	method: "post",
+    url: "http://example.com",
+    headers: {},
+    params: {},
+    data: {name:"Rivalsa",age:18},
+    withCredentials: false
 }).then(res => {
     console.log(res);
 }).catch(err => {
     console.log(err);
 });
 ```
+
+也可以通过`axios.get`与`axios.post`直接发送get或post请求
 
 **发送多个请求**
 
@@ -2669,11 +2660,13 @@ axios.all([ reqA(),reqB() ]).then(res => {
 });
 ```
 
-### 18.4 跨域问题
+### 18.3 跨域及jsonp
 
-发送ajax请求时需要确保当前页面与请求页面同源(必须协议\\主机\\端口号全都相同),否则需要后端发送相应的HTTP Header才能正常访问.
+**跨域问题**
 
-### 18.5 jsonp
+发送ajax请求时需要确保当前页面与请求页面同源(必须协议\\主机\\端口号全都相同),否则需要后端按照CORS策略发送相应的HTTP Header
+
+**jsonp**
 
 由于HTML页面中调用JavaScript是没有同源限制的,所以可以利用此方法发送数据,举例如下:
 
