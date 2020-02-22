@@ -1,5 +1,13 @@
 # node.js学习笔记
 
+## 杂项
+
+**node.js官网**
+
+https://nodejs.org 官网
+
+http://nodejs.cn 官方中文网
+
 **node.js的安装**
 
 windows版的在官网下载后运行，一路next即可。安装完成后，可以在cmd中通过`node -v`与`npm -v`命令查看版本号来确定是否安装成功。
@@ -40,6 +48,8 @@ console.log(bb); // node
 
 `__dirname`当前文件所在的目录
 
+## 各种模块
+
 **path模块**
 
 - `join(...paths)`路径拼接
@@ -50,3 +60,26 @@ console.log(bb); // node
 **url模块**
 
 `URL(地址) `构造函数，会返回将url地址序列化的对象
+
+**querystring模块**
+
+`parse(x)`字符串x应为`application/x-www-form-urlencoded`形式的字符串，此函数将其序列化，返回序列化的对象
+
+`stringify(x[， y[, z]])`x应为一个对象，会返回将x转换为`application/x-www-form-urlencoded`形式的字符串，y为一个参数与另一个参数的分割符，z为一个参数的键与值之间的连接符。y与z默认为`&`和`=`
+
+**fs模块**
+
+`readFile(x[, options]， function(err, body))`【异步操作】读取一个文件，读取完成后执行回调函数
+
+- `x`为字符串表示要读取的文件的地址
+- `options`可以是一个字符串，也可以是一个对象，字符串表示以对应的编码格式打开文件，对象中，可以包含以下属性：
+
+> 当`option`为对象时，可以包含以下属性：
+>
+> - `encoding`表示已对应的编码格式打开文件，默认为null
+> - `flag`文件系统标识，默认为`r`
+>
+> 关于文件系统标识，请参阅[node.js中文网](http://nodejs.cn/api/fs.html#fs_file_system_flags)
+
+- `err`为错误信息对象，没有错误是`err`为`null`
+- `body`为读取的文件内的内容（如果指定格式为null则以buffer格式读取）
