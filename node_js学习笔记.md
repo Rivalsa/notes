@@ -1,6 +1,6 @@
 # node.js学习笔记
 
-## 杂项
+本文中所写的只是自认为较常用的内容，更完整的内容请参考官方文档
 
 **node.js官网**
 
@@ -17,6 +17,8 @@ windows版的在官网下载后运行，一路next即可。安装完成后，可
 node.js运行时不支持对DOM与BOM的操作。
 
 在cmd中进入js文件所在目录，执行`node 文件名`即可，对于扩展名为js的文件，可以省略扩展名。
+
+## 引入模块、导出数据与全局变量
 
 **引入模块**
 
@@ -52,34 +54,46 @@ console.log(bb); // node
 
 **path模块**
 
-- `join(...paths)`路径拼接
-- `resolve(...paths)` 在当前路径的基础上进行拼接
-- `relative(x,y)`从x到y的路径
-- `parse(path)`将路径序列化
+- `path.join(...paths)`路径拼接
+- `path.resolve(...paths)` 在当前路径的基础上进行拼接
+- `path.relative(from, to)`从参数`from`到参数`to`的路径
+- `path.parse(path)`将路径序列化
 
 **url模块**
 
-`URL(地址) `构造函数，会返回将url地址序列化的对象
+`url.URL(地址) `构造函数，会返回将url地址序列化的对象，其中参数部分为map格式
 
 **querystring模块**
 
-`parse(x)`字符串x应为`application/x-www-form-urlencoded`形式的字符串，此函数将其序列化，返回序列化的对象
+`querystring.parse(x, y, z)`字符串x应为`application/x-www-form-urlencoded`形式的字符串，y为一个参数与另一个参数的分割符，z为一个参数的键与值之间的连接符，此函数将其序列化，返回序列化的对象
 
-`stringify(x[， y[, z]])`x应为一个对象，会返回将x转换为`application/x-www-form-urlencoded`形式的字符串，y为一个参数与另一个参数的分割符，z为一个参数的键与值之间的连接符。y与z默认为`&`和`=`
+`querystring.stringify(x[， y[, z]])`x应为一个对象，会返回将x转换为`application/x-www-form-urlencoded`形式的字符串，y为一个参数与另一个参数的分割符，z为一个参数的键与值之间的连接符。y与z默认为`&`和`=`
 
 **fs模块**
 
-`readFile(x[, options]， function(err, body))`【异步操作】读取一个文件，读取完成后执行回调函数
+`fs.readFile(path[, encoding]， function(err, data))`【异步操作】读取一个文件，读取完成后执行回调函数
 
-- `x`为字符串表示要读取的文件的地址
-- `options`可以是一个字符串，也可以是一个对象，字符串表示以对应的编码格式打开文件，对象中，可以包含以下属性：
+- `path`为字符串表示要读取的文件的地址
+- `encoding`表示以对应的编码格式读取文件
+- `err`为错误信息对象，没有错误是`err`为`null`
+- `data`为读取的文件内的内容（如果指定格式为`null`则以`buffer`格式读取）
 
-> 当`option`为对象时，可以包含以下属性：
+`fs.readFileSync(path[, encoding])`【同步操作】读取一个文件，参数与`readFile`的参数含义一致
+
+`fs.writeFile(file, data[, options], function(err))`【异步操作】写入文件，当文件不存在时创建文件，文件存在时覆盖文件，写入完成后执行回调函数
+
+- `file`为写入的文件地址（如果路径中有不存在的文件夹会出错）
+- `data`为写入的文件数据
+- `options`可以是字符串，也可以是一个对象，如果是一个字符串表示以对应的编码格式读取文件，如果是一个对象，请参考如下内容
+
+> 当`options`为一个对象时，可以包含如下属性：
 >
-> - `encoding`表示已对应的编码格式打开文件，默认为null
-> - `flag`文件系统标识，默认为`r`
->
-> 关于文件系统标识，请参阅[node.js中文网](http://nodejs.cn/api/fs.html#fs_file_system_flags)
+> - `encoding`以对应的编码格式读取文件
+> - `flag`文件系统标志，默认为`w`，其它常用值为`a`或`wx`（`w`表示覆盖，`a`表示在末尾追加，`wx`与`w`基本相同，但如果文件已存在，则返回错误）
 
 - `err`为错误信息对象，没有错误是`err`为`null`
-- `body`为读取的文件内的内容（如果指定格式为null则以buffer格式读取）
+
+`fs.writeFileSync(file, data[, options])`【同步操作】写入一个文件，参数与`writeFile`的参数含义一致
+
+<span style="color:red;font-weight:600;">本文中介绍的大部分（除了有特殊说明外）异步操作都有对应的同步操作（在后面加Sync）</span>
+
