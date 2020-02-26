@@ -1,7 +1,3 @@
-**本仓库中JavaScript整理汇总正在持续维护中...**
-
-**JavaScript整理汇总更名为JavaScript学习笔记**
-
 > GitHub仓库地址:
 >
 > ```url
@@ -18,14 +14,15 @@
 
 **本仓库主要含有如下内容**
 
-- JavaScript整理汇总 - **已更名为JavaScript学习笔记，持续维护中...**
+- JavaScript学习笔记
 - HTML/CSS生词本
-- canvas整理汇总 - **暂停更新**
+- canvas整理汇总
 - git基础操作
 - vscode常用代码片段
 - vscode常用插件
 - nginx配置文件(仅部分配置)
-- TypeScript整理汇总 - **暂停更新**
+- TypeScript整理汇总
+- node.js学习笔记
 
 欢迎来访:[rivalsa.cn](https://rivalsa.cn) 或 [卅卅.我爱你](https://卅卅.我爱你)
 
