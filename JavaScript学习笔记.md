@@ -400,9 +400,9 @@ console.log(0o88); // 报错 Uncaught SyntaxError: invalid or unexpected token
 - 可以使用`对象名.属性名`的方式来获取对应的值，但属性名必须满足变量的命名规则（纯数字会转换为字符串），且不能使用变量，属性名不必加引号会自动按字符串处理
 - 也可以使用`对象名[变量或表达式]`的方式来获取变量或表达式的值对应的属性值，如果变量或表达式的值为纯数字，则会转换为字符串处理，属性名为字符串需要使用引号。
 
-新增对象属性值有两种方法：
+新增对象和修改属性值有两种方法：
 
-- 直接通过赋值运算符进行赋值，例如：`obj.prop = 'abc'`，若prop属性原本不存在，则会新增此属性，原本存在会被修改
+- 直接通过赋值运算符进行赋值，例如：`obj.prop = 'abc'`，若prop属性原本不存在，则会新增此属性，原本存在会被修改（设置`get xxx`或`set xxx`属性时，其值需要为一个函数，表示xxx属性被读取或被赋值时执行此函数，详情见与下一条中的`get`属性和`set`属性的描述）
 - 通过`Object.defineProperty(obj, prop, descriptor)`方法
 
 > Object.defineProperty(obj, prop, descriptor)直接在obj上定义一个新属性，或者修改一个对象的现有属性， 并返回这个对象。
@@ -417,7 +417,8 @@ console.log(0o88); // 报错 Uncaught SyntaxError: invalid or unexpected token
 > > - enumerable属性，当且仅当此属性为true时，obj的prop属性才能够出行在obj的枚举属性中（可以被遍历到），默认为false
 > > - value属性，obj的prop属性对应的值，默认为undefined
 > > - writable属性，当且仅当此属性为true是，obj的prop属性值才能被赋值运算符改变，默认为false
-> > - get属性于set属性，请参考[这篇文章](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty)
+> > - get属性，值为一个函数，当读取此属性时会执行此函数，函数的返回值为读取到的属性值。
+> > - set属性，值为一个函数，当给此属性赋值是会执行此函数。此函数必须接受一个形参，为被赋的值。
 
 **例1**
 
@@ -2090,25 +2091,6 @@ r.showName();
 
 在方法前加`static`可以使此方法创建为私有方法（构造函数的属性，而不是在原型上）
 
-class中可以通过get和set来对获取或设置私有属性前进行操作，例如：
-
-```javascript
-class Person {
-    constructor(n) {
-        this.name = n;
-    }
-    get name() {
-        console.log('你在获取属性');
-    }
-    set name(val) {
-        console.log(`你在将属性值设置为${val}`);
-    }
-}
-let xm = new Person('小明');
-xm.name = 'xxx';
-console.log(xm.name);
-```
-
 ## 16. <span style="color:yellowgreen;font-weight:600;">[ES6]</span>回调地狱及其解决方案
 
 如果代码中有多处异步代码(异步中还有异步),例如:
@@ -2492,6 +2474,24 @@ console.log(1);
 
 使用小括号可以将里面的内容作为一个子项，有一些字符串的方法会同时返回匹配的子项，有时也利用子项提高一部分表达式的优先级
 
+在子项中以`?<键>`开头可以给匹配的子项组成此键组成的键值对，例如：
+
+```javascript
+const str = '2233-3344-5555-4423',
+      reg = /(\d{4})-(\d{4})-(\d{4})-(\d{4})/,
+      reg2 = /(?<aa>\d{4})-(?<bb>\d{4})-(?<cc>\d{4})-(?<dd>\d{4})/;
+console.log(str.match(reg).groups); // undefined
+console.log(str.match(reg2).groups); // {aa:"2233",bb:"3344",cc:"5555",dd:"4423"}
+```
+
+使用String.prototype.replace时，可以在被替换的值中利用$<键>来取得对应的子项的值，例如：
+
+```javascript
+const str = '2233-3344-5555-4423',
+      reg = /(?<aa>\d{4})-(?<bb>\d{4})-(?<cc>\d{4})-(?<dd>\d{4})/;
+console.log(str.replace(reg, '$<dd>-$<cc>-$<bb>-$<aa>')); // 4423-5555-3344-2233
+```
+
 #### 17.2.5 字符集
 
 用中括号表示
@@ -2512,7 +2512,7 @@ console.log(1);
 
 - 如果字符集中第1个字符是`^`整个子项表示排除，例如:`[^abc]`表示除了字符a和字符b和字符c外的任意字符
 
-- 字符集中小括号/大括号/正斜杠/问号/星号/加号/竖线无特殊含义
+- 字符集中小括号/大括号/中括号的前半部分/正斜杠/问号/星号/加号/竖线/点/美元符号无特殊含义
 
 #### 17.2.6 其他有特殊意义的字符
 
@@ -2547,7 +2547,11 @@ console.log(1);
 
 `RegExp.prototype.test(字符串)`检查字符串中是否存在对应正则规则,存在则返回`true`否则返回`false`
 
-`RegExp.prototype.exec(字符串)`返回第一次出现对应规则的字符串有关的对象，若未匹配成功则返回null，不执行全局查找。
+`RegExp.prototype.exec(字符串)`返回第一次出现对应规则的字符串有关的对象，若未匹配成功则返回null，不执行全局查找
+
+`RegExp.prototype[Symbol.match](字符串)`当不全局匹配时类似`RegExp.prototype.exrc`，全局匹配时，返回由匹配成功的内容组成的数组
+
+`RegExp.prototype[Symbol.matchAll](字符串)`返回一个对象，此对象的原型链上有一个next方法，当第一次执行next方法时，返回包含第一个匹配到的内容的对象，第二次执行next方法时，返回包含第二个匹配到的内容的对象，...
 
 **字符串的方法**
 

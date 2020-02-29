@@ -40,23 +40,28 @@ canvas为双标签,标签中间的内容在浏览器不支持canvas时会显示�
 
 *后续的代码中,直接JS的部分,HTML中默认有与上面代码相同的元素,且已获取完上下文(canCon)*
 
-### 调整绘制的颜色
-
-```javascript
-canCon.fillstyle = 'red'; // 设置实心图形的颜色
-canCon.strokestyle = 'red'; // 设置空心图形的颜色
-```
-
 ### 绘制矩形
 
 ```javascript
 // 以下内容中参数x,y为矩形左上角的坐标,width和height为矩形的宽与高
 canCon.fillRect(x, y, width, height); // 绘制实心矩形
 canCon.strokeRect(x, y, width, height); // 绘制空心矩形
-canCon.cleatRect(x, y, width, height); // 清除矩形区域
+canCon.clearRect(x, y, width, height); // 清除矩形区域
 ```
 
-### 绘制圆弧
+### 绘制定义图形
+
+绘制矩形的方法可以直接将矩形绘制出来，但有的图形无法直接绘制，只能定义出来，这样就需要在定义后通过绘制定义图形方法来将其绘制出来
+
+`beginPath()`新建一条路径,生成之后,图形绘制命令被指向到路径上生成路径
+
+`closePath()`闭合路径之后图形绘制命令又重新指向到上下文中
+
+### 定义矩形
+
+`rect(x,y,width,height)`定义矩形，x,y为矩形左上角的坐标，widht与height分别为矩形的宽与高
+
+### 定义圆弧
 
 `arc(x, y, radius, startAngle, endAngle, anticlockwise)`参数中x,y表示圆心坐标,radius表示圆弧半径,startAngle为起始角度,endAngle为终止角度,anticlockwise为绘制方向,true表示逆时针绘制,false表示顺时针绘制,默认为false
 
@@ -85,9 +90,7 @@ canCon.stroke(); // 绘制图案
 
 > 路径是通过不同颜色和宽度的线段或曲线相连形成的不同形状的点的集合
 
-`beginPath()`新建一条路径,生成之后,图形绘制命令被指向到路径上生成路径
 
-`closePath()`闭合路径之后图形绘制命令又重新指向到上下文中
 
 `stroke()`通过线条来绘制图形轮廓
 
@@ -122,15 +125,22 @@ canCon.arcTo(250,200,250,210,50); // 定义圆角
 canCon.stroke(); // 绘制图形
 ```
 
-`quadraticCurveTo(cp1x,cp1y,x,y)`定义二次贝塞尔曲线,前两个参数为控制点坐标,后两个参数为结束点坐标
+`quadraticCurveTo(cp1x,cp1y,x,y)`定义具有一个控制点的贝塞尔曲线,前两个参数为控制点坐标,后两个参数为结束点坐标
 
-`bezierCurveTo(cp1x,cp1y,cp2x,cp2y,x,y)`定义三次贝塞尔曲线,前两个参数为控制点一的坐标,中间两个为控制点二的坐标,最后两个为结束点的坐标
+`bezierCurveTo(cp1x,cp1y,cp2x,cp2y,x,y)`定义具有两个控制点的贝塞尔曲线,前两个参数为控制点一的坐标,中间两个为控制点二的坐标,最后两个为结束点的坐标
 
 ## 相关参数
 
+### 调整绘制的颜色
+
+`fillstyle = colorValue`设置实心图形的颜色
+
+strokestyle = colorValue`设置空心图形的颜色
+
 ### 透明度
 
-`globalAlpha`透明度,从此代码向后的按照此透明度绘制,对之前的代码无影响.例如`canCon.globalAloha = 0.4;`,但更常使用的是rgba颜色来设置透明度
+`globalAlpha`透明度,从此代码向后的按照此透明度绘制,对之前的代码无影响.例如
+`canCon.globalAloha = 0.4;`,但更常使用的是rgba颜色来设置透明度
 
 ### 线型
 
