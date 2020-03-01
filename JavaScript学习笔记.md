@@ -2682,19 +2682,19 @@ axios.all([ reqA(),reqB() ]).then(res => {
 > DOM（文档对象模型 document object model）是针对HTML文档的一个API.
 > DOM 描绘了一个层次化的节点树，允许开发人员添加、移除和修改页面元素(元素的文字也是DOM的一个节点)
 
-DOM节点共有12种
+DOM节点共有12种，可以通过`Node.prototype.nodeType`判断DOM节点的类型
 
-- 元素节点(nodetype为1)
-- 文本节点(nodetype为3,nodeValue为文本的内容)
-- 属性节点(nodetype为2,nodeValue为属性的值)
-- 注释节点(nodetype为8,nodeValue为注释的内容)
+- 元素节点(nodeType为1)
+- 文本节点(nodeType为3,nodeValue为文本的内容)
+- 属性节点(nodeType为2,nodeValue为属性的值)
+- 注释节点(nodeType为8,nodeValue为注释的内容)
 - (其他8种)
 
-`nodeValue`是可读可写的
+`Node.prototype.nodeValue`是可读可写的
 
-`nodeName`为节点的名称（以大写字母表示，只读）
+`Node.prototype.nodeName`为节点的名称（以大写字母表示，只读）
 
-`attributes`为节点的属性
+`Element.prototype.attributes`为节点的属性
 
 ### 19.1 获取DOM对象基础方式
 
@@ -2707,13 +2707,17 @@ document.getElementById('ID'); // 返回对应的DOM元素
 **通过class获取**(不兼容IE8及其以下)
 
 ```javascript
-element.getElementsByClassName('className'); // 返回类数组HTMLCollection, element的后代元素
+// 返回类数组HTMLCollection
+Element.protorype.getElementsByClassName('className'); 
+document.getElementsByClassName('className');
 ```
 
 **通过标签名获取**
 
 ```javascript
-element.getElementsByTagName('tagName'); // 返回类数组HTMLCollection, element的后代元素
+// 返回类数组HTMLCollection
+Element.prototype.getElementsByTagName('tagName'); 
+document.getElementsByTagName('tagName');
 ```
 
 **通过name获取**
@@ -2727,8 +2731,12 @@ document.getElementsByName('name'); // 返回类数组NodeList
 **通过选择器获取**(静态方法，不兼容IE7及其以下)
 
 ```javascript
-element.querySelector('选择器'); // 返回对应的DOM元素(第一个), element的后代元素
-element.querySelectorAll('选择器') // 返回类数组NodeList, element的后代元素
+// 返回对应的DOM元素(第一个)
+Element.prototype.querySelector('选择器'); 
+document.querySelector('选择器');
+// 返回类数组NodeList, element的后代元素
+Element.prototype.querySelectorAll('选择器');
+document.querySelectorAll('选择器');
 ```
 
 **几个特殊元素的获取方式**
@@ -2756,7 +2764,7 @@ oBox.style.display = "none" ;
 
 特殊情况
 
-- 修改DOM元素的class属性,可以使用`className`或`classList`来操作
+- 修改DOM元素的class属性,可以使用`Element.prototype.className`或`Element.prototype.classList`来操作
 - DOM对象的style属性也是一个对象,此对象的各种属性就是对应元素行内的CSS样式
 
 对特殊情况的举例
@@ -2839,7 +2847,7 @@ oBox.style.display = "none" ;
 </html>
 ```
 
-通过修改`className`可以直接修改标签对应的类名,通过修改类名可以修改对应样式
+通过修改`Element.prototype.className`可以直接修改标签对应的类名,通过修改类名可以修改对应样式
 
 例4
 
@@ -2869,16 +2877,16 @@ oBox.style.display = "none" ;
 </html>
 ```
 
-通过`classList`的各种API可以直接修改类名(*不支持IE9及其以下*),`classList`包括以下API:
+通过`Element.protorype.classList`的各种API可以直接修改类名(*不支持IE9及其以下*)，此函数返回`DOMTokenList`对象，`classList`包括以下API：
 
-- `add(类名)`添加类名
-- `remove(类名)`移除类名
-- `toggle(类名)`添加或删除类名(有则删除,无则添加),删除了类名会返回false,添加了类名会返回true
-- `contains(类名)`判断是否存在类名,存在则返回true,不存在则返回false
+- `DOMTokenList.prototype.add(类名)`添加类名
+- `DOMTokenList.prototype.remove(类名)`移除类名
+- `DOMTokenList.prototype.toggle(类名)`添加或删除类名(有则删除,无则添加),删除了类名会返回false,添加了类名会返回true
+- `DOMTokenList.prototype.contains(类名)`判断是否存在类名,存在则返回true,不存在则返回false
 
 获取标签当前样式
 
-`getComputedStyle(x，y)`省略y时返回对象x的计算样式表，y取`'after'`或`'before'`时返回x的对应伪元素的计算样式表,只读属性（IE8及其以下不支持，用`element.currentStyle`代替，IE8以上不支持第2个参数）（动态的）例如:
+`window.getComputedStyle(x，y)`省略y时返回对象x的计算样式表，y取`'after'`或`'before'`时返回x的对应伪元素的计算样式表,只读属性（IE8及其以下不支持，用`element.currentStyle`代替，IE8以上不支持第2个参数）（动态的）例如:
 
 **HTML**
 
@@ -2908,15 +2916,15 @@ console.log(wrapCss.backgroundColor);
 
 **操作标签`data-`自定义属性**
 
-`dataset`也是一个对象，可以直接读取或修改“data-”开头的属性
+`HTMLElement.prototype.dataset`也是一个对象，可以直接读取或修改“data-”开头的属性
 
 **操作标签的属性(原有的和自定义的都可以)**
 
-获取属性:`getAttribute('属性名');`
+获取属性:`HTMLElement.prototype.getAttribute('属性名');`
 
-新增或修改属性:`setAttribute('属性名','属性值');`
+新增或修改属性:`HTMLElement.prototype.setAttribute('属性名','属性值');`
 
-移除属性:`removeAttribute('属性名');`
+移除属性:`HTMLElement.prototype.removeAttribute('属性名');`
 
 ```javascript
 var oBox = document.getElementById("box");
@@ -2937,24 +2945,24 @@ oBox.innerText = "123";
 
 innerHTML 与 innerText 的区别：
 
-- innerHTML会解析其中的html标签
-- innerText不会解析hmtl标签，原样替换所设置的内容
+- `HTMLElement.prototype.innerHTML`会解析其中的html标签
+- `HTMLElement.prototype.innerText`不会解析html标签，原样替换所设置的内容
 
 *低版本火狐浏览器不支持`innerText`,用`textContent`代替*
 
 ### 19.3 更多DOM操作
 
-`.childNodes`获取元素的所有子节点(主流浏览器是获取所有子节点,低版本IE浏览器是获取所有子元素节点)
+`Node.prototype.childNodes`获取元素的所有子节点(主流浏览器是获取所有子节点,低版本IE浏览器是获取所有子元素节点)
 
-`.children`获取元素的所有子元素节点
+`Element.prototype.children`获取元素的所有子元素节点
 
-`.parentNode`获取元素父节点
+`Node.prototype.parentNode`获取元素父节点
 
-`.parentElement`获取元素父元素节点
+`Node.prototype.parentElement`获取元素父元素节点
 
 *通常元素的父节点与元素的父元素节点是相同的，因为通常只有元素节点才会有子节点*
 
-`.offsetParent`【兼容性差】
+`HTMLElement.prototype.offsetParent`【兼容性差】
 
 - 对于主流浏览器：获取元素最近的有定位属性的父节点，找不到则为body
 - 对于IE7及其以下：
@@ -2963,50 +2971,50 @@ innerHTML 与 innerText 的区别：
 >
 > 如果本身没有定位属性：与主流浏览器相同
 
-`.createElement(x)`创建X元素节点
+`document.createElement(x)`创建X元素节点
 
-`.createTextNode("xx")`创建内容为xx的文本节点
+`document.createTextNode("xx")`创建内容为xx的文本节点
 
-`.creatComment('xx')`创建内容为xx的注释节点
+`document.creatComment('xx')`创建内容为xx的注释节点
 
-`.createDocumentfragment()`创建文档片段
+`document.createDocumentfragment()`创建文档片段
 
-`.appendChild(x)`在子节点的末尾添加节点x
+`Node.prototype.appendChild(x)`在子节点的末尾添加节点x
 
-`.insertBefore(a,b)`在子节点中节点b之前新增节点a
+`Node.prototype.insertBefore(a,b)`在子节点中节点b之前新增节点a
 
-`.replaceChild(a,b)`在子节点中用a节点替换b节点，返回b节点
+`Node.prototype.replaceChild(a,b)`在子节点中用a节点替换b节点，返回b节点
 
-`.remove()`删除本节点
+`Element.prototype.remove()`删除本节点
 
-`.removeChild(x)`在子节点中删除节点x，返回被删除的节点
+`Node.prototype.removeChild(x)`在子节点中删除节点x，返回被删除的节点
 
-`.hasChildNodes()`有子节点则返回true，否则返回false
+`Node.prototype.hasChildNodes()`有子节点则返回true，否则返回false
 
-`.firstElementChild`获取第一个子元素节点(不支持IE9及其以下)
+`Element.prototype.firstElementChild`获取第一个子元素节点(不支持IE9及其以下)
 
-`.firstChild`
+`Node.prototype.firstChild`
 
 - 主流浏览器:获取第一个子节点
 - IE9及其以下:获取第一个子元素节点
 
-`.lastElementChild`获取最后一个子元素节点(不支持IE9及其以下)
+`Element.prototype.lastElementChild`获取最后一个子元素节点(不支持IE9及其以下)
 
-`.lastChild`
+`Node.prototype.lastChild`
 
 - 主流浏览器:获取最后一个子节点
 - IE9及其以下:获取最后一个子元素节点
 
-`.nextElementSibling`获取下一个兄弟元素节点(不支持IE9及其以下)
+`Element.prototype.nextElementSibling`获取下一个兄弟元素节点(不支持IE9及其以下)
 
-`.nextSibling`
+`Node.prototype.nextSibling`
 
 - 主流浏览器:获取下一个兄弟节点
 - IE9及其以下:获取下一个兄弟元素节点
 
-`.previousElementSibling`获取上一个兄弟元素节点(不支持IE9及其以下)
+`Element.prototype.previousElementSibling`获取上一个兄弟元素节点(不支持IE9及其以下)
 
-`.previousSibling`
+`Node.prototype.previousSibling`
 
 - 主流浏览器:获取上一个兄弟节点
 - IE9及其以下:获取上一个兄弟元素节点
@@ -3025,27 +3033,27 @@ element.event = fun;
 
 **鼠标事件**
 
-`oncontextmenu`鼠标右键点击事件
+`HTMLElement.prototype.oncontextmenu`鼠标右键点击事件
 
-`onselectstart`选中开始事件
+`HTMLElement.prototype.onselectstart`选中开始事件
 
-`ondblclick`鼠标双击事件
+`HTMLElement.prototype.ondblclick`鼠标双击事件
 
-`onclick`鼠标单击事件
+`HTMLElement.prototype.onclick`鼠标单击事件
 
-`onmousedown`鼠标任意键按下
+`HTMLElement.prototype.onmousedown`鼠标任意键按下
 
-`onmousemove`鼠标移动
+`HTMLElement.prototype.onmousemove`鼠标移动
 
-`onmouseup`鼠标任意键抬起
+`HTMLElement.prototype.onmouseup`鼠标任意键抬起
 
-`ommouseenter`鼠标移入(不冒泡)
+`HTMLElement.prototype.ommouseenter`鼠标移入(不冒泡)
 
-`onmouseleave`鼠标移出(不冒泡)
+`HTMLElement.prototype.onmouseleave`鼠标移出(不冒泡)
 
-`onmouseover`鼠标移入(冒泡)
+`HTMLElement.prototype.onmouseover`鼠标移入(冒泡)
 
-`onmouseout`鼠标移出(冒泡)
+`HTMLElement.prototype.onmouseout`鼠标移出(冒泡)
 
 关于鼠标移入移出事件,冒泡与不冒泡的说明:
 
@@ -3055,48 +3063,48 @@ element.event = fun;
 
 鼠标滚轮滚动事件
 
-- `mousewheel`鼠标滚轮事件（非火狐浏览器）
-- `DOMMouseScroll`鼠标滚轮事件（火狐浏览器专用，仅支持2级事件）
+- `HTMLElement.prototype.mousewheel`鼠标滚轮事件（非火狐浏览器）
+- `HTMLElement.prototype.DOMMouseScroll`鼠标滚轮事件（火狐浏览器专用，仅支持2级事件）
 
 **键盘事件**
 
-`onkeydown`键盘按键按下事件
+`HTMLElement.prototype.onkeydown`键盘按键按下事件
 
-`onkeypress`键盘能输入内容的按键(不含功能键)按下事件
+`HTMLElement.prototype.onkeypress`键盘能输入内容的按键(不含功能键)按下事件
 
-`onkeyup`键盘按键抬起事件
+`HTMLElement.prototype.onkeyup`键盘按键抬起事件
 
 **表单事件**
 
-`onfocus`表单获得焦点事件(window和表单均码有此事件)
+`HTMLElement.prototype.onfocus`表单获得焦点事件(window和表单均码有此事件)
 
-`onblur`表单失去焦点事件(window和表单均码有此事件)
+`HTMLElement.prototype.onblur`表单失去焦点事件(window和表单均码有此事件)
 
-`onchange`表单内容发生改变事件
+`HTMLElement.prototype.onchange`表单内容发生改变事件
 
 - 对于`text`:在失去焦点之前触发(需要失去焦点时刻与获得焦点时刻**内容不同**才会触发)
 - 对于`radio`:被选中的单选框触发
 - 对于`checkbox`:被选中和被取消选中时均会触发
 - 对于`select`:选择的内容发生改变时会被触发
 
-`oninput`input框输入或删除字符事件
+`HTMLElement.prototype.oninput`input框输入或删除字符事件
 
-`onsubmit`表单提交事件
+`HTMLElement.prototype.onsubmit`表单提交事件
 
-`onreset`表单重置事件
+`HTMLElement.prototype.onreset`表单重置事件
 
-`onselect`文本框的文本内容被选中事件
+`HTMLElement.prototype.onselect`文本框的文本内容被选中事件
 
 **表单事件方法**
 
-- `focus()`获得焦点
-- `blur()`失去焦点
-- `submit()`提交表单
-- `reset()`重置表单
+- `HTMLElement.prototype.focus()`获得焦点
+- `HTMLElement.prototype.blur()`失去焦点
+- `HTMLElement.prototype.submit()`提交表单
+- `HTMLElement.prototype.reset()`重置表单
 
 **滚动条事件**
 
-`onscroll`滚动条滚动事件
+`HTMLElement.prototype.onscroll`滚动条滚动事件
 
 ### 20.2 2级事件
 
@@ -3104,13 +3112,13 @@ element.event = fun;
 
 *新事件与旧事件共存,与0级事件不冲突*
 
-`.addEventListener(a,b,c)`添加事件监听器(低版本IE不支持,用`.attachEvent(a,b)`代替（没有第3个参数）,且IE中事件函数的this指向window)
+`EventTarget.prototype.addEventListener(a,b,c)`添加事件监听器(低版本IE不支持,用`attachEvent(a,b)`代替（没有第3个参数）,且IE中事件函数的this指向window)
 
 - a为事件字符串，不写on(使用`attachEvent`时需要写on)
 - b为事件函数(参数为事件对象)
 - c为布尔值，true表示事件绑定在捕获阶段，false表示事件绑定在冒泡阶段（**参考事件捕获与事件冒泡章节**）
 
-`removeEventListener(a,b,c)`移除事件监听器(低版本IE不支持,用`detachEvent(a,b)`代替（没有第3个参数）)
+`EventTarget.prototype.removeEventListener(a,b,c)`移除事件监听器(低版本IE不支持,用`detachEvent(a,b)`代替（没有第3个参数）)
 
 *移除事件时的参数应与绑定事件时的参数相同（函数需要指针相同）*
 
