@@ -102,11 +102,11 @@ V8引擎为解析js代码最快的js引擎
 
 `window.decodeURIComponent(x)`将`window.encodeURIComponent`编码的x进行解码
 
-`window.alert([x])`警告弹窗，x为弹窗的内容
+`window.alert(x)`警告弹窗，x为弹窗的内容
 
 `window.prompt([x[, y]])`输入弹窗,x是提示内容,y为在输入框中默认输入的内容,返回输入的字符串,如果点"取消"则返回null(在IE7和IE8中，省略y会导致输入框中显示默认值undefined)
 
-`window.confirm([x])`确认弹窗,x是提示内容,点击"是"返回true,否则返回false
+`window.confirm(x)`确认弹窗,x是提示内容,点击"是"返回true,否则返回false
 
 `JSON.parse(x)`将JSON格式的字符串x转换为对象，返回这个对象（IE7及其以下不支持）
 
@@ -145,15 +145,15 @@ try{
 var a=20,
     obj={a:30};
 (function(){
-	var a=10;
+    var a=10;
     console.log(a);
     with(window){
-        console(a);
+        console.log(a);
     }
     with(obj){
-        console(a);
+        console.log(a);
     }
-});
+})();
 ```
 
 ## 2.变量
@@ -232,9 +232,9 @@ let {x: c, y: d} = {x: 50, y: 80}; // 相当于let c = 50, d = 80;
 
 ## 3. 控制台输出
 
-`console.log([x[, y[, z[, ...]]]])`普通输出，如有多个参数则依次输出
+`console.log(...x)`普通输出，如有多个参数则依次输出
 
-`console.info([x])`输出信息
+`console.info(x)`输出信息
 
 *`console.log`与`console.info`只是语义上的差别,效果上差别不大,在有有的浏览器中有info的标记,但在Google Chrome中完全一样*
 
@@ -3064,7 +3064,7 @@ element.event = fun;
 鼠标滚轮滚动事件
 
 - `HTMLElement.prototype.mousewheel`鼠标滚轮事件（非火狐浏览器）
-- `HTMLElement.prototype.DOMMouseScroll`鼠标滚轮事件（火狐浏览器专用，仅支持2级事件）
+- `DOMMouseScroll`鼠标滚轮事件（火狐浏览器专用，仅支持通过添加事件监听器的方式绑定事件）
 
 **键盘事件**
 
@@ -3106,9 +3106,7 @@ element.event = fun;
 
 `HTMLElement.prototype.onscroll`滚动条滚动事件
 
-### 20.2 2级事件
-
-*2级事件的绑定与解绑方式与0级事件不同，所有0级事件都可以在2级事件中使用*
+### 20.2 2级事件与3级事件
 
 *新事件与旧事件共存,与0级事件不冲突*
 
@@ -3122,7 +3120,13 @@ element.event = fun;
 
 *移除事件时的参数应与绑定事件时的参数相同（函数需要指针相同）*
 
-**DOM 3级事件的绑定与解绑方式与DOM 2级事件相同，只是增加了一些新的事件，在此暂不列出。**
+**只能通过绑定事件监听器的方式添加的事件**
+
+- `DOMMouseScroll`鼠标滚动事件（火狐浏览器专用）
+- `touchstart`触屏事件，手指放在屏幕上
+- `touchmove`触屏事件，手指在屏幕上滑动
+- `touchend`触屏事件，手指离开屏幕
+- `touchcancel`系统取消touch事件时触发
 
 ### 20.3 事件捕获与事件冒泡
 
@@ -3290,6 +3294,12 @@ element.event = fun;
 `altKey/shiftKey/ctrlKey` 布尔值，表示alt/shift/ctrl键是否按下
 
 `keyCode`按键的键值（也有用`witch`的）
+
+**触屏事件属性**
+
+*触屏事件属性大部分与鼠标事件属性相似，这里只列出一部分不同的属性*
+
+（待添加内容）
 
 ## 21.BOM相关
 
