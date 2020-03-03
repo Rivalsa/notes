@@ -170,7 +170,7 @@ var a=20,
 
 - 只允许使用 数字(0-9)/字母(A-Z,a-z)/下划线(_)/美元符号($)
 - 语义化命名
-- 小驼峰命名
+- 小驼峰命名（构造函数的函数名用大驼峰命名）
 - 不覆盖系统自带API
 
 ### 2.3 定义变量及赋值
@@ -290,11 +290,11 @@ throw new Error('xxx');
 
 `String.fromCharCode(x)`返回对应编码的字符
 
-`String.prototype.subString(x[, y])`截取字符串,如果x小于y则从第x个字符(含)开始截取到y个字符(不含)；如果x大于y则从第y个字符(含)开始截取到x个字符(不含)，x与y传负数时按0计，若省略y，则从此处一直截取到字符串结尾，返回截取的字符串。
+`String.prototype.subString(x[, y])`截取字符串,如果x小于y则从第x个字符(含)开始截取到第y个字符(不含)；如果x大于y则从第y个字符(含)开始截取到第x个字符(不含)，x与y传负数时按0计，若省略y，则从此处一直截取到字符串结尾，返回截取的字符串。
 
 `String.prototype.substr(x[, y])`截取字符串,从第x个字符(含)开始截取y个字符,省略y时截取到末尾。x可以传负数，表示从结尾开始计，返回截取的字符串。
 
-`String.prototype.slice(x[, y])`截取字符串,从第x个字符(含)开始截取到y个字符(不含)，省略y时截取到末尾。x与y可以传负数，表示从结尾开始计，返回截取的字符串。
+`String.prototype.slice(x[, y])`截取字符串,从第x个字符(含)开始截取到第y个字符(不含)，省略y时截取到末尾。x与y可以传负数，表示从结尾开始计，返回截取的字符串。
 
 `String.prototype.toLowerCase()`字符串转换为小写,无参数，返回转换后的字符串。
 
@@ -391,13 +391,13 @@ console.log(0o88); // 报错 Uncaught SyntaxError: invalid or unexpected token
 - 通过`new Object()`的方式来创建一个对象
 - 通过`Object.create(x)`来创建一个对象，创建的对象的原型指向x
 
-在es5中,键必须是字符串形式（纯数字会转换为字符串，不能是变量）,可以加引号也可以不加引号,但不加引号时必须符合变量的命名规则（纯数字除外）
+在es5中,键必须是字符串形式（不能是变量）,可以加引号也可以不加引号,但不加引号时必须符合变量的命名规则（纯数字会转换为字符串）
 
 值可以是任意一种数据类型，也可以是变量
 
 获取对象属性的值有两种方法：
 
-- 可以使用`对象名.属性名`的方式来获取对应的值，但属性名必须满足变量的命名规则（纯数字会转换为字符串），且不能使用变量，属性名不必加引号会自动按字符串处理
+- 可以使用`对象名.属性名`的方式来获取对应的值，但属性名必须满足变量的命名规则，且不能使用变量，属性名不必加引号会自动按字符串处理
 - 也可以使用`对象名[变量或表达式]`的方式来获取变量或表达式的值对应的属性值，如果变量或表达式的值为纯数字，则会转换为字符串处理，属性名为字符串需要使用引号。
 
 新增对象和修改属性值有两种方法：
@@ -452,7 +452,7 @@ obj.name = 'Jerry';
 console.log(obj); // {age: 16, name: "Jerry"}
 ```
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>在es6中键可以写`[变量或表达式]`,这时会使用变量或表达式的值转换为字符串形式作为对象的键，例如:
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>在es6中键可以写`[变量或表达式]`,这时会使用变量或表达式的值转换为字符串形式作为对象的键，例如：
 
 ```javascript
 let key = "name";
@@ -491,7 +491,7 @@ let x = 10,
 
 使用`delete`可以删除对象中的属性，例如:`delete obj.pet`，删除成功返回`true`否则返回`false`(在严格模式下无法使用)
 
-将对象赋值给一个变量是将对象的地址给这个变量,对变量的修改等价于直接修改对象,举例如下:
+将对象赋值给一个变量是将对象的地址给这个变量，对变量的修改等价于直接修改对象，举例如下：
 
 ```javascript
 let obj = {
@@ -508,7 +508,7 @@ console.log(obj.age); // 16
 
 <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Object.getOwnPropertySymbols(obj)`返回对象obj所有Symbol值作为属性名的数组
 
-`Object.prototype.hasOwnProperty(prop)`判断对象中是否存在prop属性，存在返回true，不存在返回false
+`Object.prototype.hasOwnProperty(prop)`判断对象中是否存在prop属性（不检查原型链），存在返回true，不存在返回false
 
 <span style="color:yellowgreen;font-weight:600;">[ES6]</span>对象的`Object.keys(obj)`,`Object.values(obj)`与`Object.entries(obj)`方法分别表示获取对象的键,值以及键值对组成的数组
 
@@ -524,7 +524,7 @@ console.log(Object.is({}, {})); // false 比较的仍然是地址
 
 <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Object.assign(target, ...sources)`将source对象拼接在target对象上（如果属性名重复，则使用最后一个属性值），target对象会被改变，sources对象不改变，返回修改后的target对象
 
-`a in obj`如果a是obj的属性，则返回true，否则返回false。
+`a in obj`如果a是obj的属性或原型链上的属性，则返回true，否则返回false。
 
 ##### 4.2.3.2 数组
 
@@ -538,9 +538,9 @@ console.log(Object.is({}, {})); // false 比较的仍然是地址
 
 **数组常用方法**
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Array.prototype.keys()`、`Array.prototype.values()`、`Array.prototype.entries()`方法分别表示获取数组的下标组成的数组，数组的数据组成的数组以及数组的下标数据对组成的数组
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Array.prototype.keys()`、`Array.prototype.values()`、`Array.prototype.entries()`方法分别会返回数组的下标，数组的数据以及数组的下标数据对组成的`Symbol.Iterator`对象
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>利用`for 变量 of 数组`遍历数组（部署了Symbol.Iterator的类数组也能用），举例如下:
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>利用`for 变量 of 数组`遍历数组（部署了Symbol.Iterator的类数组也能用），举例如下：
 
 ```javascript
 //遍历对象（本质上也是遍历数组）
@@ -933,9 +933,9 @@ Symbol的参数是它的标识，只是便于开发者区分，运行时没有�
 
 ## 7. <span style="color:yellowgreen;font-weight:600;">[ES6]</span>Set和Map两种数据结构
 
-ES6中新增Set和Map两种数据结构，需用new创建对象
+ES6中新增`Set`和`Map`两种数据结构，需用`new`创建对象
 
-创建set对象时需要传一个数组，创建的set对象有数组中的元素去重后组成(不传值或传空数组均返回没有元素的set对象)
+创建`set`对象时需要传一个数组，创建的`set`对象有数组中的元素去重后组成(不传值或传空数组均返回没有元素的`set`对象)
 
 ```javascript
 let set = new Set(['a', 'b', 10, 20, true, 'b', true]);
@@ -944,7 +944,7 @@ console.log(set); // Set(5) {"a", "b", 10, 20, true}
 
 通过`Set.prototype.keys()`,`Set.prototype.values()`以及`Set.prototype.entries()`的执行，可以看出一个set对象的键与值是完全一样的，例如上例中的set对象的键分别为`"a", "b", 10, 20, true`，值也分别为`"a", "b", 10, 20, true`
 
-利用set对象将传进的数组去重，例如：
+利用`set`对象将传进的数组去重，例如：
 
 ```javascript
 let arr=[1, 2, 4, 6, 6, 8, 3, 8, 1];
@@ -952,7 +952,7 @@ let x=[...new Set(arr)];
 console.log(x);
 ```
 
-set对象的属性
+`set`对象的属性
 
 - `set.size` 长度
 - `Set.prototype.add(x)` 添加数据x（数据有相同内容时不会被添加），改变原set对象，返回改变后的set对象
@@ -967,9 +967,9 @@ s.add(10).add(20).add(30).add(40);
 console.log(s);
 ```
 
-set对象部署有`Symbol.iterator`接口，可以利用`for ... of...`循环
+`set`对象部署有`Symbol.iterator`接口，可以利用`for ... of...`循环
 
-Map可以让任何数据类型都能作为键，但只能`Map.prototype.set(键, 值)`存值，`Map.prototype.get(键)`取值。例如：
+`Map`可以让任何数据类型都能作为键，但只能`Map.prototype.set(键, 值)`存值，`Map.prototype.get(键)`取值。例如：
 
 ```javascript
 let obj={};
@@ -979,29 +979,23 @@ map.set(obj,"qwe");
 console.log(map.get(obj),map.get(true));
 ```
 
-## <span style="color:yellowgreen;font-weight:600;">[ES6]</span>8.Symbol.iterator
+## <span style="color:yellowgreen;font-weight:600;">[ES6]</span>8.iterator
 
-iterator在ES6之前就存在，但它是非标准的，不是目前任何标准文档的一部分。到了ES2015才有了Symbol.iterator的规范。以下所提到的任何iterator都指的是Symbol.iterator
+`Symbol.iterator`是某些对象的方法，某些对象中本身就自带这个属性，当调用这个方法时，会生成一个与此对象有关的`iterator`对象。
 
-iterator称为迭代器，其作用有三个：
+*`Symbol.iterator`通常会在某些方法内部自动调用*
 
-- 为各种数据结构，提供一个统一的、简便的访问接口
-- 使得数据结构的成员能够按某种次序排列
-- 主要供`for...of`
+`iterator`称为迭代器，其运行过程是这样的：
 
-**iterator本质上，就是一个指针对象**
+（1）某些方法内部会自动调用`Symbol.iterator`接口，会生成一个`iterator`对象。
 
-过程是这样的：
+（2）第一次调用`iterator`对象对象的`next`方法，可以将指针指向数据结构的第一个成员。
 
-（1）创建一个指针对象，指向当前数据结构的起始位置。
+（3）第二次调用`iterator`对象对象的`next`方法，指针就指向数据结构的第二个成员。
 
-（2）第一次调用指针对象的`next`方法，可以将指针指向数据结构的第一个成员。
+（4）不断调用`iterator`对象对象的`next`方法，直到它指向数据结构的结束位置。
 
-（3）第二次调用指针对象的`next`方法，指针就指向数据结构的第二个成员。
-
-（4）不断调用指针对象的`next`方法，直到它指向数据结构的结束位置。
-
-**为了理解iterator，现在以数组为例，逐步说明**
+**为了理解`iterator`，现在以数组为例，逐步说明**
 
 ```javascript
 let arr = [10, 20, 30];
@@ -1014,9 +1008,9 @@ console.log(ite.next()); // 执行next函数，会返回一个对象，对象中
 console.log(ite.next()); // 执行next函数，会返回一个对象，对象中value属性为undefined，done属性为true表示当前已经迭代完成
 ```
 
-上例中，经过反复执行next函数，就能够依次遍历到数组中的每一个值，而类似for...of...的内部，就是利用迭代器来得到数组中每一个值的，所以只有部署了Symbol.iterator的对象才能使用for...of...
+上例中，经过反复执行`nex`t函数，就能够依次遍历到数组中的每一个值，而类似`for...of...`的内部，就是利用迭代器来得到数组中每一个值的，所以只有部署了`Symbol.iterator`的对象才能使用`for...of...`
 
-**原生具备 Iterator 接口的对象**
+**原生具备`Symbol.Iterator`的对象**
 
 - Array
 - Map
@@ -1025,7 +1019,7 @@ console.log(ite.next()); // 执行next函数，会返回一个对象，对象中
 - 函数的arguments对象
 - Nodelist对象
 
-**给类数组部署Symbol.iterator接口**
+**给类数组部署`Symbol.iterator`**
 
 ```javascript
 let obj = {
@@ -1040,7 +1034,7 @@ for(let v of obj) {
 }
 ```
 
-不能给普通对象部署Symbol.iterator，如果强行部署，会因为没有属性名为“0“，”1“，”2“，... 的属性，所以每次返回的对象中value的值均为undefined
+不能给普通对象部署`Symbol.iterator`，如果强行部署，会因为没有属性名为“0“，”1“，”2“，... 的属性，所以每次返回的对象中`value`的值均为`undefined`
 
 ## <span style="color:yellowgreen;font-weight:600;">[ES6]</span>9.Proxy
 
@@ -1956,7 +1950,7 @@ console.log(new String(str).length);
 
 在函数中，存在一个`prototype`属性,这个属性值是一个对象,.此函数通过`new`操作符创建的对象中会默认含有一个`__proto__`属性,此属性值与其构造函数的`prototype`属性指向同一个对象.我们将这个对象称为**原型**
 
-任何一个对象都有自己的原型,原型的属性值是一个对象,则此对象的原型还有自己的原型...所以我们将此称为**原型链**,原型链的终点为Object
+任何一个对象都有自己的原型,原型的属性值是一个对象,则此对象的原型还有自己的原型...所以我们将此称为**原型链**,原型链的终点通常为Object
 
 一个对象在调用属性时会首先找它本身的属性,如果找到,则使用这个属性值,如果找不到,则会在它的原型中查找,如果找到,则使用这个属性值,如果找不到,则在其原型的原型中查找...也就是说,对象找不到的属性会在原型链中继续查找.
 
