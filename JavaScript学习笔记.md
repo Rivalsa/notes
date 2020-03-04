@@ -411,11 +411,11 @@ console.log(0o88); // 报错 Uncaught SyntaxError: invalid or unexpected token
 > - prop为要定义或修改的属性名称
 > - descriptor为将被定义或修改的属性的描述
 >
-> > descriptor为一个对象，包含如下属性：
+> > descriptor为一个对象，可包含如下属性：
 > >
 > > - configurable属性，当且仅当此属性为true时，obj的prop属性的descriptor能被改变，同时此属性也能从对象上被删除，默认为false
 > > - enumerable属性，当且仅当此属性为true时，obj的prop属性才能够出行在obj的枚举属性中（可以被遍历到），默认为false
-> > - value属性，obj的prop属性对应的值，默认为undefined
+> > - value属性，obj的prop属性对应的值，默认为undefined（有get或set属性时不能配置value属性）
 > > - writable属性，当且仅当此属性为true是，obj的prop属性值才能被赋值运算符改变，默认为false
 > > - get属性，值为一个函数，当读取此属性时会执行此函数，函数的返回值为读取到的属性值。
 > > - set属性，值为一个函数，当给此属性赋值是会执行此函数。此函数必须接受一个形参，为被赋的值。
@@ -979,15 +979,15 @@ map.set(obj,"qwe");
 console.log(map.get(obj),map.get(true));
 ```
 
-## <span style="color:yellowgreen;font-weight:600;">[ES6]</span>8.iterator
+## <span style="color:yellowgreen;font-weight:600;">[ES6]</span>8.[Symbol.iterator]
 
-`Symbol.iterator`是某些对象的方法，某些对象中本身就自带这个属性，当调用这个方法时，会生成一个与此对象有关的`iterator`对象。
+在`Symbol`这个对象中会默认有一个名为`iterator`的属性，其值为`Symbol`数据类型。`Symbol.iterator`被系统设置为一些对象的属性，其值为一个函数，执行这个函数时，会返回一个与此对象有关的`iterator`对象。
 
-*`Symbol.iterator`通常会在某些方法内部自动调用*
+*`[Symbol.iterator]`通常会在某些方法内部自动调用*
 
 `iterator`称为迭代器，其运行过程是这样的：
 
-（1）某些方法内部会自动调用`Symbol.iterator`接口，会生成一个`iterator`对象。
+（1）某些方法内部会自动调用`[Symbol.iterator]`接口，会生成一个`iterator`对象。
 
 （2）第一次调用`iterator`对象对象的`next`方法，可以将指针指向数据结构的第一个成员。
 
@@ -1010,7 +1010,7 @@ console.log(ite.next()); // 执行next函数，会返回一个对象，对象中
 
 上例中，经过反复执行`nex`t函数，就能够依次遍历到数组中的每一个值，而类似`for...of...`的内部，就是利用迭代器来得到数组中每一个值的，所以只有部署了`Symbol.iterator`的对象才能使用`for...of...`
 
-**原生具备`Symbol.Iterator`的对象**
+**原生具备`[Symbol.Iterator]`的对象**
 
 - Array
 - Map
@@ -1019,7 +1019,7 @@ console.log(ite.next()); // 执行next函数，会返回一个对象，对象中
 - 函数的arguments对象
 - Nodelist对象
 
-**给类数组部署`Symbol.iterator`**
+**给类数组部署`[Symbol.iterator]`**
 
 ```javascript
 let obj = {
@@ -1034,7 +1034,7 @@ for(let v of obj) {
 }
 ```
 
-不能给普通对象部署`Symbol.iterator`，如果强行部署，会因为没有属性名为“0“，”1“，”2“，... 的属性，所以每次返回的对象中`value`的值均为`undefined`
+不能给普通对象部署`[Symbol.iterator]`，如果强行部署，会因为没有属性名为“0“，”1“，”2“，... 的属性，所以每次返回的对象中`value`的值均为`undefined`
 
 ## <span style="color:yellowgreen;font-weight:600;">[ES6]</span>9.Proxy
 
@@ -1933,9 +1933,7 @@ setTimeout((...arr) => {
 构造函数的本质就是一个函数（箭头函数不能作为构造函数）。但构造函数通常不是直接调用，而是通过`new`关键词来调用，直接调用与通过`new`调用的区别如下：
 
 - 使用`new`执行函数时会自动创建一个对象，函数中的`this`指向这个对象，函数执行结束后自动返回这个对象。
-- 构造函数的函数体中存在`return`语句时，用`new`来执行函数时，如果`return`的是基础数据类型则会忽略函数体中的`return`，返回自动创建的对象，如果`return`的是复杂数据类型则会返回`return`的这个对象。
-
-构造函数的函数名通常使用大驼峰命名。
+- 构造函数的函数体中存在`return`语句且用`new`来执行函数时，如果`return`的是基础数据类型则会终止函数执行并返回函数自动创建的对象，如果`return`的是复杂数据类型则会终止函数执行并返回`return`后面的对象。
 
 对于基础数据类型，本身是没有属性的，但字符串、数字等具有一个自带的构造函数（如String，Number），当通过`.`或`[]`来读取或运行属性时，系统会自动通过自带的构造函数创建一个对象，再执行或读取对象的属性。我们把这个自带的构造函数称为**包装类**。举例如下：
 
@@ -1948,11 +1946,13 @@ console.log(new String(str).length);
 
 ### 15.2 原型与原型链
 
-在函数中，存在一个`prototype`属性,这个属性值是一个对象,.此函数通过`new`操作符创建的对象中会默认含有一个`__proto__`属性,此属性值与其构造函数的`prototype`属性指向同一个对象.我们将这个对象称为**原型**
+一般来说，绝大多数对象都有一个名为`__proto__`的属性，其值为对象类型，此对象称为原对象的**原型**
 
-任何一个对象都有自己的原型,原型的属性值是一个对象,则此对象的原型还有自己的原型...所以我们将此称为**原型链**,原型链的终点通常为Object
+在函数中，默认存在一个`prototype`属性，其值为对象类型。此函数通过`new`操作符创建的对象的`__proto__`属性值默认与其构造函数的`prototype`属性值指向同一个对象。
 
-一个对象在调用属性时会首先找它本身的属性,如果找到,则使用这个属性值,如果找不到,则会在它的原型中查找,如果找到,则使用这个属性值,如果找不到,则在其原型的原型中查找...也就是说,对象找不到的属性会在原型链中继续查找.
+绝大多数对象都有自己的原型，原型的属性值是一个对象，则此对象的原型还有自己的原型...我们将此称为**原型链**，通常原型链的终点通常为Object
+
+一个对象在调用属性时会首先找它本身的属性,如果找到,则使用这个属性值,如果找不到,则会在它的原型中查找,如果找到,则使用这个属性值,如果找不到,则在其原型的原型中查找...
 
 例1
 
@@ -1976,9 +1976,7 @@ var obj = new O;
 console.log(obj);
 ```
 
-每一个原型上都默认有一个`construotor`指向对应的的函数
-
-*由于利用构造函数创造出来的所有的对象的原型都是指向同一对象的指针,所以利用原型及原型链可以减少不必要的内存开销*
+构造函数的`prototype`中会默认有一个`construotor`，函数值为构造函数
 
 **构造函数私有属性及其原型（链）的继承**
 
