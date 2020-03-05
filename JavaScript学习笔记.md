@@ -108,9 +108,9 @@ V8引擎为解析js代码最快的js引擎
 
 `window.confirm(x)`确认弹窗,x是提示内容,点击"是"返回true,否则返回false
 
-`JSON.parse(x)`将JSON格式的字符串x转换为对象，返回这个对象（IE7及其以下不支持）
+`window.JSON.parse(x)`将JSON格式的字符串x转换为对象，返回这个对象（IE7及其以下不支持）
 
-`JSON.stringify(obj)`返回obj对象转换为的JSON字符串（IE7及其以下不支持）
+`window.JSON.stringify(obj)`返回obj对象转换为的JSON字符串（IE7及其以下不支持）
 
 `try-catch`执行代码出错后不阻碍后面代码执行,例如:
 
@@ -232,15 +232,15 @@ let {x: c, y: d} = {x: 50, y: 80}; // 相当于let c = 50, d = 80;
 
 ## 3. 控制台输出
 
-`console.log(...x)`普通输出，如有多个参数则依次输出
+`window.console.log(...x)`普通输出，如有多个参数则依次输出
 
-`console.info(x)`输出信息
+`window.console.info(x)`输出信息
 
-*`console.log`与`console.info`只是语义上的差别,效果上差别不大,在有有的浏览器中有info的标记,但在Google Chrome中完全一样*
+*`window.console.log`与`console.info`只是语义上的差别,效果上差别不大,在有有的浏览器中有info的标记,但在Google Chrome中完全一样*
 
-`console.warn(x)`输出警告信息,不阻碍代码继续执行
+`window.console.warn(x)`输出警告信息,不阻碍代码继续执行
 
-`console.error(x)`输出错误信息,不阻碍代码继续执行
+`window.console.error(x)`输出错误信息,不阻碍代码继续执行
 
 *如想阻止代码继续执行,可以使用`throw`抛出错误,例如*
 
@@ -249,7 +249,7 @@ throw 'xxx';
 throw new Error('xxx');
 ```
 
-`console.dir`如果输出的是对象,则可以显示对象的所有属性与方法,如果不是对象,则除只能接收一个参数外与`log`无明显差异
+`window.console.dir`如果输出的是对象,则可以显示对象的所有属性与方法,如果不是对象,则除只能接收一个参数外与`log`无明显差异
 
 ## 4.数据类型
 
@@ -282,69 +282,69 @@ throw new Error('xxx');
 
 字符串可以加下标（用中括号）,表示取其中字符，只读，低版本IE不支持，x超出下标范围时返回undefined
 
-`String.prototype.charAt(x)`只读,用法同字符串的下标，任何浏览器都支持，x超出下标范围时返回空字符串
+`window.String.prototype.charAt(x)`只读,用法同字符串的下标，任何浏览器都支持，x超出下标范围时返回空字符串
 
-`String.prototype.length`只读,获取字符串的长度
+`window.String.prototype.length`只读,获取字符串的长度
 
-`String.prototype.charCodeAt(x)`第x位的编码
+`window.String.prototype.charCodeAt(x)`第x位的编码
 
-`String.fromCharCode(x)`返回对应编码的字符
+`window.String.fromCharCode(x)`返回对应编码的字符
 
-`String.prototype.subString(x[, y])`截取字符串,如果x小于y则从第x个字符(含)开始截取到第y个字符(不含)；如果x大于y则从第y个字符(含)开始截取到第x个字符(不含)，x与y传负数时按0计，若省略y，则从此处一直截取到字符串结尾，返回截取的字符串。
+`window.String.prototype.subString(x[, y])`截取字符串,如果x小于y则从第x个字符(含)开始截取到第y个字符(不含)；如果x大于y则从第y个字符(含)开始截取到第x个字符(不含)，x与y传负数时按0计，若省略y，则从此处一直截取到字符串结尾，返回截取的字符串。
 
-`String.prototype.substr(x[, y])`截取字符串,从第x个字符(含)开始截取y个字符,省略y时截取到末尾。x可以传负数，表示从结尾开始计，返回截取的字符串。
+`window.String.prototype.substr(x[, y])`截取字符串,从第x个字符(含)开始截取y个字符,省略y时截取到末尾。x可以传负数，表示从结尾开始计，返回截取的字符串。
 
-`String.prototype.slice(x[, y])`截取字符串,从第x个字符(含)开始截取到第y个字符(不含)，省略y时截取到末尾。x与y可以传负数，表示从结尾开始计，返回截取的字符串。
+`window.String.prototype.slice(x[, y])`截取字符串,从第x个字符(含)开始截取到第y个字符(不含)，省略y时截取到末尾。x与y可以传负数，表示从结尾开始计，返回截取的字符串。
 
-`String.prototype.toLowerCase()`字符串转换为小写,无参数，返回转换后的字符串。
+`window.String.prototype.toLowerCase()`字符串转换为小写,无参数，返回转换后的字符串。
 
-`String.prototype.toUpperCase()`字符串转换为大写,无参数，返回转换后的字符串。
+`window.String.prototype.toUpperCase()`字符串转换为大写,无参数，返回转换后的字符串。
 
-`String.prototype.toLocaleLowerCase()`按照本地方式将字符串转换为小写,无参数，返回转换后的字符串。
+`window.String.prototype.toLocaleLowerCase()`按照本地方式将字符串转换为小写,无参数，返回转换后的字符串。
 
-`String.prototype.toLocaleUpperCase()`按照本地方式将字符串转换为大写,无参数，返回转换后的字符串。
+`window.String.prototype.toLocaleUpperCase()`按照本地方式将字符串转换为大写,无参数，返回转换后的字符串。
 
 > 只有少数几种语言（如土耳其语）具有地方特有的大小写映射，所以该方法的返回值通常与不带`Local`的函数一样。
 
-`String.prototype.split(x)`以参数中的字符串或正则表达式切割字符串,返回一个数组,如果传参为**空字符串**,则逐字符切割,如果不传参数则将整体作为数组的一个元素。
+`window.String.prototype.split(x)`以参数中的字符串或正则表达式切割字符串,返回一个数组,如果传参为**空字符串**,则逐字符切割,如果不传参数则将整体作为数组的一个元素。
 
-`String.prototype.indexOf(x[, y])`从自左向右第y位开始查询,返回x在字符串中第一次出现的位置,若未出现该字符串,则返回-1，y可以省略表示从第0个字符开始查询
+`window.String.prototype.indexOf(x[, y])`从自左向右第y位开始查询,返回x在字符串中第一次出现的位置,若未出现该字符串,则返回-1，y可以省略表示从第0个字符开始查询
 
-`String.prototype.lastIndexOf(x[, y])`从自左向右第y位开始向左查询,返回x在字符串中第一次出现的位置,若未出现x,则返回-1，y可以省略表示从最后0个字符开始查询
+`window.String.prototype.lastIndexOf(x[, y])`从自左向右第y位开始向左查询,返回x在字符串中第一次出现的位置,若未出现x,则返回-1，y可以省略表示从最后0个字符开始查询
 
-`String.prototype.search(x)`返回x在字符串中第一次出现的位置,x可以为字符串也可以为正则表达式（传正则时不执行全局检索）,若未出现该字符串,则返回-1
+`window.String.prototype.search(x)`返回x在字符串中第一次出现的位置,x可以为字符串也可以为正则表达式（传正则时不执行全局检索）,若未出现该字符串,则返回-1
 
-`String.prototype.concat(a[, b[, c[, ...]]])`字符串拼接，将参数a,b,c,...拼接在字符串后面，返回拼接后的新字符串
+`window.String.prototype.concat(a[, b[, c[, ...]]])`字符串拼接，将参数a,b,c,...拼接在字符串后面，返回拼接后的新字符串
 
-`String.prototype.trimLeft()`去除左侧空格，返回新字符串
+`window.String.prototype.trimLeft()`去除左侧空格，返回新字符串
 
-`String.prototype.trimRight()`去除右侧空格，返回新字符串
+`window.String.prototype.trimRight()`去除右侧空格，返回新字符串
 
-`String.prototype.trim()`去除两侧空格，返回新字符串
+`window.String.prototype.trim()`去除两侧空格，返回新字符串
 
-`String.prototype.replace(旧内容,新内容)`用新内容替换旧内容,返回替换后的字符串
+`window.String.prototype.replace(旧内容,新内容)`用新内容替换旧内容,返回替换后的字符串
 
 - 旧内容可以是一段字符串,也可以是一个正则表达式，旧内容为字符串时，只替换第一个匹配的内容
 - 新内容可以是一段字符串,也可以是一个函数,如果是函数则用函数的返回值替换就内容,传给函数的第一个实参为替换前的旧内容(形参通常用$0接收)
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`String.prototype.padStart(i[, x])`[ES2017]字符串不够i位，则在开头数次添加字符串x，补满位数，返回处理后的字符串，若省略第二个参数，则用空格补全。
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`window.String.prototype.padStart(i[, x])`[ES2017]字符串不够i位，则在开头数次添加字符串x，补满位数，返回处理后的字符串，若省略第二个参数，则用空格补全。
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`String.prototype.padEnd(i[, x])`[ES2017]字符串不够i位，则在结尾数次添加字符串x，补满位数，返回处理后的字符串，若省略第二个参数，则用空格补全。
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`window.String.prototype.padEnd(i[, x])`[ES2017]字符串不够i位，则在结尾数次添加字符串x，补满位数，返回处理后的字符串，若省略第二个参数，则用空格补全。
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`String.prototype.includes(x[, i])`从第i位开始到最后为范围，判断字符串x是否在范围中，存在则返回true，否则返回false
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`window.String.prototype.includes(x[, i])`从第i位开始到最后为范围，判断字符串x是否在范围中，存在则返回true，否则返回false
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`String.prototype.startsWith(x[, i])`从第i位开始到最后为范围，判断范围内是否已x开头，是则返回true，否则返回false
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`window.String.prototype.startsWith(x[, i])`从第i位开始到最后为范围，判断范围内是否已x开头，是则返回true，否则返回false
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`String.prototype.endsWith(x[, i])`从第0位开始到第i位（不包括i）为范围，判断范围内是否已x结尾，是则返回true，否则返回false
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`window.String.prototype.endsWith(x[, i])`从第0位开始到第i位（不包括i）为范围，判断范围内是否已x结尾，是则返回true，否则返回false
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`String.prototype.repeat(n)`返回将字符串重复n次的新字符串
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`window.String.prototype.repeat(n)`返回将字符串重复n次的新字符串
 
 - 如果n为正小数则向下取整
 - 如果n为小于或等于-1的负数或Infinity则报错
 - 如果n为-1到0之间的小数，则n取0
 - 如果n为字符串，则先转换为数字
 
-`.match(正则表达式)`返回字符串中匹配成功的字符串组成的数组(数组有匹配的内容与子项组成,在规则中使用全局`g`则组成的数组中不包含子项)
+`windoe.String.prototype.match(正则表达式)`返回字符串中匹配成功的字符串组成的数组(数组有匹配的内容与子项组成,在规则中使用全局`g`则组成的数组中不包含子项)
 
 #### 4.2.2 number类型
 
@@ -371,15 +371,15 @@ console.log(0o88); // 报错 Uncaught SyntaxError: invalid or unexpected token
 
 **数字常用方法**
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Number.isFinite(x)`若x为数字类型且为有穷的数字，则返回true，否则返回false（NaN返回false）
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`window.Number.isFinite(x)`若x为数字类型且为有穷的数字，则返回true，否则返回false（NaN返回false）
 
 `window.isFinite(x)`将x转换为数字类型，判断转后后的数字是否为有穷的，若是则返回true，否则返回false（NaN返回false）
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Number.isNaN(x)`如果x为数字类型，且x为NaN，则返回true，否则返回false
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`window.Number.isNaN(x)`如果x为数字类型，且x为NaN，则返回true，否则返回false
 
 `window.isNaN(x)`判断x转换为数字类型是否是NaN，若是则返回true，否则返回false
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Number.isInteger(x)`如果x为数字，且x为整数，则返回true，否则返回false
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`window.Number.isInteger(x)`如果x为数字，且x为整数，则返回true，否则返回false
 
 #### 4.2.3 object类型
 
@@ -388,8 +388,8 @@ console.log(0o88); // 报错 Uncaught SyntaxError: invalid or unexpected token
 我们可以通过如下方式来创建一个对象
 
 - 使用`{键1:值1,键2:值2,...键n:值n}`的方式来定义对象,其中可以有若干个键值对(键也可以称为属性)
-- 通过`new Object()`的方式来创建一个对象
-- 通过`Object.create(x)`来创建一个对象，创建的对象的原型指向x
+- 通过`new window.Object()`的方式来创建一个对象
+- 通过`window.Object.create(x)`来创建一个对象，创建的对象的原型指向x
 
 在es5中,键必须是字符串形式（不能是变量）,可以加引号也可以不加引号,但不加引号时必须符合变量的命名规则（纯数字会转换为字符串）
 
@@ -403,9 +403,9 @@ console.log(0o88); // 报错 Uncaught SyntaxError: invalid or unexpected token
 新增对象和修改属性值有两种方法：
 
 - 直接通过赋值运算符进行赋值，例如：`obj.prop = 'abc'`，若prop属性原本不存在，则会新增此属性，原本存在会被修改（设置`get xxx`或`set xxx`属性时，其值需要为一个函数，表示xxx属性被读取或被赋值时执行此函数，详情见与下一条中的`get`属性和`set`属性的描述）
-- 通过`Object.defineProperty(obj, prop, descriptor)`方法
+- 通过`window.Object.defineProperty(obj, prop, descriptor)`方法
 
-> Object.defineProperty(obj, prop, descriptor)直接在obj上定义一个新属性，或者修改一个对象的现有属性， 并返回这个对象。
+> window.Object.defineProperty(obj, prop, descriptor)直接在obj上定义一个新属性，或者修改一个对象的现有属性， 并返回这个对象。
 >
 > - obj为要在其上定义属性的对象
 > - prop为要定义或修改的属性名称
@@ -504,17 +504,17 @@ a.age = 16;
 console.log(obj.age); // 16
 ```
 
-`Object.getOwnPropertyNames(obj)`返回对象obj的所有属性名（包括不可枚举的属性，但不包含Symbol值作为属性名的属性）组成的数组
+`window.Object.getOwnPropertyNames(obj)`返回对象obj的所有属性名（包括不可枚举的属性，但不包含Symbol值作为属性名的属性）组成的数组
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Object.getOwnPropertySymbols(obj)`返回对象obj所有Symbol值作为属性名的数组
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`window.Object.getOwnPropertySymbols(obj)`返回对象obj所有Symbol值作为属性名的数组
 
-`Object.prototype.hasOwnProperty(prop)`判断对象中是否存在prop属性（不检查原型链），存在返回true，不存在返回false
+`window.Object.prototype.hasOwnProperty(prop)`判断对象中是否存在prop属性（不检查原型链），存在返回true，不存在返回false
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>对象的`Object.keys(obj)`,`Object.values(obj)`与`Object.entries(obj)`方法分别表示获取对象的键,值以及键值对组成的数组
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>对象的`window.Object.keys(obj)`,`window.Object.values(obj)`与`window.Object.entries(obj)`方法分别表示获取对象的键,值以及键值对组成的数组
 
 利用`for 变量 in 对象`可以遍历对象的键。
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Object.is(x, y)`判断x与y是否是相同的值（不发生数据类型转换），例如：
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`window.Object.is(x, y)`判断x与y是否是相同的值（不发生数据类型转换），例如：
 
 ```javascript
 console.log(Object.is(NaN, NaN)); // true
@@ -522,7 +522,7 @@ console.log(Object.is(+0, -0)); // false
 console.log(Object.is({}, {})); // false 比较的仍然是地址
 ```
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Object.assign(target, ...sources)`将source对象拼接在target对象上（如果属性名重复，则使用最后一个属性值），target对象会被改变，sources对象不改变，返回修改后的target对象
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`window.Object.assign(target, ...sources)`将source对象拼接在target对象上（如果属性名重复，则使用最后一个属性值），target对象会被改变，sources对象不改变，返回修改后的target对象
 
 `a in obj`如果a是obj的属性或原型链上的属性，则返回true，否则返回false。
 
@@ -531,16 +531,16 @@ console.log(Object.is({}, {})); // false 比较的仍然是地址
 数组属于对象的一种，可以通过如下方式创建一个数组：
 
 - 通过`[值1,值2,值3,...,值n]`来定义一个数组
-- 通过`new Array(x[, y[, z[, ...]]])`来创建一个数组，如果x为数字且没有其他参数,则返回有x项的数组且每项内容为空；否则，返回由x,y,z...组成的数组
-- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>通过`Array.of(x, y, z, ...)`将一组散列的值转换为数组
+- 通过`new window.Array(x[, y[, z[, ...]]])`来创建一个数组，如果x为数字且没有其他参数,则返回有x项的数组且每项内容为空；否则，返回由x,y,z...组成的数组
+- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>通过`window.Array.of(x, y, z, ...)`将一组散列的值转换为数组
 
 *JS不同方法对数组的空位的处理不一致，很乱，所以要尽量避免空位的出现*
 
 **数组常用方法**
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Array.prototype.keys()`、`Array.prototype.values()`、`Array.prototype.entries()`方法分别会返回数组的下标，数组的数据以及数组的下标数据对组成的`Symbol.Iterator`对象
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`window.Array.prototype.keys()`、`window.Array.prototype.values()`、`window.Array.prototype.entries()`方法分别会返回数组的下标，数组的数据以及数组的下标数据对组成的`Iterator`对象
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>利用`for 变量 of 数组`遍历数组（部署了Symbol.Iterator的类数组也能用），举例如下：
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>利用`for 变量 of 数组`遍历数组（部署了`Iterator`的类数组也能用），举例如下：
 
 ```javascript
 //遍历对象（本质上也是遍历数组）
@@ -557,27 +557,27 @@ for(let value of arr){
 
 `array.length`返回数组的长度
 
-`Array.prototype.push(x[, y[, z[, ...]]])`向数组中添加新数据x,y,z,...(新增到结尾),返回新增数据后数组的长度.(改变原数组)
+`window.Array.prototype.push(x[, y[, z[, ...]]])`向数组中添加新数据x,y,z,...(新增到结尾),返回新增数据后数组的长度.(改变原数组)
 
-`Array.prototype.unshift(x[, y[, z[, ...]]])`向数组中添加新数据x,y,z,...(新增到开头),返回新增数据后数组的长度.(改变原数组)
+`window.Array.prototype.unshift(x[, y[, z[, ...]]])`向数组中添加新数据x,y,z,...(新增到开头),返回新增数据后数组的长度.(改变原数组)
 
-`Array.prototype.pop()`无参数,把原数组的最后一位删掉,改变原数组,返回被删除的数据
+`window.Array.prototype.pop()`无参数,把原数组的最后一位删掉,改变原数组,返回被删除的数据
 
-`Array.prototype.shift()`无参数,把原数组的第一位删掉,改变原数组,返回被删除的数据
+`window.Array.prototype.shift()`无参数,把原数组的第一位删掉,改变原数组,返回被删除的数据
 
-`Array.prototype.splice(a, b[, data[, data[, data[,...]]]])`从数组下标为a的位开始删除b个数据,再增加数据data,改变原数组,返回由被删除的数据组成的数组(若未删除则返回空数组)
+`window.Array.prototype.splice(a, b[, data[, data[, data[,...]]]])`从数组下标为a的位开始删除b个数据,再增加数据data,改变原数组,返回由被删除的数据组成的数组(若未删除则返回空数组)
 
 - a可以传入负数,表示从末尾的某处开始删除
 
-`Array.prototype.indexOf(x[, y])`从下标为y处开始查找数组中的第一个数据x,返回数据下标,若未找到则返回-1，省略y则从第一个元素开始查找
+`window.Array.prototype.indexOf(x[, y])`从下标为y处开始查找数组中的第一个数据x,返回数据下标,若未找到则返回-1，省略y则从第一个元素开始查找
 
-`Array.prototype.lastIndexOf(x[, y])`从下标为y处开始反向查找数组中的第一个数据x,返回数据下标,若未找到则返回-1，省略y则从最后一个元素开始查找
+`window.Array.prototype.lastIndexOf(x[, y])`从下标为y处开始反向查找数组中的第一个数据x,返回数据下标,若未找到则返回-1，省略y则从最后一个元素开始查找
 
-`Array.prototype.slice(x[, y])`截取数组,从下标为x的数据(含)开始到下标为y的数据(不含)结束,如果省略y则截取到最后,不修改原数组,返回得到的新数组
+`window.Array.prototype.slice(x[, y])`截取数组,从下标为x的数据(含)开始到下标为y的数据(不含)结束,如果省略y则截取到最后,不修改原数组,返回得到的新数组
 
 - x与y均可以传入负数,表示从末尾开始计
 
-`Array.prototype.sort(x)`当不传入参数x时将数组中的数据从小到大排列,改变原数组,返回排序后的数组
+`window.Array.prototype.sort(x)`当不传入参数x时将数组中的数据从小到大排列,改变原数组,返回排序后的数组
 
 *x可以为函数,此处不详细写明,但有一种常用用法,举例如下*
 
@@ -588,15 +588,15 @@ arr.sort(function(a,b){return b-a;});
 console.log(arr)
 ```
 
-`Array.prototype.reverse()`颠倒顺序,改变原数组,返回改变后的数组
+`window.Array.prototype.reverse()`颠倒顺序,改变原数组,返回改变后的数组
 
-`Array.prototype.concat(x[, y[, z[, ...]]])`将x,y,z...拼接在数组后面,x,y,z...既可以是一个数组,也可以是其他数据类型的新数据,不改变原有数组,返回新数组
+`window.Array.prototype.concat(x[, y[, z[, ...]]])`将x,y,z...拼接在数组后面,x,y,z...既可以是一个数组,也可以是其他数据类型的新数据,不改变原有数组,返回新数组
 
-`Array.prototype.join([x])`用x将数组的元素连接在一起（不传x则默认为逗号）,不修改原数组,返回拼接好的字符串
+`window.Array.prototype.join([x])`用x将数组的元素连接在一起（不传x则默认为逗号）,不修改原数组,返回拼接好的字符串
 
-`Array.isArray(x)`判断x是否是数组,如果是返回true,否则返回false
+`window.Array.isArray(x)`判断x是否是数组,如果是返回true,否则返回false
 
-`Array.prototype.forEach(function(currentValue[, index[, arr]])[, thisValue])`数组的遍历
+`window.Array.prototype.forEach(function(currentValue[, index[, arr]])[, thisValue])`数组的遍历
 
 - `currentValue`为当前的数据
 - `index`为当前的序号
@@ -609,35 +609,35 @@ console.log(arr)
 >
 > 类数组`NodeList`支持使用`forEach`
 
-`Array.prototype.map(function(item[, index[, arr]])[, thisValue])`数组的映射(遍历数组，遍历时执行函数，返回以每次执行函数的返回值为元素的数组)，不改变原数组
+`window.Array.prototype.map(function(item[, index[, arr]])[, thisValue])`数组的映射(遍历数组，遍历时执行函数，返回以每次执行函数的返回值为元素的数组)，不改变原数组
 
 - item为当前的数据
 - index为当前的序号
 - arr为数组本身
 - `thisValue`为函数中`this`的指向
 
-`Array.prototype.filter(function(item[, index[, arr]])[, thisValue])`数组的筛选(遍历数组，遍历时执行函数，返回由函数返回值为true的元素组成的新数组)，不改变原数组
+`window.Array.prototype.filter(function(item[, index[, arr]])[, thisValue])`数组的筛选(遍历数组，遍历时执行函数，返回由函数返回值为true的元素组成的新数组)，不改变原数组
 
 - item为当前的数据
 - index为当前的序号
 - arr为数组本身
 - `thisValue`为函数中`this`的指向
 
-`Array.prototype.some(function(item[, index[, arr]])[, thisValue])`遍历数组，并执行函数，每次执行函数的返回值中如果有一个返回true则整个函数返回true，否则返回false，若对空数组使用此方法，则无论任何情况都返回false
+`window.Array.prototype.some(function(item[, index[, arr]])[, thisValue])`遍历数组，并执行函数，每次执行函数的返回值中如果有一个返回true则整个函数返回true，否则返回false，若对空数组使用此方法，则无论任何情况都返回false
 
 - item为当前的数据
 - index为当前的序号
 - arr为数组本身
 - `thisValue`为函数中`this`的指向
 
-`Array.prototype.every(function(item[, index[, arr]])[, thisValue])`遍历数组，并执行函数，每次执行函数的返回值中全都返回true则整个函数返回true，否则返回false，若对空数组使用此方法，则无论任何情况都返回false
+`window.Array.prototype.every(function(item[, index[, arr]])[, thisValue])`遍历数组，并执行函数，每次执行函数的返回值中全都返回true则整个函数返回true，否则返回false，若对空数组使用此方法，则无论任何情况都返回false
 
 - item为当前的数据
 - index为当前的序号
 - arr为数组本身
 - `thisValue`为函数中`this`的指向
 
-`Array.prototype.reduce(function(prev, currentValue[, index[, arr]])[, initialValue])`
+`window.Array.prototype.reduce(function(prev, currentValue[, index[, arr]])[, initialValue])`
 
 > 当未传initialValue时，按照如下步骤执行：
 >
@@ -657,7 +657,7 @@ console.log(arr)
 > - 再次执行回调函数（prev为上一次回调执行函数的返回值，currentValue为数组的第最后一项，index时CurrentValue的索引，arr为数组本身）
 > - 整个函数返回值为最后一次执行回调函数的返回值
 
-`Array.prototype.reduceRight(function(prev, currentValue[, index[, arr]])[, initialValue])`
+`window.Array.prototype.reduceRight(function(prev, currentValue[, index[, arr]])[, initialValue])`
 
 > 当未传initialValue时，按照如下步骤执行：
 >
@@ -677,29 +677,29 @@ console.log(arr)
 > - 再次执行回调函数（prev为上一次回调执行函数的返回值，currentValue为数组的第0项，index时CurrentValue的索引，arr为数组本身）
 > - 整个函数返回值为最后一次执行回调函数的返回值
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Array.from(arrayLike[, mapFn[, thisArg]])`将类数组或可迭代对象转换为数组
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`window.Array.from(arrayLike[, mapFn[, thisArg]])`将类数组或可迭代对象转换为数组
 
 - arrayLike为想要转换成数组的伪数组对象或可迭代对象
 - mapFn为如果指定了此参数，新数组将由此函数的返回值组成
 - thisArg为回调函数中的this指向
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Array.prototype.find(function(val[, index[, arr]])[, thisArg])`返回数组中第一个使回调函数返回为true的值。若无则返回undefined
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`window.Array.prototype.find(function(val[, index[, arr]])[, thisArg])`返回数组中第一个使回调函数返回为true的值。若无则返回undefined
 
 - val当前的元素
 - index当前元素的索引
 - arr数组本身
 - thisArg回调函数中的this指向
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Array.prototype.findIndex(function(val, index, arr))`返回数组中第一个使回调函数返回为true的索引值。若无则返回-1
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`window.Array.prototype.findIndex(function(val, index, arr))`返回数组中第一个使回调函数返回为true的索引值。若无则返回-1
 
 - val当前的元素
 - index当前元素的索引
 - arr数组本身
 - thisArg回调函数中的this指向
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Array.prototype.fill(value[, start[, end]])`用value填充一个数组中从start（含）到end（不含）的全部元素，省略start则从第0位开始填充，省略end则填充到最后一位
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`window.Array.prototype.fill(value[, start[, end]])`用value填充一个数组中从start（含）到end（不含）的全部元素，省略start则从第0位开始填充，省略end则填充到最后一位
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>[ES2016]`Array.prototype.includes(x)`数组中是否包含x，包含则返回true，否则返回false
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>[ES2016]`window.Array.prototype.includes(x)`数组中是否包含x，包含则返回true，否则返回false
 
 ##### 4.2.3.3 函数
 
@@ -808,13 +808,13 @@ Symbol的参数是它的标识，只是便于开发者区分，运行时没有�
 - `object`类型(function除外)返回`object`
 - `function`返回`function`
 
-*判断x的数据类型还有一种方案是通过`Object.prototype.toString.call(x)`的返回值来判断*
+*判断x的数据类型还有一种方案是通过`window.Object.prototype.toString.call(x)`的返回值来判断*
 
 ### 4.4 数据类型之间的转换
 
 #### 4.4.1 转换为数字
 
-`Number(x)`将x转换为数字类型,返回转换后的结果如下：
+`window.Number(x)`将x转换为数字类型,返回转换后的结果如下：
 
 - 若x为纯由数字组成的字符串(可以有正负号或小数点，忽略最前面和最后面空格)，则返回对应的数字
 - 若x为含有非数字字符的字符串，则返回结果为`NaN`
@@ -828,13 +828,13 @@ Symbol的参数是它的标识，只是便于开发者区分，运行时没有�
 
 `window.parseFloat(x)`将以数字开头的字符串转换为数字(第一个非数字且非第一个`.`字符后面的内容不再解析,正负号算作数字),返回获得的结果
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>在ES6中`window.parseInt`和`window.parseFloat`可以用`Number.parseInt`和`Number.parseFloat`代替
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>在ES6中`window.parseInt`和`window.parseFloat`可以用`window.Number.parseInt`和`window.Number.parseFloat`代替
 
 #### 4.4.2 转换为字符串
 
-`String(x)`将x转换为字符串,返回转换后的结果
+`window.String(x)`将x转换为字符串,返回转换后的结果
 
-`x.toString()`将x转换为字符串,返回转换后的结果,括号中可以传入一个数字参数,表示将数字转换为对应进制数的字符串(如果x不是数字则忽略参数)
+`window.Object.prototype.toString()`将x转换为字符串,返回转换后的结果,括号中可以传入一个数字参数,表示将数字转换为对应进制数的字符串(如果x不是数字则忽略参数)
 
 将x转换为字符串的结果如下:
 
@@ -857,77 +857,77 @@ Symbol的参数是它的标识，只是便于开发者区分，运行时没有�
 
 ## 5.Math对象
 
-- `Math.abs(x)`返回x的绝对值
-- `Math.random()`返回0-1之间的随机数(包含0,不包含1)
-- `Math.round(x)`返回x的四舍五入取整值
-- `Math.ceil(x)`返回大于或等于x的最小整数
-- `Math.floor(x)`返回小于或等于x的最大整数
-- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Math.trunc(x)`返回x的整数部分，对于undefined和无法截取整数的值，返回NaN（可以用~~x代替）(传入该函数的参数会被转换为数字类型)
-- `Math.min(a,b,c,...)`接收多个数字参数,返回最小值（如果不传参返回`Infinity`）
-- `Math.max(a,b,c,...)`接收多个数字参数,返回最大值（如果不传参返回`-Infinity`）
-- `Math.pow(a,b)`返回a的b次幂(<span style="color:yellowgreen;font-weight:600;">[ES6]</span>在es6中可以用`a ** b`表示)
-- `Math.sqrt(x)`返回x的算术平方根
-- `Math.cos(x)`计算x的余弦值，x是以弧度为单位的数字
-- `Math.sin(x)`计算x的正弦值，x是以弧度为单位的数字
-- `Math.tan(x)`计算x的正切值，x是以弧度为单位的数字
-- `Math.PI`圆周率的值
-- `Math.LN10`10的自然对数
-- `Math.LN2`2的自然对数
-- `Math.LOG10E`以10为底e的对数
-- `Math.LOG2E`以2为底e的对数
-- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Math.sign(x)`此函数共有5种返回值, 分别是 **1, -1, 0, -0, NaN.** 代表的各是**正数, 负数, 正零, 负零, NaN**(传入该函数的参数会被转换为数字类型)
-- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Math.cbrt(x)`返回x的立方根
-- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`Math.hypot(x[, y[, z[, ...]]])`返回所有参数的平方和的平方根
+- `window.Math.abs(x)`返回x的绝对值
+- `window.Math.random()`返回0-1之间的随机数(包含0,不包含1)
+- `window.Math.round(x)`返回x的四舍五入取整值
+- `window.Math.ceil(x)`返回大于或等于x的最小整数
+- `window.Math.floor(x)`返回小于或等于x的最大整数
+- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`window.Math.trunc(x)`返回x的整数部分，对于undefined和无法截取整数的值，返回NaN（可以用~~x代替）(传入该函数的参数会被转换为数字类型)
+- `window.Math.min(a,b,c,...)`接收多个数字参数,返回最小值（如果不传参返回`Infinity`）
+- `window.Math.max(a,b,c,...)`接收多个数字参数,返回最大值（如果不传参返回`-Infinity`）
+- `window.Math.pow(a,b)`返回a的b次幂(<span style="color:yellowgreen;font-weight:600;">[ES6]</span>在es6中可以用`a ** b`表示)
+- `window.Math.sqrt(x)`返回x的算术平方根
+- `window.Math.cos(x)`计算x的余弦值，x是以弧度为单位的数字
+- `window.Math.sin(x)`计算x的正弦值，x是以弧度为单位的数字
+- `window.Math.tan(x)`计算x的正切值，x是以弧度为单位的数字
+- `window.Math.PI`圆周率的值
+- `window.Math.LN10`10的自然对数
+- `window.Math.LN2`2的自然对数
+- `window.Math.LOG10E`以10为底e的对数
+- `window.Math.LOG2E`以2为底e的对数
+- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`window.Math.sign(x)`此函数共有5种返回值, 分别是 **1, -1, 0, -0, NaN.** 代表的各是**正数, 负数, 正零, 负零, NaN**(传入该函数的参数会被转换为数字类型)
+- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`window.Math.cbrt(x)`返回x的立方根
+- <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`window.Math.hypot(x[, y[, z[, ...]]])`返回所有参数的平方和的平方根
 
 ## 6.日期对象
 
-**Date()为构造函数（类）,需要通过new创建一个对象**
+**window.Date为构造函数（类）,需要通过new创建一个对象**
 
 *Date后面加括号可以指定时间(年,月,日,时,分,秒),月份从0起,注意减一,或者括号中可以直接写以毫秒为单位的时间戳,或者传格式为"年/月/日 时:分:秒"的字符串("/"可以替换为"-")).传字符串时月份不必考虑加减1的问题*
 
-`Date.prototype.toLocalString()`转换为本地格式的日期时间
+`window.Date.prototype.toLocalString()`转换为本地格式的日期时间
 
-`Date.prototype.toLocalDateString()`转换为本地格式的日期
+`window.Date.prototype.toLocalDateString()`转换为本地格式的日期
 
-`Date.prototype.toLocalTimeString()`转换为本地格式的时间
+`window.Date.prototype.toLocalTimeString()`转换为本地格式的时间
 
-`Date.prototype.getFullYear()`获取完整年份
+`window.Date.prototype.getFullYear()`获取完整年份
 
-`Date.prototype.getYear()`获取年份(19xx年用两位数表示,后续会超过100,不常用)
+`window.Date.prototype.getYear()`获取年份(19xx年用两位数表示,后续会超过100,不常用)
 
-`Date.prototype.getMonth()`获取月份,0-11月,所以通常要加1
+`window.Date.prototype.getMonth()`获取月份,0-11月,所以通常要加1
 
-`Date.prototype.getDay()`获取星期,从零开始,星期日为0
+`window.Date.prototype.getDay()`获取星期,从零开始,星期日为0
 
-`Date.prototype.getDate()`获取日
+`window.Date.prototype.getDate()`获取日
 
-`Date.prototype.getHours()`获取时
+`window.Date.prototype.getHours()`获取时
 
-`Date.prototype.getMinutes()`获取分
+`window.Date.prototype.getMinutes()`获取分
 
-`Date.prototype.getSeconds()`获取秒
+`window.Date.prototype.getSeconds()`获取秒
 
-`Date.prototype.getMilliSeconds()`获取毫秒
+`window.Date.prototype.getMilliSeconds()`获取毫秒
 
-`Date.prototype.toUTCSting()`转换为UTC时间,返回值为字符串
+`window.Date.prototype.toUTCSting()`转换为UTC时间,返回值为字符串
 
-`Date.prototype.getTime()`转换为以毫秒为单位的时间戳(从1970年1月1日0时整开始计算)
+`window.Date.prototype.getTime()`转换为以毫秒为单位的时间戳(从1970年1月1日0时整开始计算)
 
-`Date.prototype.getTimezoneOffset()`获取GMT时间与本地时间相差的分钟数(GMT时间减去本地时间)
+`window.Date.prototype.getTimezoneOffset()`获取GMT时间与本地时间相差的分钟数(GMT时间减去本地时间)
 
-`Date.prototype.setFullYear(x)`将年份设置为x
+`window.Date.prototype.setFullYear(x)`将年份设置为x
 
-`Date.prototype.setMonth(x)`将月份设置为x,范围为0-11
+`window.Date.prototype.setMonth(x)`将月份设置为x,范围为0-11
 
-`Date.prototype.setDate(x)`将日设置为x
+`window.Date.prototype.setDate(x)`将日设置为x
 
-`Date.prototype.setHours(x)`将小时设置为x
+`window.Date.prototype.setHours(x)`将小时设置为x
 
-`Date.prototype.setMinutes(x)`将分钟设置为x
+`window.Date.prototype.setMinutes(x)`将分钟设置为x
 
-`Date.prototype.setSeconds(x)`将秒设置为x
+`window.Date.prototype.setSeconds(x)`将秒设置为x
 
-`Date.prototype.setMilliseconds(x)`将毫秒设置为x
+`window.Date.prototype.setMilliseconds(x)`将毫秒设置为x
 
 日期对象可以相减,返回值为两个日期相差的毫秒数(相当于时间戳相减)
 
@@ -942,7 +942,7 @@ let set = new Set(['a', 'b', 10, 20, true, 'b', true]);
 console.log(set); // Set(5) {"a", "b", 10, 20, true}
 ```
 
-通过`Set.prototype.keys()`,`Set.prototype.values()`以及`Set.prototype.entries()`的执行，可以看出一个set对象的键与值是完全一样的，例如上例中的set对象的键分别为`"a", "b", 10, 20, true`，值也分别为`"a", "b", 10, 20, true`
+通过`window.Set.prototype.keys()`,`window.Set.prototype.values()`以及`window.Set.prototype.entries()`的执行，可以看出一个set对象的键与值是完全一样的，例如上例中的set对象的键分别为`"a", "b", 10, 20, true`，值也分别为`"a", "b", 10, 20, true`
 
 利用`set`对象将传进的数组去重，例如：
 
@@ -955,11 +955,11 @@ console.log(x);
 `set`对象的属性
 
 - `set.size` 长度
-- `Set.prototype.add(x)` 添加数据x（数据有相同内容时不会被添加），改变原set对象，返回改变后的set对象
-- `Set.prototype.clear()` 全部清除
-- `Set.prototype.delete(x)` 删除数据x，成功返回true，失败返回false
+- `window.Set.prototype.add(x)` 添加数据x（数据有相同内容时不会被添加），改变原set对象，返回改变后的set对象
+- `window.Set.prototype.clear()` 全部清除
+- `window.Set.prototype.delete(x)` 删除数据x，成功返回true，失败返回false
 
-由于`Set.prototype.add(x)`的返回值仍是此set对象，所以可以进行链式操作，例如：
+由于`window.Set.prototype.add(x)`的返回值仍是此set对象，所以可以进行链式操作，例如：
 
 ```javascript
 let s = new Set();
@@ -967,9 +967,7 @@ s.add(10).add(20).add(30).add(40);
 console.log(s);
 ```
 
-`set`对象部署有`Symbol.iterator`接口，可以利用`for ... of...`循环
-
-`Map`可以让任何数据类型都能作为键，但只能`Map.prototype.set(键, 值)`存值，`Map.prototype.get(键)`取值。例如：
+`Map`可以让任何数据类型都能作为键，但只能`window.Map.prototype.set(键, 值)`存值，`window.Map.prototype.get(键)`取值。例如：
 
 ```javascript
 let obj={};
@@ -1090,7 +1088,7 @@ let proxy = new Proxy(target, handler);
 
 **可撤销的代理**
 
-利用`Proxy.revocable(target, handler)`可以创建一个可撤销的代理，其返回值为一个对象，由如下两个属性组成：
+利用`window.Proxy.revocable(target, handler)`可以创建一个可撤销的代理，其返回值为一个对象，由如下两个属性组成：
 
 - `proxy`代理的对象
 - `revoke`函数，执行此函数可以撤销代理
@@ -1105,7 +1103,7 @@ console.log(proxy.foo); // Uncaught TypeError: Cannot perform 'get' on a proxy t
 
 ## 10.改变this指向
 
-`Function.prototype.call(a[, b[, c[, ...]]])`立即执行函数,a为函数中的this指向，b,c,...为向函数中传递的实参，例如:
+`window.Function.prototype.call(a[, b[, c[, ...]]])`立即执行函数,a为函数中的this指向，b,c,...为向函数中传递的实参，例如:
 
 ```javascript
 function fn(a, b){
@@ -1115,7 +1113,7 @@ function fn(a, b){
 fn.call(document, 5, 6);
 ```
 
-`Function.prototype.apply(a[, b])`立即执行函数，a为函数中的this指向，b为向函数中传的的实参组成的数组，例如:
+`window.Function.prototype.apply(a[, b])`立即执行函数，a为函数中的this指向，b为向函数中传的的实参组成的数组，例如:
 
 ```javascript
 function fn(a, b){
@@ -1125,7 +1123,7 @@ function fn(a, b){
 fn.apply(document, [5, 6]);
 ```
 
-`Function.prototype.bind(a[, b[, c[, ...]]])`*[不兼容IE8及其以下]*不执行这个函数,返回值为新函数,但新函数的内容与原函数相同,新函数的this指向为实参对象a，实参b,c,...为函数的实参,返回的函数无须再传此参数也无法修改
+`window.Function.prototype.bind(a[, b[, c[, ...]]])`*[不兼容IE8及其以下]*不执行这个函数,返回值为新函数,但新函数的内容与原函数相同,新函数的this指向为实参对象a，实参b,c,...为函数的实参,返回的函数无须再传此参数也无法修改
 
 ```javascript
 function fn(a, b){
@@ -2104,7 +2102,7 @@ console.log(1);
 
 ###  16.1 Promise
 
-`Promise`是一个构造函数，需要通过`new`来创建一个promise对象，创建对象时，需要传递一个函数参数fn1(resolve, reject)，当创建这个对象时，系统会执行函数fn1，执行时形参resolve和reject所对应的实参为函数fn2和函数fn3，我们只要把想进行的异步操作放在fn1中执行，根据执行的结果在函数fn1中手动执行函数fn2（即执行resolve）或执行函数fn3（即执行reject）即可。当函数f2函数（即resolve）被执行时，promise对象由pending状态转换为resolve状态，当函数f3（即reject）被执行时，promise对象由pending状态转换为reject状态。
+`window.Promise`是一个构造函数，需要通过`new`来创建一个promise对象，创建对象时，需要传递一个函数参数fn1(resolve, reject)，当创建这个对象时，系统会执行函数fn1，执行时形参resolve和reject所对应的实参为函数fn2和函数fn3，我们只要把想进行的异步操作放在fn1中执行，根据执行的结果在函数fn1中手动执行函数fn2（即执行resolve）或执行函数fn3（即执行reject）即可。当函数f2函数（即resolve）被执行时，promise对象由pending状态转换为resolve状态，当函数f3（即reject）被执行时，promise对象由pending状态转换为reject状态。
 
 ```javascript
 let promise - new Promise((res, rej) => {
@@ -2115,8 +2113,8 @@ let promise - new Promise((res, rej) => {
 
 通常，我们需要在根据执行成功与否的情况来做出一些操作，所以系统允许我们自定义两个函数fn4与fn5，函数f4会在promise对象转换为resolve状态时自动调用，函数f5会在promise对象转换为reject状态时自动调用，函数f4与函数f5的定义方法如下：
 
-- `Promise.prototype.then(fn4, fn5)`promise对象有then属性(方法)，可以通过调用此方法传递f4与f5两个函数
-- `Promise.prototype.then(fn4)`和`Promise.prototype.catch(fn5)`，promise对象有then和catch属性（方法），可以通过调用这两个方法分别传递f4与f5两个函数
+- `window.Promise.prototype.then(fn4, fn5)`promise对象有then属性(方法)，可以通过调用此方法传递f4与f5两个函数
+- `window.Promise.prototype.then(fn4)`和`window.Promise.prototype.catch(fn5)`，promise对象有then和catch属性（方法），可以通过调用这两个方法分别传递f4与f5两个函数
 
 ```javascript
 // 接续上一段代码，方案一
@@ -2137,19 +2135,19 @@ promise.catch((形参) => { // 此处的形参为执行reject函数（即fn3)时
 
 **Promise的更多属性**
 
-`Promise.resolve(x)`返回一个promise对象（若x为promise对象，则返回x，若x非promise对象，则返回一个新的状态为resolve内容为x的promise对象），等价于如下内容：
+`window.Promise.resolve(x)`返回一个promise对象（若x为promise对象，则返回x，若x非promise对象，则返回一个新的状态为resolve内容为x的promise对象），等价于如下内容：
 
 ```javascript
 new Promise(resolve => resolve(x));
 ```
 
-`Promise.reject(x)`返回状态为reject内容为x的Promise对象，等价于如下内容：
+`window.Promise.reject(x)`返回状态为reject内容为x的Promise对象，等价于如下内容：
 
 ```javascript
 new Promise((resolve, reject) => reject(x));
 ```
 
-`Promise.all(x)`参数x为由多个promise对象组成的数组，返回的promise对象当x中的所有promise对象都转换为resolve状态时才会转换为resolve状态。
+`window.Promise.all(x)`参数x为由多个promise对象组成的数组，返回的promise对象当x中的所有promise对象都转换为resolve状态时才会转换为resolve状态。
 
 **利用Promise解决回调地狱问题**
 
@@ -2537,20 +2535,20 @@ console.log(str.replace(reg, '$<dd>-$<cc>-$<bb>-$<aa>')); // 4423-5555-3344-2233
 
 **正则表达式的方法**
 
-`RegExp.prototype.test(字符串)`检查字符串中是否存在对应正则规则,存在则返回`true`否则返回`false`
+`window.RegExp.prototype.test(字符串)`检查字符串中是否存在对应正则规则,存在则返回`true`否则返回`false`
 
-`RegExp.prototype.exec(字符串)`返回第一次出现对应规则的字符串有关的对象，若未匹配成功则返回null，不执行全局查找
+`window.RegExp.prototype.exec(字符串)`返回第一次出现对应规则的字符串有关的对象，若未匹配成功则返回null，不执行全局查找
 
-`RegExp.prototype[Symbol.match](字符串)`当不全局匹配时类似`RegExp.prototype.exrc`，全局匹配时，返回由匹配成功的内容组成的数组
+`window.RegExp.prototype[Symbol.match](字符串)`当不全局匹配时类似`RegExp.prototype.exrc`，全局匹配时，返回由匹配成功的内容组成的数组
 
-`RegExp.prototype[Symbol.matchAll](字符串)`返回一个对象，此对象的原型链上有一个next方法，当第一次执行next方法时，返回包含第一个匹配到的内容的对象，第二次执行next方法时，返回包含第二个匹配到的内容的对象，...
+`window.RegExp.prototype[Symbol.matchAll](字符串)`返回一个对象，此对象的原型链上有一个next方法，当第一次执行next方法时，返回包含第一个匹配到的内容的对象，第二次执行next方法时，返回包含第二个匹配到的内容的对象，...
 
 **字符串的方法**
 
-- String.prototype.search
-- String.prototype.replace
-- String.prototype.split
-- String.prototype.match
+- window.String.prototype.search
+- window.String.prototype.replace
+- window.String.prototype.split
+- window.String.prototype.match
 
 ### 17.4 RegExp对象
 
@@ -2628,7 +2626,7 @@ axios({
 });
 ```
 
-也可以通过`axios.get`与`axios.post`直接发送get或post请求
+也可以通过`window.axios.get`与`window.axios.post`直接发送get或post请求
 
 **发送多个请求**
 
@@ -2682,40 +2680,40 @@ DOM节点共有12种，可以通过`Node.prototype.nodeType`判断DOM节点的�
 - 注释节点(nodeType为8,nodeValue为注释的内容)
 - (其他8种)
 
-`Node.prototype.nodeValue`是可读可写的
+`window.Node.prototype.nodeValue`是可读可写的
 
-`Node.prototype.nodeName`为节点的名称（以大写字母表示，只读）
+`window.Node.prototype.nodeName`为节点的名称（以大写字母表示，只读）
 
-`Element.prototype.attributes`为节点的属性
+`window.Element.prototype.attributes`为节点的属性
 
 ### 19.1 获取DOM对象基础方式
 
 **通过ID获取**
 
 ```javascript
-document.getElementById('ID'); // 返回对应的DOM元素
+window.document.getElementById('ID'); // 返回对应的DOM元素
 ```
 
 **通过class获取**(不兼容IE8及其以下)
 
 ```javascript
 // 返回类数组HTMLCollection
-Element.protorype.getElementsByClassName('className'); 
-document.getElementsByClassName('className');
+window.Element.protorype.getElementsByClassName('className'); 
+window.document.getElementsByClassName('className');
 ```
 
 **通过标签名获取**
 
 ```javascript
 // 返回类数组HTMLCollection
-Element.prototype.getElementsByTagName('tagName'); 
-document.getElementsByTagName('tagName');
+window.Element.prototype.getElementsByTagName('tagName'); 
+window.document.getElementsByTagName('tagName');
 ```
 
 **通过name获取**
 
 ```javascript
-document.getElementsByName('name'); // 返回类数组NodeList
+window.document.getElementsByName('name'); // 返回类数组NodeList
 ```
 
 *在低版本的IE浏览器中，此方法会获取ID为对应字符串的元素*
@@ -2724,22 +2722,22 @@ document.getElementsByName('name'); // 返回类数组NodeList
 
 ```javascript
 // 返回对应的DOM元素(第一个)
-Element.prototype.querySelector('选择器'); 
-document.querySelector('选择器');
+window.Element.prototype.querySelector('选择器'); 
+window.document.querySelector('选择器');
 // 返回类数组NodeList, element的后代元素
-Element.prototype.querySelectorAll('选择器');
-document.querySelectorAll('选择器');
+window.Element.prototype.querySelectorAll('选择器');
+window.document.querySelectorAll('选择器');
 ```
 
 **几个特殊元素的获取方式**
 
-获取html:`document.documentElement`
+获取html:`window.document.documentElement`
 
-获取title:`document.title`
+获取title:`window.document.title`
 
-获取body:`document.body`
+获取body:`window.document.body`
 
-获取head:`document.head`
+获取head:`window.document.head`
 
 ### 19.2 操作DOM的属性及内容
 
@@ -2756,7 +2754,7 @@ oBox.style.display = "none" ;
 
 特殊情况
 
-- 修改DOM元素的class属性,可以使用`Element.prototype.className`或`Element.prototype.classList`来操作
+- 修改DOM元素的class属性,可以使用`window.Element.prototype.className`或`window.Element.prototype.classList`来操作
 - DOM对象的style属性也是一个对象,此对象的各种属性就是对应元素行内的CSS样式
 
 对特殊情况的举例
@@ -2839,7 +2837,7 @@ oBox.style.display = "none" ;
 </html>
 ```
 
-通过修改`Element.prototype.className`可以直接修改标签对应的类名,通过修改类名可以修改对应样式
+通过修改`window.Element.prototype.className`可以直接修改标签对应的类名,通过修改类名可以修改对应样式
 
 例4
 
@@ -2869,12 +2867,12 @@ oBox.style.display = "none" ;
 </html>
 ```
 
-通过`Element.protorype.classList`的各种API可以直接修改类名(*不支持IE9及其以下*)，此函数返回`DOMTokenList`对象，`classList`包括以下API：
+通过`window.Element.protorype.classList`的各种API可以直接修改类名(*不支持IE9及其以下*)，此函数返回`DOMTokenList`对象，`classList`包括以下API：
 
-- `DOMTokenList.prototype.add(类名)`添加类名
-- `DOMTokenList.prototype.remove(类名)`移除类名
-- `DOMTokenList.prototype.toggle(类名)`添加或删除类名(有则删除,无则添加),删除了类名会返回false,添加了类名会返回true
-- `DOMTokenList.prototype.contains(类名)`判断是否存在类名,存在则返回true,不存在则返回false
+- `window.DOMTokenList.prototype.add(类名)`添加类名
+- `window.DOMTokenList.prototype.remove(类名)`移除类名
+- `window.DOMTokenList.prototype.toggle(类名)`添加或删除类名(有则删除,无则添加),删除了类名会返回false,添加了类名会返回true
+- `window.DOMTokenList.prototype.contains(类名)`判断是否存在类名,存在则返回true,不存在则返回false
 
 获取标签当前样式
 
@@ -2908,15 +2906,15 @@ console.log(wrapCss.backgroundColor);
 
 **操作标签`data-`自定义属性**
 
-`HTMLElement.prototype.dataset`也是一个对象，可以直接读取或修改“data-”开头的属性
+`window.HTMLElement.prototype.dataset`也是一个对象，可以直接读取或修改“data-”开头的属性
 
 **操作标签的属性(原有的和自定义的都可以)**
 
-获取属性:`HTMLElement.prototype.getAttribute('属性名');`
+获取属性:`window.HTMLElement.prototype.getAttribute('属性名');`
 
-新增或修改属性:`HTMLElement.prototype.setAttribute('属性名','属性值');`
+新增或修改属性:`window.HTMLElement.prototype.setAttribute('属性名','属性值');`
 
-移除属性:`HTMLElement.prototype.removeAttribute('属性名');`
+移除属性:`window.HTMLElement.prototype.removeAttribute('属性名');`
 
 ```javascript
 var oBox = document.getElementById("box");
@@ -2937,24 +2935,24 @@ oBox.innerText = "123";
 
 innerHTML 与 innerText 的区别：
 
-- `HTMLElement.prototype.innerHTML`会解析其中的html标签
-- `HTMLElement.prototype.innerText`不会解析html标签，原样替换所设置的内容
+- `window.HTMLElement.prototype.innerHTML`会解析其中的html标签
+- `window.HTMLElement.prototype.innerText`不会解析html标签，原样替换所设置的内容
 
 *低版本火狐浏览器不支持`innerText`,用`textContent`代替*
 
 ### 19.3 更多DOM操作
 
-`Node.prototype.childNodes`获取元素的所有子节点(主流浏览器是获取所有子节点,低版本IE浏览器是获取所有子元素节点)
+`window.Node.prototype.childNodes`获取元素的所有子节点(主流浏览器是获取所有子节点,低版本IE浏览器是获取所有子元素节点)
 
-`Element.prototype.children`获取元素的所有子元素节点
+`window.Element.prototype.children`获取元素的所有子元素节点
 
-`Node.prototype.parentNode`获取元素父节点
+`window.Node.prototype.parentNode`获取元素父节点
 
-`Node.prototype.parentElement`获取元素父元素节点
+`window.Node.prototype.parentElement`获取元素父元素节点
 
 *通常元素的父节点与元素的父元素节点是相同的，因为通常只有元素节点才会有子节点*
 
-`HTMLElement.prototype.offsetParent`【兼容性差】
+`window.HTMLElement.prototype.offsetParent`【兼容性差】
 
 - 对于主流浏览器：获取元素最近的有定位属性的父节点，找不到则为body
 - 对于IE7及其以下：
@@ -2963,50 +2961,50 @@ innerHTML 与 innerText 的区别：
 >
 > 如果本身没有定位属性：与主流浏览器相同
 
-`document.createElement(x)`创建X元素节点
+`window.document.createElement(x)`创建X元素节点
 
-`document.createTextNode("xx")`创建内容为xx的文本节点
+`window.document.createTextNode("xx")`创建内容为xx的文本节点
 
-`document.creatComment('xx')`创建内容为xx的注释节点
+`window.document.creatComment('xx')`创建内容为xx的注释节点
 
-`document.createDocumentfragment()`创建文档片段
+`window.document.createDocumentfragment()`创建文档片段
 
-`Node.prototype.appendChild(x)`在子节点的末尾添加节点x
+`window.Node.prototype.appendChild(x)`在子节点的末尾添加节点x
 
-`Node.prototype.insertBefore(a,b)`在子节点中节点b之前新增节点a
+`window.Node.prototype.insertBefore(a,b)`在子节点中节点b之前新增节点a
 
-`Node.prototype.replaceChild(a,b)`在子节点中用a节点替换b节点，返回b节点
+`window.Node.prototype.replaceChild(a,b)`在子节点中用a节点替换b节点，返回b节点
 
-`Element.prototype.remove()`删除本节点
+`window.Element.prototype.remove()`删除本节点
 
-`Node.prototype.removeChild(x)`在子节点中删除节点x，返回被删除的节点
+`window.Node.prototype.removeChild(x)`在子节点中删除节点x，返回被删除的节点
 
-`Node.prototype.hasChildNodes()`有子节点则返回true，否则返回false
+`window.Node.prototype.hasChildNodes()`有子节点则返回true，否则返回false
 
-`Element.prototype.firstElementChild`获取第一个子元素节点(不支持IE9及其以下)
+`window.Element.prototype.firstElementChild`获取第一个子元素节点(不支持IE9及其以下)
 
-`Node.prototype.firstChild`
+`window.Node.prototype.firstChild`
 
 - 主流浏览器:获取第一个子节点
 - IE9及其以下:获取第一个子元素节点
 
-`Element.prototype.lastElementChild`获取最后一个子元素节点(不支持IE9及其以下)
+`window.Element.prototype.lastElementChild`获取最后一个子元素节点(不支持IE9及其以下)
 
-`Node.prototype.lastChild`
+`window.Node.prototype.lastChild`
 
 - 主流浏览器:获取最后一个子节点
 - IE9及其以下:获取最后一个子元素节点
 
-`Element.prototype.nextElementSibling`获取下一个兄弟元素节点(不支持IE9及其以下)
+`window.Element.prototype.nextElementSibling`获取下一个兄弟元素节点(不支持IE9及其以下)
 
-`Node.prototype.nextSibling`
+`window.Node.prototype.nextSibling`
 
 - 主流浏览器:获取下一个兄弟节点
 - IE9及其以下:获取下一个兄弟元素节点
 
-`Element.prototype.previousElementSibling`获取上一个兄弟元素节点(不支持IE9及其以下)
+`window.Element.prototype.previousElementSibling`获取上一个兄弟元素节点(不支持IE9及其以下)
 
-`Node.prototype.previousSibling`
+`window.Node.prototype.previousSibling`
 
 - 主流浏览器:获取上一个兄弟节点
 - IE9及其以下:获取上一个兄弟元素节点
@@ -3025,27 +3023,27 @@ element.event = fun;
 
 **鼠标事件**
 
-`HTMLElement.prototype.oncontextmenu`鼠标右键点击事件
+`window.HTMLElement.prototype.oncontextmenu`鼠标右键点击事件
 
-`HTMLElement.prototype.onselectstart`选中开始事件
+`window.HTMLElement.prototype.onselectstart`选中开始事件
 
-`HTMLElement.prototype.ondblclick`鼠标双击事件
+`window.HTMLElement.prototype.ondblclick`鼠标双击事件
 
-`HTMLElement.prototype.onclick`鼠标单击事件
+`window.HTMLElement.prototype.onclick`鼠标单击事件
 
-`HTMLElement.prototype.onmousedown`鼠标任意键按下
+`window.HTMLElement.prototype.onmousedown`鼠标任意键按下
 
-`HTMLElement.prototype.onmousemove`鼠标移动
+`window.HTMLElement.prototype.onmousemove`鼠标移动
 
-`HTMLElement.prototype.onmouseup`鼠标任意键抬起
+`window.HTMLElement.prototype.onmouseup`鼠标任意键抬起
 
-`HTMLElement.prototype.ommouseenter`鼠标移入(不冒泡)
+`window.HTMLElement.prototype.ommouseenter`鼠标移入(不冒泡)
 
-`HTMLElement.prototype.onmouseleave`鼠标移出(不冒泡)
+`window.HTMLElement.prototype.onmouseleave`鼠标移出(不冒泡)
 
-`HTMLElement.prototype.onmouseover`鼠标移入(冒泡)
+`window.HTMLElement.prototype.onmouseover`鼠标移入(冒泡)
 
-`HTMLElement.prototype.onmouseout`鼠标移出(冒泡)
+`window.HTMLElement.prototype.onmouseout`鼠标移出(冒泡)
 
 关于鼠标移入移出事件,冒泡与不冒泡的说明:
 
@@ -3055,60 +3053,60 @@ element.event = fun;
 
 鼠标滚轮滚动事件
 
-- `HTMLElement.prototype.mousewheel`鼠标滚轮事件（非火狐浏览器）
+- `window.HTMLElement.prototype.mousewheel`鼠标滚轮事件（非火狐浏览器）
 - `DOMMouseScroll`鼠标滚轮事件（火狐浏览器专用，仅支持通过添加事件监听器的方式绑定事件）
 
 **键盘事件**
 
-`HTMLElement.prototype.onkeydown`键盘按键按下事件
+`window.HTMLElement.prototype.onkeydown`键盘按键按下事件
 
-`HTMLElement.prototype.onkeypress`键盘能输入内容的按键(不含功能键)按下事件
+`window.HTMLElement.prototype.onkeypress`键盘能输入内容的按键(不含功能键)按下事件
 
-`HTMLElement.prototype.onkeyup`键盘按键抬起事件
+`window.HTMLElement.prototype.onkeyup`键盘按键抬起事件
 
 **表单事件**
 
-`HTMLElement.prototype.onfocus`表单获得焦点事件(window和表单均码有此事件)
+`window.HTMLElement.prototype.onfocus`表单获得焦点事件(window和表单均码有此事件)
 
-`HTMLElement.prototype.onblur`表单失去焦点事件(window和表单均码有此事件)
+`window.HTMLElement.prototype.onblur`表单失去焦点事件(window和表单均码有此事件)
 
-`HTMLElement.prototype.onchange`表单内容发生改变事件
+`window.HTMLElement.prototype.onchange`表单内容发生改变事件
 
 - 对于`text`:在失去焦点之前触发(需要失去焦点时刻与获得焦点时刻**内容不同**才会触发)
 - 对于`radio`:被选中的单选框触发
 - 对于`checkbox`:被选中和被取消选中时均会触发
 - 对于`select`:选择的内容发生改变时会被触发
 
-`HTMLElement.prototype.oninput`input框输入或删除字符事件
+`window.HTMLElement.prototype.oninput`input框输入或删除字符事件
 
-`HTMLElement.prototype.onsubmit`表单提交事件
+`window.HTMLElement.prototype.onsubmit`表单提交事件
 
-`HTMLElement.prototype.onreset`表单重置事件
+`window.HTMLElement.prototype.onreset`表单重置事件
 
-`HTMLElement.prototype.onselect`文本框的文本内容被选中事件
+`window.HTMLElement.prototype.onselect`文本框的文本内容被选中事件
 
 **表单事件方法**
 
-- `HTMLElement.prototype.focus()`获得焦点
-- `HTMLElement.prototype.blur()`失去焦点
-- `HTMLElement.prototype.submit()`提交表单
-- `HTMLElement.prototype.reset()`重置表单
+- `window.HTMLElement.prototype.focus()`获得焦点
+- `window.HTMLElement.prototype.blur()`失去焦点
+- `window.HTMLElement.prototype.submit()`提交表单
+- `window.HTMLElement.prototype.reset()`重置表单
 
 **滚动条事件**
 
-`HTMLElement.prototype.onscroll`滚动条滚动事件
+`window.HTMLElement.prototype.onscroll`滚动条滚动事件
 
 ### 20.2 2级事件与3级事件
 
 *新事件与旧事件共存,与0级事件不冲突*
 
-`EventTarget.prototype.addEventListener(a,b,c)`添加事件监听器(低版本IE不支持,用`attachEvent(a,b)`代替（没有第3个参数）,且IE中事件函数的this指向window)
+`window.EventTarget.prototype.addEventListener(a,b,c)`添加事件监听器(低版本IE不支持,用`attachEvent(a,b)`代替（没有第3个参数）,且IE中事件函数的this指向window)
 
 - a为事件字符串，不写on(使用`attachEvent`时需要写on)
 - b为事件函数(参数为事件对象)
 - c为布尔值，true表示事件绑定在捕获阶段，false表示事件绑定在冒泡阶段（**参考事件捕获与事件冒泡章节**）
 
-`EventTarget.prototype.removeEventListener(a,b,c)`移除事件监听器(低版本IE不支持,用`detachEvent(a,b)`代替（没有第3个参数）)
+`window.EventTarget.prototype.removeEventListener(a,b,c)`移除事件监听器(低版本IE不支持,用`detachEvent(a,b)`代替（没有第3个参数）)
 
 *移除事件时的参数应与绑定事件时的参数相同（函数需要指针相同）*
 
