@@ -92,6 +92,17 @@ V8引擎为解析js代码最快的js引擎
 
 ## 1.杂项
 
+`window.document.hidden`（只读）如果当前标签页是隐藏的，则值为`true`，否则值为`false`
+
+`window.document.visibilityState`（只读）根据当前标签页的状态，值分别为
+
+- visible页面部分内容可见，此标签页正常显示（可能被其它也没覆盖了一部分）
+- hidden页面内容不可见，非当前标签页或者处于最小化状态或者系统是锁屏状态等
+- prerender页面此时正在渲染中, 因此是不可见的，文档只能从此状态开始，永远不能从其他值变为此状态
+- unloaded页面从内存中卸载清除
+
+*`window.document.visibilityState`属性值发生变化时会触发`document`的`visibilitychange`事件*
+
 <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`const`定义一个常数,定义时必须赋值,不允许重新赋值，例如`const num = 20;`
 
 `window.encodeURI(x)`将x进行URL encode编码（ASCII字母和数字以及URL中个分隔符不进行编码）
@@ -290,7 +301,7 @@ throw new Error('xxx');
 
 `window.String.fromCharCode(x)`返回对应编码的字符
 
-`window.String.prototype.subString(x[, y])`截取字符串,如果x小于y则从第x个字符(含)开始截取到第y个字符(不含)；如果x大于y则从第y个字符(含)开始截取到第x个字符(不含)，x与y传负数时按0计，若省略y，则从此处一直截取到字符串结尾，返回截取的字符串。
+`window.String.prototype.substring(x[, y])`截取字符串,如果x小于y则从第x个字符(含)开始截取到第y个字符(不含)；如果x大于y则从第y个字符(含)开始截取到第x个字符(不含)，x与y传负数时按0计，若省略y，则从此处一直截取到字符串结尾，返回截取的字符串。
 
 `window.String.prototype.substr(x[, y])`截取字符串,从第x个字符(含)开始截取y个字符,省略y时截取到末尾。x可以传负数，表示从结尾开始计，返回截取的字符串。
 
@@ -308,9 +319,9 @@ throw new Error('xxx');
 
 `window.String.prototype.split(x)`以参数中的字符串或正则表达式切割字符串,返回一个数组,如果传参为**空字符串**,则逐字符切割,如果不传参数则将整体作为数组的一个元素。
 
-`window.String.prototype.indexOf(x[, y])`从自左向右第y位开始查询,返回x在字符串中第一次出现的位置,若未出现该字符串,则返回-1，y可以省略表示从第0个字符开始查询
+`window.String.prototype.indexOf(x[, y])`从自左向右第y位开始查询,返回x在字符串中第一次出现的位置,若未出现该字符串,则返回-1，y为负数或省略表示从第0个字符开始查询
 
-`window.String.prototype.lastIndexOf(x[, y])`从自左向右第y位开始向左查询,返回x在字符串中第一次出现的位置,若未出现x,则返回-1，y可以省略表示从最后0个字符开始查询
+`window.String.prototype.lastIndexOf(x[, y])`从自左向右第y位开始向左查询,返回x在字符串中第一次出现的位置,若未出现x,则返回-1，y可以省略表示从最后一个字符开始查询，y为0或负数表示则返回-1
 
 `window.String.prototype.search(x)`返回x在字符串中第一次出现的位置,x可以为字符串也可以为正则表达式（传正则时不执行全局检索）,若未出现该字符串,则返回-1
 
@@ -326,10 +337,11 @@ throw new Error('xxx');
 
 - 旧内容可以是一段字符串,也可以是一个正则表达式，旧内容为字符串时，只替换第一个匹配的内容
 - 新内容可以是一段字符串,也可以是一个函数,如果是函数则用函数的返回值替换就内容,传给函数的第一个实参为替换前的旧内容(形参通常用$0接收)
+- 当旧内容使用正则表达式且正则表达式中使用了子项中的`?<键>`时，在新内容中可以使用`$<键>`表示对应的子项
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`window.String.prototype.padStart(i[, x])`[ES2017]字符串不够i位，则在开头数次添加字符串x，补满位数，返回处理后的字符串，若省略第二个参数，则用空格补全。
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`window.String.prototype.padStart(i[, x])`[ES2017]字符串不够i位，则在开头数次添加字符串x，补满位数，返回处理后的字符串，若省略第二个参数，则用空格补全
 
-<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`window.String.prototype.padEnd(i[, x])`[ES2017]字符串不够i位，则在结尾数次添加字符串x，补满位数，返回处理后的字符串，若省略第二个参数，则用空格补全。
+<span style="color:yellowgreen;font-weight:600;">[ES6]</span>`window.String.prototype.padEnd(i[, x])`[ES2017]字符串不够i位，则在结尾数次添加字符串x，补满位数，返回处理后的字符串，若省略第二个参数，则用空格补全
 
 <span style="color:yellowgreen;font-weight:600;">[ES6]</span>`window.String.prototype.includes(x[, i])`从第i位开始到最后为范围，判断字符串x是否在范围中，存在则返回true，否则返回false
 
@@ -3054,7 +3066,7 @@ element.event = fun;
 鼠标滚轮滚动事件
 
 - `window.HTMLElement.prototype.mousewheel`鼠标滚轮事件（非火狐浏览器）
-- `DOMMouseScroll`鼠标滚轮事件（火狐浏览器专用，仅支持通过添加事件监听器的方式绑定事件）
+- `DOMMouseScroll`鼠标滚轮事件（火狐浏览器专用，仅支持通过绑定事件监听器的方式绑定事件）
 
 **键盘事件**
 
@@ -3095,6 +3107,12 @@ element.event = fun;
 **滚动条事件**
 
 `window.HTMLElement.prototype.onscroll`滚动条滚动事件
+
+**加载事件**
+
+`window.HTMLElement.prototype.onload`元素加载成功事件
+
+`window.HTMLElement.prototype.onerror`元素加载出错事件
 
 ### 20.2 2级事件与3级事件
 
@@ -3306,6 +3324,8 @@ element.event = fun;
 `onfocus`获得焦点事件
 
 `onblur`失去焦点事件
+
+`visibilitychange`当window.document.visibilityState属性值改变是触发此事件（只能通过绑定事件监听器的方式添加事件）
 
 *获得焦点与失去焦点事件通常与定时器配合,在失去焦点时取消定时器*
 
