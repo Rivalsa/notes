@@ -1,13 +1,13 @@
 > GitHub仓库地址:
 >
 > ```url
-> https://github.com/Rivalsa/Instructions_and_config.git
+> https://github.com/Rivalsa/notes
 > ```
 >
 > Gitee仓库地址
 >
 > ```url
-> https://gitee.com/rivalsa/Instructions_and_config.git
+> https://gitee.com/rivalsa/notes
 > ```
 
 由于刚刚涉足这些知识,所以整理的内容难免存在错误或不足之处,如有发现,敬请指正
