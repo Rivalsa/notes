@@ -2570,56 +2570,13 @@ RegExp中存储了上一次的子项,可以通过这个对象直接拿到数据.
 
 > ajax即“Asynchronous Javascript And XML”（异步 JavaScript 和 XML）,可以在不刷新页面的前提下向后端发送请求
 
-### 18.1 JavaScript原生ajax
+**利用原生的JavaScript发送ajax请求请参考[《原生JavaScript的ajax请求》](https://www.rivalsa.cn/s/article/Frontend/native_ajax?utm=SlPlrabkuaDnrJTorrA=)**
 
-```javascript
-let xhr;
-if (window.XMLHttpRequest) {　 // 标准浏览器
-    xhr = new XMLHttpRequest();
-} else if (window.ActiveXObject) { // 低版本IE（比较复杂，写的可能不完整）
-    try {
-        xhr = new ActiveXObject('Msxml2.XMLHTTP');
-    } catch () {
-            xhr = new ActiveXObject('Microsoft.XMLHTTP');
-    }
-}
-if (xhr) {
-    xhr.onreadystatechange = onReadyStateChange; // 状态发生变化时会调用此函数
-    xhr.open('POST', '/url', true);
-    // 设置 Content-Type 为 application/x-www-form-urlencoded
-    // 以表单的形式传递数据
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.send('username=admin&password=root');
-}
+### 18.1 fetch
 
-// onreadystatechange 方法
-function onReadyStateChange() {
-    /*
-    xhr.readyState：
-        0: 请求未初始化
-        1: 服务器连接已建立
-        2: 请求已接收
-        3: 请求处理中
-        4: 请求已完成，且响应已就绪
-     */
-    if (xhr.readyState === 4) {
-        // 请求处理到了最后一步
-        //xhr.status HTTP状态码
-        if (xhr.status >= 200 && xhr.status < 300) {
-            console.log(xhr.responseText); // xhr.responseText请求返回的文本内容
-        } else {
-            console.log('There was a problem with the request.');
-        }
-    } else {
-        // 请求还没处理到最后一步
-        console.log('still not ready...', xhr.readyState);
-    }
-}
-```
+......
 
-### 18.2 封装的ajax方法
-
-常用的封装的ajax方法有很多，比如jQuery中就有`$.ajax`，但本文中介绍的是封装的axios方法。
+### 18.2 axios
 
 **发送单个请求**
 
