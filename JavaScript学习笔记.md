@@ -3224,41 +3224,41 @@ element.event = fun;
 
 **通用属性**
 
-`type`事件的类型（没有on）
+`Event.prototype.type`事件的类型（没有on）
 
-`stopPropagation()`停止事件流的传播（不再继续捕获或冒泡）（IE8及其以下浏览器不支持，用`cancelBubble=true`代替）
+`Event.prototype.stopPropagation()`停止事件流的传播（不再继续捕获或冒泡）（IE8及其以下浏览器不支持，用`Event.prototype.cancelBubble=true`代替）
 
-`preventDefault()`阻止默认事件（IE8及其以下浏览器不支持`preventDefault`，用`returnValue=false`代替）（在0级事件中也可以用`return false`阻止默认事件，所有浏览器均支持)
+`Event.prototype.preventDefault()`阻止默认事件（IE8及其以下浏览器不支持`Event.prototype.preventDefault`，用`Event.prototype.returnValue=false`代替）（在0级事件中也可以用`return false`阻止默认事件，所有浏览器均支持)
 
-`target`触发事件的DOM元素(IE8及其以下浏览器不支持,用srcElement代替)
+`Event.prototype.target`触发事件的DOM元素(IE8及其以下浏览器不支持,用srcElement代替)
 
-`currentTarget`当前执行事件函数的DOM元素（通常会使用this代替此属性）
+`Event.prototype.currentTarget`当前执行事件函数的DOM元素（通常会使用this代替此属性）
 
 **鼠标事件属性**
 
-`altKey/shiftKey/ctrlKey` 布尔值，表示alt/shift/ctrl键是否按下
+`MouseEvent.prototype.altKey/MouseEvent.prototype.shiftKey/MouseEvent.prototype.ctrlKey` 布尔值，表示alt/shift/ctrl键是否按下
 
-`clientX/clientY` 鼠标到浏览器左上角的距离(不是到文档,与滚动条无关)
+`MouseEvent.prototype.clientX/MouseEvent.prototype.clientY` 鼠标到浏览器左上角的距离(不是到文档,与滚动条无关)
 
-`pageX/pageY` 鼠标到文档左上角的距离(与滚动条有关)
+`MouseEvent.prototype.pageX/MouseEvent.prototype.pageY` 鼠标到文档左上角的距离(与滚动条有关)
 
-`offsetX/offsetY` 鼠标到触发事件元素左上角的距离
+`MouseEvent.prototype.offsetX/MouseEvent.prototype.offsetY` 鼠标到触发事件元素左上角的距离
 
-`layerX/layerY`鼠标距离定位父级左上角的距离【没试过但感觉兼容性差】
+`MouseEvent.prototype.layerX/MouseEvent.prototype.layerY`鼠标距离定位父级左上角的距离【没试过但感觉兼容性差】
 
-`screenX/screenY` 鼠标到用户屏幕左上角的距离
+`MouseEvent.prototype.screenX/MouseEvent.prototype.screenY` 鼠标到用户屏幕左上角的距离
 
-`button`按下的是鼠标左键还是中键还是右键（值分别为0，1，2）
+`MouseEvent.prototype.button`按下的是鼠标左键还是中键还是右键（值分别为0，1，2）
 
-`wheelDelta`(非火狐浏览器可用)滚轮向上滚动值为120，向下滚动值为-120
+`WheelEvent.prototype.wheelDelta`(非火狐浏览器可用)滚轮向上滚动值为120，向下滚动值为-120
 
 `detail`(火狐浏览器可用)滚轮向上滚动值为-3，向下滚动值为3
 
 **键盘事件属性**
 
-`altKey/shiftKey/ctrlKey` 布尔值，表示alt/shift/ctrl键是否按下
+`KeyboardEvent.prototype.altKey/KeyboardEvent.prototype.shiftKey/KeyboardEvent.prototype.ctrlKey` 布尔值，表示alt/shift/ctrl键是否按下
 
-`keyCode`按键的键值（也有用`witch`的）
+`KeyboardEvent.prototype.keyCode`按键的键值（也有用`witch`的）
 
 **触屏事件属性**
 
@@ -3270,25 +3270,23 @@ element.event = fun;
 
 **BOM事件**
 
-`onresize`窗口大小改变事件(window的事件)
+`resize`窗口大小改变事件(window的事件)
 
-`onload`页面加载完成事件
+`load`页面加载完成事件
 
-`onerror`页面加载出错事件
+`error`页面加载出错事件
 
-`onscroll`滚动条滚动事件
+`scroll`滚动条滚动事件
 
-`onfocus`获得焦点事件
+`focus`获得焦点事件
 
-`onblur`失去焦点事件
+`blur`失去焦点事件
 
 `visibilitychange`当window.document.visibilityState属性值改变是触发此事件（只能通过绑定事件监听器的方式添加事件）
 
-*获得焦点与失去焦点事件通常与定时器配合,在失去焦点时取消定时器*
-
 **其他BOM相关内容**
 
-`location`当前地址信息对象
+`window.location`当前地址信息对象
 
 - `.href`完整的URL
 - `.protocol`使用的协议
@@ -3299,16 +3297,16 @@ element.event = fun;
 - `.search`参数（`?`后的字符）
 - `.hash` `#`后的字符
 
-`history`前进后退等历史信息对象
+`window.history`前进后退等历史信息对象
 
 - `.length`历史页面的个数
 - `.back()`转跳到前一个页面
 - `forward()`转跳到后一个页面
 - `.go(n)`转跳到下n个页面，n可为非0的整数
 
-`navigator`浏览器相关信息(例如用户代理)对象
+`window.navigator`浏览器相关信息(例如用户代理)对象
 
-`screen`屏幕相关信息对象
+`window.screen`屏幕相关信息对象
 
 ## 22.元素各种尺寸和距离
 
