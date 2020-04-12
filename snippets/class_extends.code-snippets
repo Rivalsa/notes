@@ -11,6 +11,6 @@
 			"    $4",
 			"}"
 		],
-		"description": "class extends"
+		"description": "继承一个类"
 	}
 }

@@ -5,6 +5,6 @@
 		"body": [
 			"<script src=\"https://code.invisible.rivalsa.cn/axios/axios_0_19_0_min.js\"></script>"
 		],
-		"description": "axios"
+		"description": "引入axios代码"
 	}
 }

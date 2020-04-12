@@ -10,6 +10,6 @@
 			"	$3"
 			"}"
 		],
-		"description": "创建或继承一个类"
+		"description": "创建一个类"
 	}
 }
