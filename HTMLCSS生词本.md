@@ -165,16 +165,35 @@ div{
 `select` 下拉菜单,选项用`option`添加(添加`multiple`属性可以多选),分组用`optgroup`,例如
 
 ```html
-<!-- 就是做一个例子,可能不太恰当 -->
 <form>
-    <select name="sex">
-        <optgroup label="分组:男">
-        	<option value="m">男</option>
+    <select name="xx">
+        <optgroup label="xx">
+        	<option value="xx">x</option>
+            <option value="xx">x</option>
         </optgroup>
-    	<optgroup label="分组:女">
-        	<option value="f">女</option>
+    	<optgroup label="xx">
+        	<option value="xx">xx</option>
+            <option value="xx">xx</option>
 		</optgroup>
     </select>
+</form>
+```
+
+`fieldset`通常用于分组会在外围画出一个框，第一个子元素通常用`legend`标签来指定分组的标题。
+
+```html
+<form>
+    <fieldset>
+    	<legend>账户信息</legend>
+        账户名：<input type="text" name="tel">
+        昵称：<input type="text" name="email">
+    </fieldset>
+    <fieldset>
+    	<legend>联系方式</legend>
+        电话号码：<input type="text" name="tel">
+        电子邮件：<input type="text" name="email">
+    </fieldset>
+    <input type="submit">
 </form>
 ```
 
