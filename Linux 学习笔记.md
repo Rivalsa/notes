@@ -172,13 +172,13 @@
 
 `unzip`解压文件，后面跟文件名
 
-`tar`将一个目录打包，后面跟目录地址
+`tar`将一个目录打包或将一个打包文件解包，打包时后面跟要打包的目录，解包后后面没有参数
 
 > `-c`创建一个新包
 >
 > `-x`解一个包
 >
-> `-f`配置打包后的文件名或要解包的文件名
+> `-f`配置打包后的文件名或要解包的文件名（文件名跟在选项`f`后面）
 >
 > `-c`将打包或解包的文件显示出来
 >
@@ -189,8 +189,6 @@
 > `-J`打包后再利用xz压缩或先用xz解压后解包
 >
 > `-t`查看格子铺包内的文件
->
-> 
 
 ## Linux系统自带目录说明
 
@@ -299,3 +297,36 @@
 - `q!`强制退出，所有改动不生效
 - `set nu`显示行号
 - `set nonu`不显示行号
+
+## 包管理器
+
+### rpm
+
+
+
+### yum
+
+
+
+### dnf
+
+如果系统没有自带dnf，则需要另外安装（可以通过yum来安装dnf）。
+
+## 环境变量
+
+
+
+## 常见缺少依赖提示及解决方案
+
+c compiler cc is not found
+
+> yum install gcc-c++
+
+the HTTP rewrite module requires the PCRE library.
+
+> yum install pcre-devel
+
+the HTTP gzip module requires the zlib library.
+
+> yum install zlib-devel
+
