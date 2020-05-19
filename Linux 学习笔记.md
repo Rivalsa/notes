@@ -1,6 +1,286 @@
 # Linux 学习笔记
 
-## 常用指令
+## vi或vim用法
+
+### 一般模式
+
+刚刚进入页面的时候默认就是一般模式，在一般模式下可以进行如下操作：
+
+- 上下左右方向键可以让光标向上下左右移动
+- `k` `j` `h` `l`键可以让光标向上下左右移动
+- `ctrl + B`文本页面向前翻一页
+- `ctrl + F`文本页面向后翻一页
+- `0`或`shift + 6`移动到本行行首
+- `shift + 4`移动到本行行尾
+- `gg`移动到首行
+- `G`移动到尾行
+- `nG(n为数字）或ngg`移动到第n行
+- `x`和`X`向后或向前删除一个字符
+- `nx`向后删除n个字符
+- `dd`删除/剪切光变所在的哪一行
+- `ndd（n为数字）`删除光变虽在的行之后的n行
+- `yy`复制光标所在行
+- `p`从光标所在行开始，向下粘贴已经复制或剪切的内容
+- `P`从光标所在行开始，向上粘贴已经复制或剪切的内容
+- `nyy`从光标所在行开始，向下复制n行
+- `u`还原上一步操作
+- `v`选中字符
+
+### 编辑模式
+
+可以任意编辑其中的内容，按esc键返回一般模式。
+
+在一般模式下，可以通过如下按键进入编辑模式：
+
+`i`在当前字符前插入
+
+`I`在光标所在行行首插入
+
+`a`在当前字符后插入
+
+`A`在光标所在行行尾插入
+
+`o`在当前行的下一行插入新的一行
+
+`O`在当前行的上一行插入新的一行
+
+### 命令模式
+
+可以执行如下命令：
+
+- `/word`在光标之后查找一个字符串word，按n继续向后搜索
+- `?word`在光标之前查找一个字符串word，按n继续向前搜索
+- `n1,n2s/word1/word2/g`在n1和n2行之间查找word1并替换为word2，不加g则只替换每行的第一个word1
+- `1,$s/word1/word2/g`将文档中所有的word1替换为word2，不加g则只替换每行的第一个word1
+- `w`保存文件
+- `q`退出VIM 
+- `w!`强制保存, 在root用户下，即使文本只读也可以完成保存
+- `q!`强制退出，所有改动不生效
+- `set nu`显示行号
+- `set nonu`不显示行号
+
+## curl用法
+
+`curl`是一款发送请求的命令行工具，如果熟练使用，可以完全取代postman这一类图形页面工具。
+
+使用方法：`curl [参数] URL地址`
+
+为了方便演示，在本节中每个例子的服务端程序之间都有所不同。
+
+此命令如果不携带任何参数，则是向对应地址发送GET请求，服务器返回内容会在命令行输出，例如：
+
+```
+[root@bogon ~]# curl http://192.168.1.5
+Hello World!
+```
+
+**`-A "UA"`参数**
+
+此参数可以修改发送的请求头中的`User-Agent`的值为对应的UA，例如：
+
+```
+[root@bogon ~]# curl http://192.168.1.5
+Hello World!
+User-agent:curl/7.61.1
+[root@bogon ~]# curl -A "test UA" http://192.168.1.5
+Hello World!
+User-agent:test UA
+[root@bogon ~]# curl -A "" http://192.168.1.5
+Hello World!
+User-agent:
+```
+
+上述命令会在发送的请求头中移除`User-Agent`字段，如果不携带此参数，则默认的UA为`curl/[version]。
+
+**`-b "N1=V1;N2=V2..."`或`-b filename`参数**
+
+`-b "N1=V1;N2=V2..."`可以向在发送的请求头中添加cookie，例如：
+
+```
+[root@bogon ~]# curl -b "foo=test1" http://192.168.1.5
+Hello World!
+COOKIE-foo:test1
+COOKIE-foo2:
+[root@bogon ~]# curl -b "foo=test1;foo2=mycookie" http://192.168.1.5
+Hello World!
+COOKIE-foo:test1
+COOKIE-foo2:mycookie
+```
+
+`-b filename`的作用与`-b "N1=V1;N2=V2..."`相似，只是发送的cookie内容是从文件`filename`中读取的，`filename`文件的生成及例子请见下一条参数。
+
+**`-c filename`参数**
+
+此参数可以将服务器返回的cookie写入一个文件中，例如：
+
+```
+[root@bogon ~]# curl -b cookies.txt http://192.168.1.5
+Hello World!
+COOKIE-foo:myCookie
+```
+
+**`-d "k1=v1&k2=v2"`或`-d "@filename"`参数**
+
+此参数可以给请求中添加`Content-Type`为`application/x-www-form-urlencoded`的请求体，使用此参数后，HTTP Header中会自动加上`Content-Type : application/x-www-form-urlencoded`且请求会自动转换为POST，例如：
+
+```
+[root@bogon ~]# curl -d "key1=value1&key2=value2" http://192.168.1.5
+Hello World!
+key1:value1
+key2:value2
+```
+
+`-d "@filename"`的作用与`-d "k1=v1&k2=v2"`相似，只是请求体中的内容是从`filename`文件中读取的，例如：
+
+```
+[root@bogon ~]# cat data.txt 
+key1=v1&key2=v2
+[root@bogon ~]# curl -d "@data.txt" http://192.168.1.5
+Hello World!
+key1:v1
+key2:v2
+```
+
+**`-e "ref"`参数**
+
+此参数可以将请求头中`Referer`的值修改为ref，例如：
+
+```
+[root@bogon ~]# curl -e "test" http://192.168.1.5
+Hello World!
+REFERER:test
+```
+
+**`-F "key=@fname[;type=MIME][;filename=fname]"`参数**
+
+此参数可以向请求中添加`Content-Type`为`multipart/form-data`的请求体，将fname文件作为`key`字段上传，`type`字段可以指定MIME类型，`filename`字段可以指定服务器接收到的文件名。
+
+**`-G`参数**
+
+略
+
+**`-H "key=value"`参数**
+
+此参数可以添加对应的请求头，例如：
+
+```
+[root@bogon ~]# curl -H "key:value" http://192.168.1.5
+Hello World!
+key:value
+```
+
+**`-i`参数**
+
+此参数会打印出返回的响应头，例如：
+
+```
+[root@bogon ~]# curl -i http://192.168.1.5
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=UTF-8
+Server: Microsoft-IIS/10.0
+X-Powered-By: PHP/7.4.2
+Date: Tue, 19 May 2020 11:52:53 GMT
+Content-Length: 13
+
+Hello World!
+```
+
+**`-I`参数**
+
+此参数会发送HEAD请求，并打印出将响应头，例如：
+
+```
+[root@bogon ~]# curl -I http://192.168.1.5
+HTTP/1.1 200 OK
+Content-Length: 0
+Content-Type: text/html; charset=UTF-8
+Server: Microsoft-IIS/10.0
+X-Powered-By: PHP/7.4.2
+Date: Tue, 19 May 2020 11:54:49 GMT
+```
+
+**`-k`参数**
+
+使用此参数将跳过SSL证书检查。
+
+**`-L`参数**
+
+此参数会让请求跟随服务器的重定向，例如：
+
+```
+[root@bogon ~]# curl -i http://192.168.1.5
+HTTP/1.1 302 Found
+Content-Type: text/html; charset=UTF-8
+Location: sec.php
+Server: Microsoft-IIS/10.0
+X-Powered-By: PHP/7.4.2
+Date: Tue, 19 May 2020 11:58:18 GMT
+Content-Length: 0
+
+[root@bogon ~]# curl -iL http://192.168.1.5
+HTTP/1.1 302 Found
+Content-Type: text/html; charset=UTF-8
+Location: sec.php
+Server: Microsoft-IIS/10.0
+X-Powered-By: PHP/7.4.2
+Date: Tue, 19 May 2020 11:58:26 GMT
+Content-Length: 0
+
+HTTP/1.1 200 OK
+Content-Type: text/html; charset=UTF-8
+Server: Microsoft-IIS/10.0
+X-Powered-By: PHP/7.4.2
+Date: Tue, 19 May 2020 11:58:26 GMT
+Content-Length: 13
+
+Hello World!
+```
+
+**`-o "filename"`参数**
+
+使用此参数将服务器的响应保存为filename文件，例如：
+
+```
+[root@bogon ~]# curl -so index.php http://192.168.1.5/sec.php
+[root@bogon ~]# cat index.php 
+Hello World!
+```
+
+**`-O`参数**
+
+使用此参数将服务器的响应保存文件，例如：
+
+```
+[root@bogon ~]# curl -sO http://192.168.1.5/sec.php
+[root@bogon ~]# cat sec.php 
+Hello World!
+```
+
+**`-s`参数**
+
+不输出错误和进度信息。
+
+**`-S`参数**
+
+只输出错误信息。
+
+**`-u`参数**
+
+略
+
+**`-v`参数**
+
+输出通信的整个过程，用于调试。
+
+**`-x`参数**
+
+略
+
+**`-X`参数**
+
+指定 HTTP 请求的方法。
+
+## 其他常用指令
 
 `pwd`查看当前所在路径
 
@@ -238,65 +518,6 @@
 - `d`表示这是一个设备文件
 
 第2-10个字符表示权限信息，第2-4位表示所有者用户的权限，第5-7位表示用户所属组的权限，第8-10位表示其他组的权限，其中`r`表示可读，`w`表示可写，`x`表示可执行，`-`表示无对应权限。
-
-## vi或vim操作
-
-### 一般模式
-
-刚刚进入页面的时候默认就是一般模式，在一般模式下可以进行如下操作：
-
-- 上下左右方向键可以让光标向上下左右移动
-- `k` `j` `h` `l`键可以让光标向上下左右移动
-- `ctrl + B`文本页面向前翻一页
-- `ctrl + F`文本页面向后翻一页
-- `0`或`shift + 6`移动到本行行首
-- `shift + 4`移动到本行行尾
-- `gg`移动到首行
-- `G`移动到尾行
-- `nG(n为数字）或ngg`移动到第n行
-- `x`和`X`向后或向前删除一个字符
-- `nx`向后删除n个字符
-- `dd`删除/剪切光变所在的哪一行
-- `ndd（n为数字）`删除光变虽在的行之后的n行
-- `yy`复制光标所在行
-- `p`从光标所在行开始，向下粘贴已经复制或剪切的内容
-- `P`从光标所在行开始，向上粘贴已经复制或剪切的内容
-- `nyy`从光标所在行开始，向下复制n行
-- `u`还原上一步操作
-- `v`选中字符
-
-### 编辑模式
-
-可以任意编辑其中的内容，按esc键返回一般模式。
-
-在一般模式下，可以通过如下按键进入编辑模式：
-
-`i`在当前字符前插入
-
-`I`在光标所在行行首插入
-
-`a`在当前字符后插入
-
-`A`在光标所在行行尾插入
-
-`o`在当前行的下一行插入新的一行
-
-`O`在当前行的上一行插入新的一行
-
-### 命令模式
-
-可以执行如下命令：
-
-- `/word`在光标之后查找一个字符串word，按n继续向后搜索
-- `?word`在光标之前查找一个字符串word，按n继续向前搜索
-- `n1,n2s/word1/word2/g`在n1和n2行之间查找word1并替换为word2，不加g则只替换每行的第一个word1
-- `1,$s/word1/word2/g`将文档中所有的word1替换为word2，不加g则只替换每行的第一个word1
-- `w`保存文件
-- `q`退出VIM 
-- `w!`强制保存, 在root用户下，即使文本只读也可以完成保存
-- `q!`强制退出，所有改动不生效
-- `set nu`显示行号
-- `set nonu`不显示行号
 
 ## 包管理器
 
