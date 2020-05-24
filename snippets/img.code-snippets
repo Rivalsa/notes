@@ -5,6 +5,6 @@
 		"body": [
 			"<img src=\"$1\" alt=\"$2\" width=\"$3\" height=\"$4\">"
 		],
-		"description": "HTML中插入img标签"
+		"description": "image"
 	}
 }

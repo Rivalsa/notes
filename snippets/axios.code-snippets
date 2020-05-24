@@ -3,8 +3,8 @@
 		"scope": "html",
 		"prefix": "axios",
 		"body": [
-			"<script src=\"https://code.invisible.rivalsa.cn/axios/axios_0_19_0_min.js\"></script>"
+			"<script src=\"https://static.rivalsa.cn/code/axios/axios_0_19_0_min.js\"></script>"
 		],
-		"description": "引入axios代码"
+		"description": "axios"
 	}
 }

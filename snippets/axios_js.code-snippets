@@ -16,6 +16,6 @@
 			"    console.log(e);",
 			"});"
 		],
-		"description": "通过axios创建ajax请求"
+		"description": "axios_js"
 	}
 }
