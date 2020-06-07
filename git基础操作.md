@@ -82,6 +82,18 @@ ssh-keygen -t rsa -b 4096 -C "your_email@example.com"
 
 *密钥创建在~/.ssh/*
 
+**从远程仓库客隆默认分支**
+
+```git
+git clone 远程仓库地址
+```
+
+**从远程仓库客隆指定分支**
+
+```git
+git clone -b 分支名 远程仓库地址
+```
+
 **推送到远程仓库master分支**
 
 ```git
@@ -126,12 +138,30 @@ git branch 分支名
 git branch
 ```
 
+**查看所有分支（包括远程分支）**
+
+```git
+git branch -a
+```
+
 **切换分支**
 
 ```git
 git switch 分支名   (推荐)
 或
 git checkout 分支名
+```
+
+**在本地创建一个与远程分支相同的分支并切换到此分支**
+
+```git
+git checkout -b 本地分支名 远程分支名
+```
+
+**在本地创建一个与远程分支相同且同名的分支并切换到此分支**
+
+```git
+git checkout -t 远程分支名
 ```
 
 **删除分支**
