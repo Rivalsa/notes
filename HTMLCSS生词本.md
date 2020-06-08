@@ -77,6 +77,17 @@ div{
 
 `text-indent`文本缩进
 
+`picture`、`source`以及`img`
+
+> ```html
+> <picture>
+>     <source media="(max-width:500px)" srcset="2.png">
+>     <img src="1.png">
+> </picture>
+> ```
+>
+> 当满足source中媒体查询的条件时，展示`2.png`否则展示`1.png`。允许写多个`source`但`img`标签需要在最后。
+
 ## 2. 定位布局
 
 `position:relative;`定位：相对于自己定位
