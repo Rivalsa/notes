@@ -1,4 +1,4 @@
-欢迎访问[个人网站导航页](https://rivalsa.cn)
+欢迎访问[关于Rivalsa](https://卅卅.我爱你)
 
 #  前端JavaScript学习笔记
 
@@ -2979,6 +2979,8 @@ innerHTML 与 innerText 的区别：
 - IE9及其以下:获取上一个兄弟元素节点
 
 ## 20. DOM事件
+
+给DOM绑定事件有两种方式，一种是通过行内事件，例如：`<div onclick="...">...</div>`，属性名（与0级事件的事件名称相同）为事件名称，属性值为JavaScript语句（通常是执行一个函数），在事件中`window.event`为此事件的事件对象；另一种方式是在JavaScript中进行绑定，下面将介绍这种方法。
 
 ### 20.1 0级事件
 
