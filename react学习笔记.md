@@ -41,7 +41,7 @@ const ele = (
 编译JSX可以利用`<script src="..."></script>`来引入`babel-standalone`，在写JSX的语法的`script`标签中添加`type="text/babel"`属性，这样浏览器就能识别其中的JSX语法并将其转换为React JS语法。例如：
 
 ```html
-<script src="https://static.rivalsa.net/code/react-16_13_1/babel_min.js"></script>
+<script src="https://rivalsa.github.io/Subminiature/code/react-16_13_1/babel_min.js"></script>
 <script type="text/babel">
 	// ...
 </script>
@@ -50,8 +50,8 @@ const ele = (
 要想使用React还需要再引入react和react-dom两个库，前者主要负责UI界面，后者主要负责DOM操作。例如：
 
 ```html
-<script src="https://static.rivalsa.net/code/react-16_13_1/react_development.js"></script>
-<script src="https://static.rivalsa.net/code/react-16_13_1/react-dom_development.js"></script>
+<script src="https://rivalsa.github.io/Subminiature/code/react-16_13_1/react_development.js"></script>
+<script src="https://rivalsa.github.io/Subminiature/code/react-16_13_1/react-dom_development.js"></script>
 ```
 
 如果想将完整的库下载到本地，可以利用node.js下载，如下命令供参考：
@@ -66,7 +66,7 @@ yarn add babel-standalone react react-dom 下载三个库
 
 JSX会被自动转换为React元素对象。
 
-JSX中指定类名时应写作`className`，指定表单的`value`时应写作`defaultValue`（如果使用`value`则无论按下什么键内容都不会变，除非修改value值）
+JSX中指定类名时应写作`className`，指定表单的`value`时应写作`defaultValue`（如果使用`value`则无论按下什么键内容都不会变，除非修改value值），`label`标签的`for`属性应写作`htmlFor`。
 
 JSX指定行内样式时需要用大括号包裹一个样式对象，例如：
 
