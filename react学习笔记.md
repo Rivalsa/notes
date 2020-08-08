@@ -208,3 +208,32 @@ class Fn extends React.Component {
 ```
 
 在类中可以用`props`来获取调用组件时设置的属性及属性值。
+
+## React脚手架
+
+可以参考如下命令来安装脚手架
+
+```bash
+npm i yarn -g
+yarn config set registry https://registry.npm.taobao.org
+yarn global add create-react-app
+```
+
+可以参考如下命令来初始化脚手架项目
+
+```bash
+create-react-app 项目名
+```
+
+> 如果以上命令出现错误，可以将对应命令的目录加入环境变量`path`中，课参考如下命令查看全局安装目录
+>
+> ```bash
+> yarn global dir
+> ```
+
+可以参考如下命令来运行脚手架项目
+
+```bash
+yarn start
+```
+
