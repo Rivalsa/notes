@@ -34,6 +34,8 @@ const ele = (
 
 `React.createElement(type[, props][, ...children])`是一个函数，参数`type`是节点类型（如`div`、`p`等），props为节点属性，需要传一个JS对象，其余参数为子节点（传字符串即为文本节点，传React元素对象即为元素节点），返回一个React元素节点。
 
+得到React元素节点后，可以借助如下函数进行渲染：`ReactDOM.render(element, container[, callback])`在提供的container中渲染一个React元素，并返回对该组件的引用（无状态组件返回null）。如果提供了可选的回调函数，则会在组件被渲染后执行。
+
 从上面例子中可以看出JSX的清晰简洁性，但JSX语法浏览器不能识别，所以通常写JSX语法后需要编译称为浏览器能识别的React JS语法。
 
 编译JSX可以利用`<script src="..."></script>`来引入`babel-standalone`，在写JSX的语法的`script`标签中添加`type="text/babel"`属性，这样浏览器就能识别其中的JSX语法并将其转换为React JS语法。例如：
@@ -64,7 +66,30 @@ yarn add babel-standalone react react-dom
 
 JSX会被自动转换为React元素对象。
 
-JSX中指定类名时应写作`className`，指定表单的`value`时应写作`defaultValue`（如果使用`value`则无论按下什么键内容都不会变，除非修改value值），`label`标签的`for`属性应写作`htmlFor`。
+JSX中指定类名时应写作`className`，指定表单的`value`时应写作`defaultValue`，`label`标签的`for`属性应写作`htmlFor`
+
+JSX在表单中使用设置`value`属性时，此属性值不会随用户动作（比如在`type="text"`框中输入数据）而变化，它只会随代码中设置的属性值而变化。所以通常通过监听表单的`onChange`事件来实时变更`value`的属性值，例如：
+
+```jsx
+class App extends React.Component {
+  state = {
+    currentValue: ''
+  }
+  handleChange(e) {
+    this.setState({
+      currentValue: e.target.value
+    });
+  }
+  render() {
+    return (
+      <>
+        <input type="text" value={this.state.currentValue} onChange={this.handleChange.bind(this)} />
+        {this.state.currentValue && <h1>{this.state.currentValue}</h1>}
+      </>
+    );
+  }
+} 
+```
 
 JSX指定行内样式时需要用大括号包裹一个样式对象，例如：
 
@@ -72,7 +97,7 @@ JSX指定行内样式时需要用大括号包裹一个样式对象，例如：
 const ele1 = (
     <div style={{color: "red", backgroundColor: "skyblue"}}>一段文字</div>
 );
-{/* 或者 */}
+// 或者
 const myStyle = {
     color: 'red',
     backgroundColor: 'skyblue'
@@ -100,6 +125,10 @@ JSX中的内容要符合XML规则，所有标签都必须是双标签，例如�
 ```jsx
 {/* 正确 */}
 <br />
+
+{/* 正确 */}
+<br></br>
+
 {/* 错误 */}
 <br>
 ```
@@ -114,6 +143,7 @@ JSX中只能有一个根节点，如果需要绑定多个空节点，可以用`<
     </div>
     <p>this is a p</p>
 </React.Fragment>
+
 {/* 正确 */}
 <>
     <div className="box">
@@ -121,6 +151,7 @@ JSX中只能有一个根节点，如果需要绑定多个空节点，可以用`<
     </div>
     <p>this is a p</p>
 </>
+
 {/* 错误 */}
 <div className="box">
     <h1>hello JSX</h1>
@@ -153,10 +184,6 @@ const ele = (
 );
 ```
 
-## ReactDOM
-
-`ReactDOM.render(element, container[, callback])`在提供的container中渲染一个React元素，并返回对该组件的引用（无状态组件返回null）。如果提供了可选的回调函数，则会在组件被渲染后执行。
-
 ## 组件
 
 使用React可以将一些简短、独立的代码片段组合成复杂的UI界面，这些代码片段称为**组件**。
@@ -176,14 +203,14 @@ function Fn(props) {
         </div>
     );
 }
-{/* 可以通过<Fn dream="test"/>来调用这个组件 */}
+// 可以通过<Fn dream="test"/>来调用这个组件
 ```
 
 ### 类组件（常用）
 
 通常创建一个继承`React.Component`的类作为组件，类名就是组件名（必须首字母大写）
 
-在类中需要创建一个名为`render`的公共函数，此函数的返回值为该组件实际要渲染的内容。
+在类中需要创建一个名为`render`的公共函数，此函数的返回值为该组件实际要渲染的内容（此函数为React生命周期中的一环，必有）。
 
 类中可以有一个`state`对象，表示组件的状态，此对象可以用`setState`方法来修改其中的内容，在修改后会自动重新渲染修改后的内容。
 
@@ -235,6 +262,29 @@ export default class App extends React.Component {
 
 同级组件之间也不能直接传递，但可以借助其共同的父组件进行传递，数据先有子组件传递至父组件，再由父组件传递至另一个子组件。
 
+### 组件的生命周期
+
+**创建组件时**
+
+1. constructor
+2. getDerivedStateFromProps（静态方法，我没搞清楚怎么用）
+3. render（渲染函数，唯一不能省略的函数，必须有返回值，返回null或false表示不渲染任何DOM元素）
+4. React更新DOM和refs
+5. componentDidMount（挂载成功函数）
+
+**更新props或执行setState时**
+
+1. getDerivedStateFromProps（静态方法，我没搞清楚怎么用）
+2. shouldComponentUpdate（返回一个布尔值，true表示继续执行生命周期，false表示不再执行生命周期，有2个参数，分别为`nextProps`和`nextState`）
+3. render（渲染函数）
+4. getSnapshotBeforeUpdate（此函数必须有返回值，返回值将最为第6环的第三个参数，有2个参数，分别为`prevProps`和`prevState`）
+5. React更新DOM和refs
+6. componentDidUpdate（更新完成函数，有3个参数，分别为`prevProps`，`prevState`和`snapshot`）
+
+**卸载组件时**
+
+componentWillUnmount
+
 ## React脚手架
 
 可以参考如下命令来安装脚手架
@@ -251,7 +301,7 @@ yarn global add create-react-app
 create-react-app 项目名
 ```
 
-> 如果以上命令出现错误，可以将对应命令的目录加入环境变量`path`中，课参考如下命令查看全局安装目录
+> 如果以上命令出现错误，可以将对应命令的目录加入环境变量`path`中，可参考如下命令查看全局安装目录
 >
 > ```bash
 > yarn global dir
@@ -261,5 +311,11 @@ create-react-app 项目名
 
 ```bash
 yarn start
+```
+
+可以参考如下命令来编译脚手架项目
+
+```bash
+yarn build
 ```
 
