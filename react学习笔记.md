@@ -2,8 +2,6 @@
 
 React是一个声明式，高效灵活的用于构建用户界面的JavaScript库。
 
-使用React可以将一些简短、独立的代码片段组合成复杂的UI界面，这些代码片段称为**组件**。
-
 举例，创建一个包含2个子节点的DOM节点：
 
 ```javascript
@@ -57,9 +55,9 @@ const ele = (
 如果想将完整的库下载到本地，可以利用node.js下载，如下命令供参考：
 
 ```bash
-npm i yarn -g 安装yarn
-yarn config set registry https://registry.npm.taobao.org 调整安装源
-yarn add babel-standalone react react-dom 下载三个库
+npm i yarn -g
+yarn config set registry https://registry.npm.taobao.org
+yarn add babel-standalone react react-dom
 ```
 
 ## JSX语法
@@ -155,13 +153,15 @@ const ele = (
 );
 ```
 
-可以通过`<组件名 属性=值 属性=值...>`的方式来调用组件，组件名的首字母必须大写。
-
 ## ReactDOM
 
 `ReactDOM.render(element, container[, callback])`在提供的container中渲染一个React元素，并返回对该组件的引用（无状态组件返回null）。如果提供了可选的回调函数，则会在组件被渲染后执行。
 
 ## 组件
+
+使用React可以将一些简短、独立的代码片段组合成复杂的UI界面，这些代码片段称为**组件**。
+
+在JSX中可以通过`<组件名 属性=值 属性=值...>`的方式来调用组件，组件名的首字母必须大写。
 
 ### 函数组件
 
@@ -187,6 +187,8 @@ function Fn(props) {
 
 类中可以有一个`state`对象，表示组件的状态，此对象可以用`setState`方法来修改其中的内容，在修改后会自动重新渲染修改后的内容。
 
+`setState(updater[, callback])`将对组件 state 的更改排入队列，并通知 React 需要使用更新后的 state 重新渲染此组件及其子组件。`updater`可以是一个对象，也可以是一个返回对象的函数，`setState`执行后会根据这个对象，或函数返回的对象来修改`state`，并重新渲染。如果`updater`是一个函数，那么执行时会传2个实参，第一个是`state`，第二个是调用组件时传的参数。`callback`是回调函数。
+
 ```jsx
 class Fn extends React.Component {
     state = {
@@ -207,7 +209,31 @@ class Fn extends React.Component {
 }
 ```
 
-在类中可以用`props`来获取调用组件时设置的属性及属性值。
+可以通过`this.props`来获取调用组件时设置的属性及属性值。
+
+在jsx中可以通过`ref`属性来绑定通过`React.createRef()`创建的ref，此时可以通过ref值操作这个元素对象吗，例如：
+
+```jsx
+export default class App extends React.Component {
+  myRef = React.createRef()
+  handleClick() {
+    this.myRef.current.style.backgroundColor = 'hotpink';
+  }
+  render() {
+    return (
+      <h1 ref={this.myRef} onClick={this.handleClick.bind(this)}>test</h1>
+    );
+  }
+}
+```
+
+### 组件之间的通信
+
+父组件向子组件通信通常在父组件调用子组件时，利用属性来进行传递信息，在子组件中利用`props`来进行接收。
+
+子组件是不能直接向父组件通信的，但可以通过如下方案来变通的实现这一功能：在父组件中定义一个函数将这个函数通过属性传递给子组件，在子组件中通过调用函数传参来使父组件获得传递的参数值。**这个方法本质上还是父组件向子组件通信，但借助函数实现了子组件的数据传递给父组件。**
+
+同级组件之间也不能直接传递，但可以借助其共同的父组件进行传递，数据先有子组件传递至父组件，再由父组件传递至另一个子组件。
 
 ## React脚手架
 
