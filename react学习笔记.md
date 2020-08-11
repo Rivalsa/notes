@@ -210,7 +210,7 @@ function Fn(props) {
 
 通常创建一个继承`React.Component`的类作为组件，类名就是组件名（必须首字母大写）
 
-在类中需要创建一个名为`render`的公共函数，此函数的返回值为该组件实际要渲染的内容（此函数为React生命周期中的一环，必有）。
+在类中需要创建一个名为`render`的公共函数，此函数的返回值为该组件实际要渲染的内容（此函数为组件生命周期中的一环，必有）。
 
 类中可以有一个`state`对象，表示组件的状态，此对象可以用`setState`方法来修改其中的内容，在修改后会自动重新渲染修改后的内容。
 
@@ -236,9 +236,9 @@ class Fn extends React.Component {
 }
 ```
 
-可以通过`this.props`来获取调用组件时设置的属性及属性值。
+可以通过`this.props`来获取调用组件时设置的属性及属性值。如果组件标签内部还有其他元素，也会通过此属性获取对应元素。
 
-在jsx中可以通过`ref`属性来绑定通过`React.createRef()`创建的ref，此时可以通过ref值操作这个元素对象吗，例如：
+ 在jsx中可以通过`ref`属性来绑定通过`React.createRef()`创建的ref，此时可以通过ref值操作这个元素对象吗，例如：
 
 ```jsx
 export default class App extends React.Component {
@@ -284,6 +284,63 @@ export default class App extends React.Component {
 **卸载组件时**
 
 componentWillUnmount
+
+## 路由
+
+当利用React创建单页面网站时可以借助路由包让页面随URL的不同而不同。可以参考如下命令通过node.js下载路由包。
+
+```bash
+npm i yarn -g
+yarn config set registry https://registry.npm.taobao.org
+yarn add react-router-dom
+```
+
+使用路由前应通过`import`或`script`引入包，当使用`import`引入时，应使用解构的方式调用相关内容，例如：
+
+```jsx
+import {BrowserRouter} from 'react-router-dom'
+```
+
+路由有Browser路由和Hash路由两种，采用前者页面中需要被路由部分应包含在标签`<BrowserRouter></BrowserRouter>`中，采用后者页面中需要被路由部分应包含在标签`<HashRouter></HashRouter>`中。
+
+以下介绍的组件必须包含这两个标签的其中一个之内。
+
+**`Link`组件**
+
+此组件需要指定`to`属性，属性值为要转跳到的路由位置（URL地址），如`<Link to="/user">用户中心</Link>`。
+
+此组件可以设置`exact`属性，设置了此属性表示匹配时采取全字匹配，没有此属性则表示可以部分匹配。
+
+**`NavLink`组件**
+
+此组件的基本功能、用法与`Link`组件相同。不一样之处在于当页面路由与此组件`to`属性值相同时，页面会为此元素增加以下两个属性：`aria-current="page"`、`class="active"`。
+
+**`Route`组件**
+
+此组件需要指定`path`属性，属性值为路由位置（可以使用`*`表示匹配所有路由），当当前页面的路由位置与此属性值匹配时，会显示此标签内的内容，例如：
+
+```jsx
+<Route path="/user">
+    <h1>这里是个人中心</h1>
+</Route>
+```
+
+此组件的路径中还可以通过`:字段`的方式来获取URL中对应位置的信息，此信息将以对象的形式传递到调用的组件的`props`信息中。
+
+当当前页面的路由位置与此属性值匹配时需要显示的页面也是一个组件时，除了类似上例的方法外，还可以通过如下2种方法：
+
+```jsx
+{/* 方法1 */}
+<Route Path="..." component={组件} />
+{/* 方法2：函数返回的组件为要渲染的内容，执行函数时会传一个实参props */}
+<Route Path="..." render={函数} />
+```
+
+此组件可以设置`exact`属性，设置了此属性表示匹配时采取全字匹配，没有此属性则表示可以部分匹配。
+
+**`Switch`组件**
+
+当`Route`组件包含在`Switch`标签内时，遇到第一个能匹配的路由后就停止匹配，如没有包含在此组件内，则无论是否匹配成功都会一直匹配到最后。
 
 ## React脚手架
 
