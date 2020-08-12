@@ -2,11 +2,13 @@
 
 > 作者：Rivalsa
 >
-> 关于Rivalsa：[https://卅卅.我爱你](https://卅卅.我爱你)
+> 关于Rivalsa：[卅卅.我爱你](https://卅卅.我爱你)
 >
 > 联系Rivalsa：[工单.卅卅.我爱你](https://www.rivalsa.net/workorder/index.php)
 
 **本仓库主要含有如下内容**
+
+所有内容可能会随时更新哦~~
 
 - JavaScript学习笔记
 - HTML/CSS生词本
