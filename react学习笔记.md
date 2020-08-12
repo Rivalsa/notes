@@ -188,7 +188,7 @@ const ele = (
 
 使用React可以将一些简短、独立的代码片段组合成复杂的UI界面，这些代码片段称为**组件**。
 
-在JSX中可以通过`<组件名 属性=值 属性=值...>`的方式来调用组件，组件名的首字母必须大写。
+在JSX中可以通过`<组件名 属性=值 属性=值...>`的方式来调用组件（其中`属性=值 ...`部分可以全部替换为`...`运算符），组件名的首字母必须大写。
 
 ### 函数组件
 
@@ -295,11 +295,21 @@ yarn config set registry https://registry.npm.taobao.org
 yarn add react-router-dom
 ```
 
-使用路由前应通过`import`或`script`引入包，当使用`import`引入时，应使用解构的方式调用相关内容，例如：
+使用路由前应通过`import`引入包，当使用`import`引入时，应使用解构的方式调用相关内容，例如：
 
 ```jsx
-import {BrowserRouter} from 'react-router-dom'
+import {...} from 'react-router-dom'
 ```
+
+也可以不下载路由包，而直接在HTML通过`script`标签引入，例如：
+
+```html
+<script src="https://rivalsa.github.io/Subminiature/code/react-16_13_1/react-router-dom_min.js"></script>
+```
+
+**`Redirect`组件**
+
+通过此组件可以让页面在前端重定向，此组件需要提供`to`属性，属性值为要重定向到的页面。
 
 路由有Browser路由和Hash路由两种，采用前者页面中需要被路由部分应包含在标签`<BrowserRouter></BrowserRouter>`中，采用后者页面中需要被路由部分应包含在标签`<HashRouter></HashRouter>`中。
 
@@ -307,7 +317,7 @@ import {BrowserRouter} from 'react-router-dom'
 
 **`Link`组件**
 
-此组件需要指定`to`属性，属性值为要转跳到的路由位置（URL地址），如`<Link to="/user">用户中心</Link>`。
+此组件需要指定`to`属性，属性值可以为字符串，也可以为对象。为字符串时要填写转跳到的路由位置（URL地址），如`<Link to="/user">用户中心</Link>`；为对象时，可以包含`pathname`属性、`search`属性、`state`属性。
 
 此组件可以设置`exact`属性，设置了此属性表示匹配时采取全字匹配，没有此属性则表示可以部分匹配。
 
@@ -327,13 +337,22 @@ import {BrowserRouter} from 'react-router-dom'
 
 此组件的路径中还可以通过`:字段`的方式来获取URL中对应位置的信息，此信息将以对象的形式传递到调用的组件的`props`信息中。
 
-当当前页面的路由位置与此属性值匹配时需要显示的页面也是一个组件时，除了类似上例的方法外，还可以通过如下2种方法：
+> `prop`信息是一个对象，其中包含`location`属性、`history`属性、`match`属性、`StaticComtext`属性。
+>
+> `history`中包括页面前进、后退以及相关的函数。
+>
+> `location`属性值为对象，里面记录这页面的URL信息，如：`hash`、`pathname`、`search`、`state`、`query`。
+>
+> `match`中记录的是`:字段`在URL中对应的信息。
+
+当前页面的路由位置与此属性值匹配时需要显示的页面也是一个组件时，除了类似上例的方法外，还可以通过如下2种方法：
 
 ```jsx
 {/* 方法1 */}
-<Route Path="..." component={组件} />
-{/* 方法2：函数返回的组件为要渲染的内容，执行函数时会传一个实参props */}
+<Route Path="..." component={组件或函数} />
+{/* 方法2 */}
 <Route Path="..." render={函数} />
+{/* 函数返回的组件为要渲染的内容，执行函数时会传一个实参props */}
 ```
 
 此组件可以设置`exact`属性，设置了此属性表示匹配时采取全字匹配，没有此属性则表示可以部分匹配。
