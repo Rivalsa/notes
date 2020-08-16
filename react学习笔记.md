@@ -206,7 +206,7 @@ function Fn(props) {
 // 可以通过<Fn dream="test"/>来调用这个组件
 ```
 
-### 类组件（常用）
+### 类组件
 
 通常创建一个继承`React.Component`的类作为组件，类名就是组件名（必须首字母大写）
 
@@ -285,7 +285,18 @@ export default class App extends React.Component {
 
 componentWillUnmount
 
-## 路由
+## Hooks
+
+Hooks可以让无状态的组件（函数组件）获得一些状态，它包括如下函数，运行后会返回对应的对象（来自React）：
+
+- useHistory
+- useLocation
+- useParams
+- useRouteMatch
+- useState会返回一个数组，第一个元素是当前状态值，第二个元素为一个函数，执行此函数可以更新状态。执行此`useState`函数需要传一个参数为初始的状态值。
+- useEffect执行此函数时需要传一个函数类型的参数，当状态发生更新后会自动调用这个函数参数；还可以传第二个参数（可选）为数组，仅当数组中对应的元素的内容发生了变化，才会执行第一个函数参数，如果传一个空数组则表示尽在组件挂载和卸载时执行。
+
+## 路由包
 
 当利用React创建单页面网站时可以借助路由包让页面随URL的不同而不同。可以参考如下命令通过node.js下载路由包。
 
@@ -307,13 +318,15 @@ import {...} from 'react-router-dom'
 <script src="https://rivalsa.github.io/Subminiature/code/react-16_13_1/react-router-dom_min.js"></script>
 ```
 
-**`Redirect`组件**
-
-通过此组件可以让页面在前端重定向，此组件需要提供`to`属性，属性值为要重定向到的页面。
+**`BrowserRouter`组件与`HashRouter`组件**
 
 路由有Browser路由和Hash路由两种，采用前者页面中需要被路由部分应包含在标签`<BrowserRouter></BrowserRouter>`中，采用后者页面中需要被路由部分应包含在标签`<HashRouter></HashRouter>`中。
 
-以下介绍的组件必须包含这两个标签的其中一个之内。
+**以下介绍的组件必须包含这两个标签的其中一个之内。**
+
+**`Redirect`组件**
+
+通过此组件可以让页面在前端重定向，此组件需要提供`to`属性，属性值为要重定向到的页面，与`from`属性，属性值为从那个路由开始重定向。
 
 **`Link`组件**
 
@@ -335,16 +348,6 @@ import {...} from 'react-router-dom'
 </Route>
 ```
 
-此组件的路径中还可以通过`:字段`的方式来获取URL中对应位置的信息，此信息将以对象的形式传递到调用的组件的`props`信息中。
-
-> `prop`信息是一个对象，其中包含`location`属性、`history`属性、`match`属性、`StaticComtext`属性。
->
-> `history`中包括页面前进、后退以及相关的函数。
->
-> `location`属性值为对象，里面记录这页面的URL信息，如：`hash`、`pathname`、`search`、`state`、`query`。
->
-> `match`中记录的是`:字段`在URL中对应的信息。
-
 当前页面的路由位置与此属性值匹配时需要显示的页面也是一个组件时，除了类似上例的方法外，还可以通过如下2种方法：
 
 ```jsx
@@ -355,11 +358,66 @@ import {...} from 'react-router-dom'
 {/* 函数返回的组件为要渲染的内容，执行函数时会传一个实参props */}
 ```
 
+此组件的路径中还可以通过`:字段`的方式来获取URL中对应位置的信息。当通过`Route`的`compontent`属性或`render`属性调用其他组件时，此信息将以对象的形式传递到调用的组件的`props`信息中。
+
+> `prop`信息是一个对象，其中包含`location`属性、`history`属性、`match`属性、`StaticComtext`属性。
+>
+> `history`中包括页面前进、后退以及相关的函数。
+>
+> `location`属性值为对象，里面记录这页面的URL信息，如：`hash`、`pathname`、`search`、`state`、`query`。
+>
+> `match`中记录的是`:字段`在URL中对应的信息。
+
 此组件可以设置`exact`属性，设置了此属性表示匹配时采取全字匹配，没有此属性则表示可以部分匹配。
 
 **`Switch`组件**
 
 当`Route`组件包含在`Switch`标签内时，遇到第一个能匹配的路由后就停止匹配，如没有包含在此组件内，则无论是否匹配成功都会一直匹配到最后。
+
+## Redux
+
+### Redux包
+
+Redux包是用来做状态管理的，它所提供的状态可以在多个组件中使用，避免了组件间通信的问题。可以参考如下命令通过node.js下载Redux包。
+
+```bash
+npm i yarn -g
+yarn config set registry https://registry.npm.taobao.org
+yarn add redux
+```
+
+从此组件中可以解构出`createStore`函数，执行此函数可以创建一个状态，此函数需要传递一个函数参数，返回一个对象。当执行`createStore`函数时，在内部也会执行传递的参数函数（不传实参），并将参数的返回值设置为当前状态。
+
+> **传递的函数参数**
+>
+> 传递的函数参数中通常规定了当执行某个“指令”时如何修改状态，此函数有两个形参，第一个为`state`，是一个对象，表示当前状态，第二个为`action`，也是一个对象，表示执行的“指令”，例如：
+>
+> ```javascript
+> const store = createStore((state, action) => {
+>   switch(action.type) {
+>     case 'jia':
+>       return Object.assign({}, state, {count: state.count + 1});
+>     case 'jian':
+>       return Object.assign({}, state, {count: state.count - 1}); 
+>     default:
+>       return {count:100};
+>   }
+> });
+> ```
+>
+> **整个函数的返回值**
+>
+> 返回值为一个对象，包括如下内容：
+>
+> - `getState`函数，执行此函数可以获得当前的状态对象。
+> - `dispatch`函数，执行此函数需要传一个“指令”对象，系统会将当前状态与此“指令”对象作为实参，执行创建状态时传递的函数参数，并将返回值作为当前的状态。
+> - `subscribe`函数，此函数需要传一个函数参数，当此函数被执行时，会对状态的变化进行监听，当状态发生变化时，会自动执行参数中传递的函数。
+
+**修改此状态后通常页面不会被重新渲染，需要靠组件的`setState`来让其重新渲染**
+
+### React-Redux包
+
+ ...
 
 ## React脚手架
 
