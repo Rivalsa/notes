@@ -393,14 +393,14 @@ yarn add redux
 > 传递的函数参数中通常规定了当执行某个“指令”时如何修改状态，此函数有两个形参，第一个为`state`，是一个对象，表示当前状态，第二个为`action`，也是一个对象，表示执行的“指令”，例如：
 >
 > ```javascript
-> const store = createStore((state, action) => {
+> const store = createStore((state = {count: 0}, action) => {
 >   switch(action.type) {
 >     case 'jia':
 >       return Object.assign({}, state, {count: state.count + 1});
 >     case 'jian':
 >       return Object.assign({}, state, {count: state.count - 1}); 
 >     default:
->       return {count:100};
+>       return state;
 >   }
 > });
 > ```
@@ -417,7 +417,17 @@ yarn add redux
 
 ### React-Redux包
 
- ...
+ React-Redux是结合了React的Redux，使用React-Redux需要安装Redux与React-Redux两个包，可以参考如下命令通过node.js下载Redux包。
+
+```bash
+npm i yarn -g
+yarn config set registry https://registry.npm.taobao.org
+yarn add react-redux
+```
+
+此组件中可以解构出`Provider`组件，需要用此组件包含需要使用状态的组件，此组件需要提供属性`store`，其属性值为`createStore`函数的返回值。
+
+此组件中还可以解构出`connect`函数，通过此函数可以将状态对应到组件的`props`中。执行此函数需要传两个参数（用到哪个传哪个就行），第一个参数为一个函数，参数为当前的状态，返回值会加入到`props`中，第二个参数为一个函数，参数为修改状态的函数，返回值为一个由函数组成的对象，这些对象会加入到props中。整个函数的返回值为一个函数，执行此函数需要传一个参数（组件），返回值为含有对应`props`内容的组件。
 
 ## React脚手架
 
