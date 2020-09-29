@@ -57,8 +57,6 @@ const ele = (
 如果想将完整的库下载到本地，可以利用node.js下载，如下命令供参考：
 
 ```bash
-npm i yarn -g
-yarn config set registry https://registry.npm.taobao.org
 yarn add babel-standalone react react-dom
 ```
 
@@ -301,8 +299,6 @@ Hooks可以让无状态的组件（函数组件）获得一些状态，它包括
 当利用React创建单页面网站时可以借助路由包让页面随URL的不同而不同。可以参考如下命令通过node.js下载路由包。
 
 ```bash
-npm i yarn -g
-yarn config set registry https://registry.npm.taobao.org
 yarn add react-router-dom
 ```
 
@@ -381,12 +377,10 @@ import {...} from 'react-router-dom'
 Redux包是用来做状态管理的，它所提供的状态可以在多个组件中使用，避免了组件间通信的问题。可以参考如下命令通过node.js下载Redux包。
 
 ```bash
-npm i yarn -g
-yarn config set registry https://registry.npm.taobao.org
 yarn add redux
 ```
 
-从此组件中可以解构出`createStore`函数，执行此函数可以创建一个状态，此函数需要传递一个函数参数，返回一个对象。当执行`createStore`函数时，在内部也会执行传递的参数函数（不传实参），并将参数的返回值设置为当前状态。
+从此组件中可以解构出`createStore`函数，执行此函数可以创建一个状态，此函数需要传递一个函数参数，返回一个对象。
 
 > **传递的函数参数**
 >
@@ -420,22 +414,18 @@ yarn add redux
  React-Redux是结合了React的Redux，使用React-Redux需要安装Redux与React-Redux两个包，可以参考如下命令通过node.js下载Redux包。
 
 ```bash
-npm i yarn -g
-yarn config set registry https://registry.npm.taobao.org
 yarn add react-redux
 ```
 
 此组件中可以解构出`Provider`组件，需要用此组件包含需要使用状态的组件，此组件需要提供属性`store`，其属性值为`createStore`函数的返回值。
 
-此组件中还可以解构出`connect`函数，通过此函数可以将状态对应到组件的`props`中。执行此函数需要传两个参数（用到哪个传哪个就行），第一个参数为一个函数，参数为当前的状态，返回值会加入到`props`中，第二个参数为一个函数，参数为修改状态的函数，返回值为一个由函数组成的对象，这些对象会加入到props中。整个函数的返回值为一个函数，执行此函数需要传一个参数（组件），返回值为含有对应`props`内容的组件。
+此组件中还可以解构出`connect`函数，通过此函数可以将状态对应到组件的`props`中。执行此函数需要传两个参数（用到哪个传哪个就行），第一个参数为一个函数，参数为当前的状态，返回值会加入到`props`中，第二个参数为一个函数，参数为修改状态的函数，返回值为一个由函数组成的对象，这些函数会加入到props中，如果不传第二个参数，则会在`props`中携带一个`dispatch`函数，用于修改状态。整个函数的返回值为一个函数，执行此函数需要传一个参数（组件），返回值为含有对应`props`内容的组件。
 
 ## React脚手架
 
 可以参考如下命令来安装脚手架
 
 ```bash
-npm i yarn -g
-yarn config set registry https://registry.npm.taobao.org
 yarn global add create-react-app
 ```
 
@@ -462,4 +452,3 @@ yarn start
 ```bash
 yarn build
 ```
-
