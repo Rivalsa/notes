@@ -24,19 +24,28 @@
 
 > 此函数有如下常用选项可以设置：
 >
-> | 选项                   | 说明                                                         | 值的类型 |
-> | ---------------------- | ------------------------------------------------------------ | -------- |
-> | CURLOPT_HEADER         | 是否将文件的头信息输出                                       | boolean  |
-> | CURLOPT_RETURNTRANSFER | 将`curl_exec`获取的信息以文件流的形式返回，而不是直接输出。  | boolean  |
-> | CURLOPT_SSL_VERIFYPEER | cURL是否从服务端进行验证。使用`CURLOPT_CAINFO`选项设置证书使用`CURLOPT_CAPATH`选项设置证书目录 如果`CURLOPT_SSL_VERIFYPEER`(默认值为2)被启用，`CURLOPT_SSL_VERIFYHOST`需要被设置成`TRUE`否则设置为`FALSE`。 | boolean  |
-> | CURLOPT_CAINFO         | 一个保存着一个或多个用来让服务端验证的证书的文件名。这个参数仅仅在和`CURLOPT_SSL_VERIFYPEER`一起使用时才有意义。 | string   |
-> | CURLOPT_CAPATH         | 一个保存着多个CA证书的目录。这个选项是和`CURLOPT_SSL_VERIFYPEER`一起使用的。 | string   |
-> | CURLOPT_COOKIE         | 设定HTTP请求中`Cookie:`部分的内容。多个cookie用分号分隔，分号后带一个空格(例如`fruit=apple; colour=red`)。 | string   |
-> | CURLOPT_REFERER        | 在HTTP请求头中"Referer: "的内容。                            | string   |
-> | CURLOPT_URL            | 需要获取的URL地址，也可以在`curl_init`函数中设置。           | string   |
-> | CURLOPT_USERAGENT      | 在HTTP请求中包含一个`User-Agent:`头的字符串。                | string   |
-> | CURLOPT_POST           | 启用时会发送一个常规的POST请求，类型为：`application/x-www-form-urlencoded`，就像表单提交的一样。 | Boolean  |
-> | CURLOPT_HTTPHEADER     | 一个用来设置HTTP头字段的数组。使用如下的形式的数组进行设置：`array('Content-type: text/plain', 'Content-length: 100')` | array    |
+> | 选项                      | 说明                                                         | 值的类型 |
+> | ------------------------- | ------------------------------------------------------------ | -------- |
+> | CURLOPT_HEADER            | 是否将文件的头信息输出                                       | boolean  |
+> | CURLOPT_RETURNTRANSFER    | 将`curl_exec`获取的信息以文件流的形式返回，而不是直接输出。  | boolean  |
+> | CURLOPT_SSL_VERIFYPEER    | cURL是否从服务端进行验证。使用`CURLOPT_CAINFO`选项设置证书使用`CURLOPT_CAPATH`选项设置证书目录 如果`CURLOPT_SSL_VERIFYPEER`(默认值为2)被启用，`CURLOPT_SSL_VERIFYHOST`需要被设置成`TRUE`否则设置为`FALSE`。 | boolean  |
+> | CURLOPT_CAINFO            | 一个保存着一个或多个用来让服务端验证的证书的文件名。这个参数仅仅在和`CURLOPT_SSL_VERIFYPEER`一起使用时才有意义。 | string   |
+> | CURLOPT_CAPATH            | 一个保存着多个CA证书的目录。这个选项是和`CURLOPT_SSL_VERIFYPEER`一起使用的。 | string   |
+> | CURLOPT_COOKIE            | 设定HTTP请求中`Cookie:`部分的内容。多个cookie用分号分隔，分号后带一个空格(例如`fruit=apple; colour=red`)。 | string   |
+> | CURLOPT_REFERER           | 在HTTP请求头中"Referer: "的内容。                            | string   |
+> | CURLOPT_URL               | 需要获取的URL地址，也可以在`curl_init`函数中设置。           | string   |
+> | CURLOPT_USERAGENT         | 在HTTP请求中包含一个`User-Agent:`头的字符串。                | string   |
+> | CURLOPT_POST              | 启用时会发送一个常规的POST请求，类型为：`application/x-www-form-urlencoded`，就像表单提交的一样。 | Boolean  |
+> | CURLOPT_HTTPHEADER        | 一个用来设置HTTP头字段的数组。使用如下的形式的数组进行设置：`array('Content-type: text/plain', 'Content-length: 100')` | array    |
+> | CURLOPT_HTTPGET           | 启用时会设置HTTP的method为GET，因为GET是默认是，所以只在被修改的情况下使用。 | Boolean  |
+> | CURLOPT_DNS_CACHE_TIMEOUT | 设置在内存中保存DNS信息的时间，默认为120秒。                 | Integer  |
+> | CURLOPT_TIMEOUT           | 设置cURL允许执行的最长秒数。                                 | Integer  |
+> | CURLOPT_TIMEOUT_MS        | 设置cURL允许执行的最长毫秒数。                               | Integer  |
+> | CURLOPT_CUSTOMREQUEST     | 使用一个自定义的请求信息来代替"GET"或"HEAD"作为HTTP请求。这对于执行"DELETE" 或者其他更隐蔽的HTTP请求。有效值如"GET"，"POST"，"CONNECT"等等。也就是说，不要在这里输入整个HTTP请求。例如输入"GET /index.html HTTP/1.0\r\n\r\n"是不正确的。 | String   |
+> | CURLOPT_POSTFIELDS        | 全部数据使用HTTP协议中的"POST"操作来发送。要发送文件，在文件名前面加上@前缀并使用完整路径。这个参数可以通过urlencoded后的字符串类似'para1=val1&para2=val2&...'或使用一个以字段名为键值，字段数据为值的数组。如果value是一个数组，Content-Type头将会被设置成multipart/form-data。 | String   |
+> | CURLOPT_REFERER           | 在HTTP请求头中"Referer: "的内容。                            | String   |
+> | CURLOPT_USERAGENT         | 在HTTP请求中包含一个"User-Agent: "头的字符串。               | String   |
+> | CURLOPT_USERPWD           | 传递一个连接中需要的用户名和密码，格式为："[username]:[password]"。 | String   |
 
 **返回值**
 

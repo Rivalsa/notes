@@ -1,5 +1,3 @@
-欢迎访问[关于Rivalsa](https://卅卅.我爱你)
-
 #  前端JavaScript学习笔记
 
 **关于本文中的ES6的说明**
@@ -96,10 +94,10 @@ V8引擎为解析js代码最快的js引擎
 
 `window.document.visibilityState`（只读）根据当前标签页的状态，值分别为
 
-- visible页面部分内容可见，此标签页正常显示（可能被其它也没覆盖了一部分）
-- hidden页面内容不可见，非当前标签页或者处于最小化状态或者系统是锁屏状态等
-- prerender页面此时正在渲染中, 因此是不可见的，文档只能从此状态开始，永远不能从其他值变为此状态
-- unloaded页面从内存中卸载清除
+- `visible`页面部分内容可见，此标签页正常显示（可能被其它也没覆盖了一部分）
+- `hidden`页面内容不可见，非当前标签页或者处于最小化状态或者系统是锁屏状态等
+- `prerender`页面此时正在渲染中, 因此是不可见的，文档只能从此状态开始，永远不能从其他值变为此状态
+- `unloaded`页面从内存中卸载清除
 
 *`window.document.visibilityState`属性值发生变化时会触发`document`的`visibilitychange`事件*
 
@@ -3079,9 +3077,9 @@ element.event = fun;
 
 `window.EventTarget.prototype.addEventListener(a,b,c)`添加事件监听器(低版本IE不支持,用`attachEvent(a,b)`代替（没有第3个参数）,且IE中事件函数的this指向window)
 
-- a为事件字符串，不写on(使用`attachEvent`时需要写on)
-- b为事件函数(参数为事件对象)
-- c为布尔值，true表示事件绑定在捕获阶段，false表示事件绑定在冒泡阶段（**参考事件捕获与事件冒泡章节**）
+- `a`为事件字符串，不写on(使用`attachEvent`时需要写on)
+- `b`为事件函数(参数为事件对象)
+- `c`既可以为一个对象，也可以为一个布尔值。如果c为对象，则应由如下3个属性中的一个或多个组成：`capture`，`once`、`passive`，他们的值都是布尔值，`capture`值为`true`表示事件绑定在捕获阶段，`capture`值为`false`表示事件绑定在冒泡阶段；`once`值为`true`表示事件在调用一次后自动移除，`once`值为`false`表示事件可以多次调用；`passive`值为`true`时表示不允许事件函数调用事件对象的`preventDefault`函数，如果仍然调用了这个函数，客户端会忽略这次调用并在控制台弹出警告，`passive`值为`false`时表示允许事件函数调用事件对象的`preventDefault`函数。如果`c`为布尔值，`true`表示事件绑定在捕获阶段，`false`表示事件绑定在冒泡阶段（**参考事件捕获与事件冒泡章节**）
 
 `window.EventTarget.prototype.removeEventListener(a,b,c)`移除事件监听器(低版本IE不支持,用`detachEvent(a,b)`代替（没有第3个参数）)
 
