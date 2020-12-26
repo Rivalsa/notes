@@ -81,12 +81,21 @@ div{
 
 > ```html
 > <picture>
->     <source media="(max-width:500px)" srcset="2.png">
->     <img src="1.png">
+>        <source media="(max-width:500px)" srcset="2.png">
+>        <img src="1.png">
 > </picture>
 > ```
 >
 > 当满足source中媒体查询的条件时，展示`2.png`否则展示`1.png`。允许写多个`source`但`img`标签需要在最后。
+
+`details`和`summary`前者是一个可折叠的标签，后者是前者内部的标签，一般位于第一个。后者定义了前者的概要或标签。
+
+```html
+<details>
+    <summary>Details</summary>
+    <p>Something small enough to escape casual notice.</p>
+</details>
+```
 
 ## 2. 定位布局
 
@@ -580,7 +589,7 @@ div{
     - `100px 100px 100px`可以写成`repeat(3, 100px)`
     - `30% 30% 20% 20%`可以写成`repeat(2, 30%) repeat(2, 20%)`
     - `100px 20px 80px 100px 20px 80px`可以写成`repeat(2, 100px 20px 80px)`
-- 使用auto-fill作为repeat的第一个参数,表示尽可能多的填充,例如`repear(auto-fill, 100px)`表示每行(列)的高(宽)为100px,并且尽可能多的填充
+- 使用auto-fill作为repeat的第一个参数,表示尽可能多的填充,例如`repeat(auto-fill, 100px)`表示每行(列)的高(宽)为100px,并且尽可能多的填充
 - 利用fr单位表示比例关系且用比例表示的部分会尽量沾满空余位置,例如`1fr 1fr`则表示两行(列),且高(宽)度相同,`1fr 2fr`则表示两行(列),且第2行(列)的高(宽)度是第一行(列)的2倍,`150px 1fr 2fr;`表示有3行(列),第1行(列)为150px,且第3行(列)是第二行(列)的2倍
 - 使用minmax(a,b)设置一个长度范围,表示最小为a,最大为b
 - 使用auto关键字,由浏览器自动判断,尽量沾满空余位置

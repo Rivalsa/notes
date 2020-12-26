@@ -165,6 +165,10 @@ var a=20,
 })();
 ```
 
+**标签专有的属性**
+
+`window.HTMLDetailsElement.prototype.open` `details`标签的当前状态，若为`true`表示已展开，若为`false`表示未展开
+
 ## 2.变量
 
 ### 2.1 变量命名规则
@@ -3005,6 +3009,8 @@ element.event = fun;
 `window.HTMLElement.prototype.onmousemove`鼠标移动
 
 `window.HTMLElement.prototype.onmouseup`鼠标任意键抬起
+
+`window.HTMLDetailsElement.prototype.ontoggle` `details`状态变化事件（状态变化后才触发此事件）
 
 `window.HTMLElement.prototype.ommouseenter`鼠标移入(不冒泡)
 
