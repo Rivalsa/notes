@@ -6,21 +6,20 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
     <noscript><meta http-equiv="refresh" content="0;URL=https://static.rivalsa.net/code/error/nojs.html"></noscript>
     <title>样式展示</title>
-    <!-- <link href="https://static-cors.rivalsa.net/code/css/init_v2_min.css" rel="stylesheet" integrity="sha512-oEAfeifU1zDaYt107bDlU8tsgV1Jm4s8QJkP0rPySyFbtdoZAkGjLM8p0epmuTwSywnqPHbiXpghSH3rOFVTrQ==" crossorigin> -->
-    <link href="https://static-cors.rivalsa.net/code/css/init_v2_min.css" rel="stylesheet">
+    <link href="https://static.rivalsa.net/code/css/init_v2_min.css" rel="stylesheet">
 </head>
-<body class="bg0" style="font-size:.16rem">
+<body class="bg0 ti2em" style="font-size:.16rem">
     <h1>普通段落</h1>
-    <p>这是一个普通段落，会自带 2em 的首行缩进。</p>
+    <p>这是一个 p 标签，如果有 ti2em 类，或者父元素有 ti2em 类，则会带 2em 的首行缩进。</p>
     <h1>无首行缩进段落</h1>
-    <p class="no-text-indent">当给 p 标签添加 no-text-indent 类后，无首行缩进效果。</p>
+    <p class="no-text-indent">当 p 标签及 p 标签的父元素没有 ti2em 类或者 p 标签的父元素有 ti2em 类但 p 标签有 no-text-indent 类，则无首行缩进效果。</p>
     <h1>提示框</h1>
     <div class="infotip1">这是 infotip1 提示框样式，其中的<a href="javascript:;">超链接</a>会显示一个小图标，也可以利用<span class="color1">颜色1</span>和<span class="color2">颜色2</span>来突出显示某些内容。内部通常不使用 p 标签（单段落内容）。</div>
     <div class="infotip2">这是 infotip2 提示框样式，其中的<a href="javascript:;">超链接</a>会显示一个小图标，也可以利用<span class="color1">颜色1</span>和<span class="color2">颜色2</span>来突出显示某些内容。内部通常不使用 p 标签（单段落内容）。</div>
     <div class="infotip3">这是 infotip3 提示框样式，其中的<a href="javascript:;">超链接</a>会显示一个小图标，也可以利用<span class="color1">颜色1</span>和<span class="color2">颜色2</span>来突出显示某些内容。内部通常不使用 p 标签（单段落内容）。</div>
     <div class="infotip0">
         <div class="title">infotip0 提示框</div>
-        <p>这是 infotip0 提示框，可以有标题，内容部分通常用 p 标签包裹（多段落或单段落内容均可）。</p>
+        <p>这是 infotip0 提示框，可以有标题，内容部分通常用 p 标签包裹（多段落或单段落内容均可），有缩进。</p>
     </div>
     <div class="infotip0">
         <div class="title">infotip0 提示框的多标题</div>
@@ -33,7 +32,7 @@
     <div class="infotip5">
         <div class="title">infotip5 提示框</div>
         <hr>
-        <p class="no-text-indent">这是 infotip5 提示框，通常需要有标签，且标题和内容之间用 hr 标签分割，内容部分通常用带有 no-text-indent 类的 p 标签包裹（单段落内容）。</p>
+        <p class="no-text-indent">这是 infotip5 提示框，通常需要有标签，且标题和内容之间用 hr 标签分割，内容部分通常用 p 标签包裹（单段落内容），无缩进。</p>
     </div>
     <h1>引用</h1>
     <p>引用分为两种，一种是 pre 标签引用，另一种是 blockquote 标签引用。</p>
@@ -45,12 +44,12 @@
 而且，当宽度不够时，会出现横向滚动条，而不会自动换行。</pre>
     <blockquote class="bg-color-blue">
         <p class="no-text-indent">这是带有 bg-color-blue 类的 blockquote 标签引用。</p>
-        <p class="no-text-indent">内部通常使用 p 元素，可以根据情况考虑是否添加 no-text-indent 类。</p>
+        <p class="no-text-indent">内部通常使用 p 元素，可以根据情况考虑是否添加缩进。</p>
         <p class="no-text-indent">而且，当宽度不够时，不会出现横向滚动条，而会自动换行。</p>
     </blockquote>
     <blockquote class="bg-color-yellow">
         <p class="no-text-indent">这是带有 bg-color-yellow 类的 blockquote 标签引用。</p>
-        <p class="no-text-indent">内部通常使用 p 元素，可以根据情况考虑是否添加 no-text-indent 类。</p>
+        <p class="no-text-indent">内部通常使用 p 元素，可以根据情况考虑是否添加缩进。</p>
         <p class="no-text-indent">而且，当宽度不够时，不会出现横向滚动条，而会自动换行。</p>
     </blockquote>
     <h1>超链接</h1>
@@ -77,5 +76,45 @@
         </tbody>
     </table>
     <p>表格样式类既可以添加在 table 标签上，也可以添加在任意父标签上。</p>
+    <h1>无序列表</h1>
+    <ul class="level-1">
+        <li>一级列表1</li>
+        <li>
+            <span>一级列表2</span>
+            <ul class="level-2">
+                <li>二级列表1</li>
+                <li>
+                    <span>二级列表2</span>
+                    <ul class="level-3">
+                        <li>三级列表1</li>
+                        <li>三级列表2</li>
+                    </ul>
+                </li>
+                <li>二级列表3</li>
+            </ul>
+        </li>
+        <li>一级列表3</li>
+        <li>一级列表4</li>
+    </ul>
+    <h1>有序列表</h1>
+    <ol class="level-1">
+        <li>一级列表1</li>
+        <li>
+            <span>一级列表2</span>
+            <ol class="level-2">
+                <li>二级列表1</li>
+                <li>
+                    <span>二级列表2</span>
+                    <ol class="level-3">
+                        <li>三级列表1</li>
+                        <li>三级列表2</li>
+                    </ol>
+                </li>
+                <li>二级列表3</li>
+            </ol>
+        </li>
+        <li>一级列表3</li>
+        <li>一级列表4</li>
+    </ol>
 </body>
 </html>
