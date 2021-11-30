@@ -176,3 +176,43 @@ openssl rsautl -sign -in text.txt -inkey private.pem -out text_sign.txt
 ```bash
 openssl rsautl -verify -in text_sign.txt -inkey public.pem -pubin
 ```
+
+## 散列
+
+散列相关个各类算法通过 `dgst` 指令实现。其格式为：
+
+```bash
+openssl dgst [参数] [被操作文件]
+```
+
+常用参数如下：
+
+> `-out {file}` 不输出任何内容，而是将应输出的内容写入 {file} 文件中
+>
+> `-md4`、`-md5`、`-sha`、`-sha1`、`-sha224`、`-sha256`、`-sha384`、`-sha512` 计算对应的散列值，如果不提供此参数，默认为 sha256
+>
+> `-sign {private}` 计算出散列值后，使用指定私钥对散列值进行签名
+>
+> `-hex` 十六进制输出
+>
+> `-verify {public}` 以及 `-signature {sign}` 用提供的公钥对提供的签名进行验证签名，并将得到的散列值与计算出的散列值进行对比。
+
+更多参数信息可以运行`openssl dgst -help`查看。
+
+**举例：计算散列值（sha1)**
+
+```hash
+openssl dgst -sha1 text.txt
+```
+
+**举例：使用私钥对散列值签名**
+
+```hash
+openssl dgst -sha1 -sign private.pem -out text_hashsign.txt text.txt
+```
+
+**举例：使用公钥对散列值签名进行验证签名，并于计算出的散列值对比**
+
+```hash
+openssl dgst -sha1 -verify public.pem -signature text_hashsign.txt text.txt
+```
