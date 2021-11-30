@@ -20,7 +20,7 @@ openssl genrsa [参数] [私钥位数]
 
 不太常用或者我没太弄清楚的参数如下：
 
-> `-des`、`-des3`、`-camellia128`、`-camellia192`、`-camellia256` 将生成的私钥用指定的对称加密算法加密后再输出或写入文件
+> `-des`、`-des3`、`-camellia128`、`-camellia192`、`-camellia256`等 将生成的私钥用指定的对称加密算法加密后再输出或写入文件
 >
 > `-f4` 使用 65537 (0x10001) 作为 E 值
 >
@@ -66,7 +66,7 @@ openssl rsa [参数]
 >
 > `-passout pass:{pass}` 指定用于将输出私钥进行对称加密的密码，指定此参数的同时还应同时提供对称加密的参数（如：`-aes128`、`-aes192` 或 `-aes256` 等）
 >
-> `-aes128`、`-aes192`、`-aes256` 对输出的私钥用指定的算法进行对称加密
+> `-aes128`、`-aes192`、`-aes256`等 对输出的私钥用指定的算法进行对称加密
 >
 > `-pubin` 输入的内容为公钥，若未提供此参数，则输入的内容为私钥
 >
@@ -185,6 +185,8 @@ openssl rsautl -verify -in text_sign.txt -inkey public.pem -pubin
 openssl dgst [参数] [被操作文件]
 ```
 
+输入原始文件、公钥或私钥等，输出计算结果。
+
 常用参数如下：
 
 > `-out {file}` 不输出任何内容，而是将应输出的内容写入 {file} 文件中
@@ -215,4 +217,60 @@ openssl dgst -sha1 -sign private.pem -out text_hashsign.txt text.txt
 
 ```hash
 openssl dgst -sha1 -verify public.pem -signature text_hashsign.txt text.txt
+```
+
+## 对称加密
+
+对称加密通常使用 `enc` 指令来进行操作。其格式为：
+
+```hash
+openssl enc [参数]
+```
+
+输入原始文件或加密后的文件，输出加密或解密的结果。
+
+常用参数如下：
+
+> `-a`、`-base64` 加密后使用 base64 编码，或先使用 base64 解码后再解密
+>
+> `-e` 加密
+>
+> `-d` 解密
+>
+> `-aes128`、`-aes256`等 通过指定的对称加密算法进行加密或解密
+>
+> `-in {file}` 提供需要加密或解密的文件
+>
+> `-k {key}`、`-pass pass:{pass}` 提供加密或解密的密码
+>
+> `-out {file}` 不输出内容，而是将应输出的内容写入到文件中
+>
+> `-pbkdf2` Use password-based key derivation function 2
+>
+> `-iter {num}` Specify the iteration count and force use of PBKDF2
+
+不太常用或者我没太弄清楚的参数如下：
+
+> `-p` 输出 salt、key、iv 等相关信息
+>
+> `-debug` 输出调试信息
+>
+> `-salt` 随机加盐，未提供此参数时也会随机加盐，除非提供了 `-nosalt` 或 `-S` 参数。
+>
+> `-nosalt` 不加盐
+>
+> `-S {salt}` 手动制定加盐的值
+
+更多参数信息可以运行`openssl dgst -help`查看。
+
+**举例：对文件进行对称加密（aes128），并输出 base64 编码**
+
+```bash
+openssl enc -e -aes128 -in text.txt -k 1234 -a -pbkdf2 -out text_aes128.txt
+```
+
+**举例：对 base64 编码的加密文件（aes128）进行解密**
+
+```bash
+openssl enc -d -aes128 -in text_aes128.txt -k 1234 -a -pbkdf2
 ```
