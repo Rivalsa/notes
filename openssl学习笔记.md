@@ -263,6 +263,12 @@ openssl enc [参数]
 
 更多参数信息可以运行`openssl dgst -help`查看。
 
+**举例：将文件进行 base64 编码**
+
+```bash
+openssl enc -in text.txt -a
+```
+
 **举例：对文件进行对称加密（aes128），并输出 base64 编码**
 
 ```bash
