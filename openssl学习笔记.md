@@ -4,7 +4,7 @@
 
 ### genrsa 指令
 
-`genrsa` 指令用于生成私钥，其格式为：
+`genrsa` 指令用于生成 RSA 私钥，其格式为：
 
 ```bash
 openssl genrsa [参数] [私钥位数]
@@ -14,7 +14,7 @@ openssl genrsa [参数] [私钥位数]
 
 常用参数如下：
 
-> `-out {filename}` 不输出生成的私钥，而是将生成的私钥写入 {filename} 文件
+> `-out {file}` 不输出生成的私钥，而是将生成的私钥写入文件
 >
 > `-aes128`、`-aes192`、`-aes256` 将生成的私钥用指定的对称加密算法加密后再输出或写入文件
 
@@ -28,7 +28,9 @@ openssl genrsa [参数] [私钥位数]
 >
 > 如果没有使用任何指定 E 值的参数，则默认使用 65537 作为 E 值
 
-更多参数信息可以运行`openssl genrsa -help`查看。
+更多参数信息请查看[官方文档](https://www.openssl.org/docs/man3.0/man1/openssl-genrsa.html)。
+
+> 高版本的 openssl 中还可以使用 `genpkey` 指令来生成私钥。
 
 **举例：生成私钥**
 
@@ -44,23 +46,23 @@ openssl genrsa -aes128 -out aes.pem 2048
 
 ### rsa 指令
 
-`rsa` 指令通常用于查看公钥或私钥相关的信息（例如：不同格式的公钥或私钥等），其格式为：
+`rsa` 指令通常用于输出 RSA 公钥或 RSA 私钥相关的信息（例如：不同格式的公钥或私钥等），其格式为：
 
 ```bash
 openssl rsa [参数]
 ```
 
-输入一个公钥或私钥，输出相关信息。
+输出相关信息。
 
 常用参数如下：
 
 > `-in {file}` 提供输入的私钥或公钥的文件名
 >
-> `-inform {format}` 提供输入文件的格式，若不提供此参数，则默认为 pem 格式
+> `-inform {format}` 提供输入文件的格式，若不提供此参数，则默认为 PEM 格式
 >
-> `-out {file}` 不输出任何内容，而是将应输出的内容写入 {file} 文件
+> `-out {file}` 不输出任何内容，而是将应输出的内容写入文件
 >
-> `-ourform {format}` 指定输出内容的格式，若不提供此参数，则默认为 pem 格式
+> `-ourform {format}` 指定输出内容的格式，若不提供此参数，则默认为 PEM 格式
 >
 > `-passin pass:{pass}` 提供被对称加密的私钥的密码
 >
@@ -81,7 +83,9 @@ openssl rsa [参数]
 >
 > `-modulus` 输出私钥的 modulus
 
-更多参数信息可以运行`openssl rsa -help`查看。
+更多参数信息请查看[官方文档](https://www.openssl.org/docs/man3.0/man1/openssl-rsa.html)。
+
+> 高版本的 openssl 中还可以使用 `pkey` 指令来输出相关信息。
 
 **举例：查看私钥信息**
 
@@ -115,21 +119,21 @@ openssl rsa -in private.pem -aes128 -passout pass:1234
 openssl rsa -in private.pem -outform der -out private.der
 ```
 
-### rsautl 指令
+### pkeyutl 指令
 
-`rsautl` 指令用于利用公钥或私钥对一个文件进行加密、解密、签名、验证签名等操作，其格式为：
+`pkeyutl` 指令用于利用公钥或私钥对一个文件进行加密、解密、签名、验证签名等操作，其格式为：
 
 ```bash
-openssl rsautl [参数]
+openssl pkeyutl [参数]
 ```
 
-输入一个需要被操作的文件及一个公钥或私钥，输出操作结果。
+输出操作结果。
 
 常用参数如下：
 
 > `-in {file}` 提供需要被操作的文件
 >
-> `-out {file}` 不输出任何内容，而是将应输出的内容写入 {file} 文件中
+> `-out {file}` 不输出任何内容，而是将应输出的内容写入文件中
 >
 > `-inkey {file}` 提供一个公钥或私钥
 >
@@ -137,13 +141,17 @@ openssl rsautl [参数]
 >
 > `-decrypt` 使用私钥解密被操作文件
 >
-> `-sign` 使用私钥对被操作文件签名
+> `-sign` 使用私钥对被操作文件签名，被操作文件必须是散列值
 >
-> `-verify` 使用公钥对被操作文件验证签名
+> `-verify` 使用公钥对被操作文件验证签名，被操作文件必须是散列值，此参数通常与 `-sigfile` 参数同时使用
+>
+> `-rawin` 被操作文件是未经散列的原始文件，此选项只能与 `-sign` 参数或 `-verify` 参数同时使用，且应当通过 `-digest` 参数指定散列算法
+>
+> `-digest {algo}` 指定散列算法，此选项必须与 `-rawin` 选项同时使用，若使用了 `-rawin` 选项，但没使用本选项，则对于 RSA、DSA、ECDSA 等签名算法默认使用 SHA256 算法，对于 SM2 签名算法，默认使用 SM3 算法
+>
+> `sigfile {file}` 在验证签名时提供签名文件，此参数必须与 `-verify`参数同时使用
 >
 > `passin pass:{pass}` 为经过对称加密的私钥提供密码
->
-> `keyform {format}` 提供私钥或公钥的格式，若未提供此参数，则默认为 pem 格式
 >
 > `-pubin` 输入的密钥为公钥，若未提供此参数，则输入的密钥为私钥
 >
@@ -151,30 +159,32 @@ openssl rsautl [参数]
 >
 > `-hexdump` 十六进制输出
 
-更多参数信息可以运行`openssl rsautl -help`查看。
+更多参数信息请查看[官方文档](更多参数信息请查看[官方文档](https://www.openssl.org/docs/man3.0/man1/openssl-rsa.html)。
+
+> 在 openssl 中还可以使用 `rsautl` 指令通过 RSA 公钥或 RSA 私钥进行加密或解密，但 `rsautl` 在高版本的 openssl 中已被废弃，不推荐使用。
 
 **举例：用公钥加密文件**
 
 ```bash
-openssl rsautl -encrypt -in text.txt -inkey public.pem -pubin -out text_encrypt.txt
+openssl pkeyutl -encrypt -in text.txt -inkey public.pem -pubin -out text_encrypt.txt
 ```
 
 **举例：用私钥解密文件**
 
 ```bash
-openssl rsautl -decrypt -in text_encrypt.txt -inkey private.pem
+openssl pkeyutl -decrypt -in text_encrypt.txt -inkey private.pem
 ```
 
 **举例：用私钥对文件签名**
 
 ```bash
-openssl rsautl -sign -in text.txt -inkey private.pem -out text_sign.txt
+openssl pkeyutl -sign -in text.txt -inkey private.pem -rawin -digest sha256 -out text_sign.txt
 ```
 
 **举例：用公钥对文件验证签名**
 
 ```bash
-openssl rsautl -verify -in text_sign.txt -inkey public.pem -pubin
+openssl pkeyutl -verify -in text.txt -inkey public.pem -pubin -sigfile text_sign.txt
 ```
 
 ## 散列
