@@ -184,7 +184,7 @@ openssl pkeyutl -sign -in text.txt -inkey private.pem -rawin -digest sha256 -out
 **举例：用公钥对文件验证签名**
 
 ```bash
-openssl pkeyutl -verify -in text.txt -inkey public.pem -pubin -sigfile text_sign.txt
+openssl pkeyutl -verify -in text.txt -inkey public.pem -pubin -sigfile text_sign.txt -rawin -digest sha256
 ```
 
 ## 散列
