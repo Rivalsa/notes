@@ -13,15 +13,22 @@ vue官网：https://cn.vuejs.org/
 - computed
 - created
 - filters (vue 3 中被废弃）
+- key
+- template
 
 HTML 中的 vue 语法或指令
 
 - {{xxx}}
 - :src
 - v-text
-- @click
+- v-on:click（简写为 @click）（$event 为事件对象）
 - v-cloak （与样式 `[v-cloak]{display:none;}` 配合）
 - v-if
+- v-else-if
+- v-else
 - v-for
 - v-html
 - v-show
+- v-model
+- v-bind
+- v-once
