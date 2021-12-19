@@ -32,3 +32,7 @@ HTML 中的 vue 语法或指令
 - v-model
 - v-bind
 - v-once
+
+全局
+
+- component
