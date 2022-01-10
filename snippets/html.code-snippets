@@ -18,6 +18,7 @@
 			"	</style>",
 			"</head>",
 			"<body class=\"bg0\" style=\"font-size:.16rem\">",
+			"	<noscript><p style=\"background-color:#dcdcbf;font-size:.16rem;text-align:center;line-height:.3rem;\"><strong>您的浏览器禁用了 JavaScript 脚本，这可能影响您正常访问本网站。</strong></p></noscript>",
 			"	$2",
 			"	<script>",
 			"		'use strict';",
