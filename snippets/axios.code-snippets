@@ -3,7 +3,7 @@
 		"scope": "html",
 		"prefix": "axios",
 		"body": [
-			"<script src=\"https://static.rivalsa.cn/code/axios/axios_0_19_0_min.js\"></script>"
+			"<script src=\"https://static.bg2kuj.com/code/axios/axios_0_19_0_min.js\" integrity=\"sha512-Sxm7hIqnsw6fVBGhaNCc7D5Ieen2ew34ola4jLl9OR2RQLvUekAyyMXQ47EX7Num4SzYurI1HNIkNdzSwOp/mQ==\" crossorigin></script>"
 		],
 		"description": "axios"
 	}
