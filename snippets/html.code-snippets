@@ -13,6 +13,7 @@
 			"	<meta name=\"Description\" Content=\"$6\">",
 			"	<title>$1</title>",
 			"	<link href=\"https://static.bg2kuj.com/code/css/init_v2_5_min.css\" rel=\"stylesheet\" integrity=\"sha512-QPAq/ZGqvApnoXwKvkA3gh9g0o0Foz/FH+9B4tauebTXmG8MudzpMl6ZpFO3zdK5CaQFgW95vBOIykWXY3MfQg==\" crossorigin>",
+			"	<script defer src=\"https://static.bg2kuj.com/code/public.js\"></script>",
 			"	<style>",
 			"		$3",
 			"	</style>",
