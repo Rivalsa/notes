@@ -4,9 +4,8 @@
     <meta charset="utf-8">
     <meta name="robots" content="noarchive">
     <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no">
-    <noscript><meta http-equiv="refresh" content="0;URL=https://static.rivalsa.net/code/error/nojs.html"></noscript>
     <title>样式展示</title>
-    <link href="https://static.bg2kuj.com/code/css/init_v2_2_min.css" rel="stylesheet" integrity="sha512-p0DdN2FBUejAdZgXku3U7MQuUqgMqz2hlK5/ofZU47kb0sBf6VaFKZ8CrYxi/0hEtbkAn0JjzFsWCVI+aO7X8Q==" crossorigin>"
+    <link href="https://static.bg2kuj.com/code/css/init_v2_6_min.css" rel="stylesheet" integrity="sha512-S7OFkbn4Xg2YhyD/ZQFB1TT0i1r9H0+cHHJowE2jLRDETi2XkzBi5FjD7+fZM9h4ZOBjt00qSu2Ldxkib7CJlg==" crossorigin>
 </head>
 <body class="bg0 ti2em" style="font-size:.16rem">
     <h1>普通段落</h1>
@@ -77,6 +76,7 @@
     </table>
     <p>表格样式类既可以添加在 table 标签上，也可以添加在任意父标签上。</p>
     <h1>无序列表</h1>
+    <p class="no-text-indent">一般无序列表</p>
     <ul class="level-1">
         <li>一级列表1</li>
         <li>
@@ -95,6 +95,14 @@
         </li>
         <li>一级列表3</li>
         <li>一级列表4</li>
+    </ul>
+    <p class="no-text-indent">小左间距一级无序列表</p>
+    <ul class="level-1 ml2em">
+        <li>小左间距一级列表(ul有ml2em类)</li>
+    </ul>
+    <p class="no-text-indent">无左间距一级无序列表</p>
+    <ul class="level-1 no-margin-left">
+        <li>无左间距一级列表(ul有no-margin-left类)，前面的点会在左侧溢出。</li>
     </ul>
     <h1>有序列表</h1>
     <ol class="level-1">
@@ -115,6 +123,14 @@
         </li>
         <li>一级列表3</li>
         <li>一级列表4</li>
+    </ol>
+    <p class="no-text-indent">小左间距一级有序列表</p>
+    <ol class="level-1 ml2em">
+        <li>小左间距一级列表(ol有ml2em类)</li>
+    </ol>
+    <p class="no-text-indent">无左间距一级有序列表</p>
+    <ol class="level-1 no-margin-left">
+        <li>无左间距一级列表(ol有no-margin-left类)，前面的点会在左侧溢出。</li>
     </ol>
 </body>
 </html>
